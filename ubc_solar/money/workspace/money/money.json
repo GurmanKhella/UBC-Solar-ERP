@@ -1,0 +1,208 @@
+{
+ "charts": [],
+ "content": "[{\"id\": \"par0001sol\", \"type\": \"paragraph\", \"data\": {\"text\": \"Every purchase is approved once, by the subteam's Lead, the division's Exec or the Captain. Whoever approves it orders it (with the receipt) and marks it received. The budget follows fundraising: available = raised \\u2212 spent \\u2212 committed.\", \"col\": 12}}, {\"id\": \"num0010sol\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Raised\", \"col\": 3}}, {\"id\": \"num0011sol\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Minimum Target\", \"col\": 3}}, {\"id\": \"num0012sol\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Available\", \"col\": 3}}, {\"id\": \"num0013sol\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Pledged\", \"col\": 3}}, {\"id\": \"num0014sol\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Committed\", \"col\": 3}}, {\"id\": \"num0015sol\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Spent\", \"col\": 3}}, {\"id\": \"num0016sol\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Purchases Waiting for Approval\", \"col\": 3}}, {\"id\": \"num0017sol\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Purchases to Order\", \"col\": 3}}, {\"id\": \"sho0030sol\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Purchase Requests\", \"col\": 3}}, {\"id\": \"sho0031sol\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Budgets\", \"col\": 3}}, {\"id\": \"sho0032sol\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Funding\", \"col\": 3}}, {\"id\": \"sho0033sol\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Budget Overview\", \"col\": 3}}, {\"id\": \"car0050sol\", \"type\": \"card\", \"data\": {\"card_name\": \"Purchasing\", \"col\": 4}}, {\"id\": \"car0051sol\", \"type\": \"card\", \"data\": {\"card_name\": \"Budget\", \"col\": 4}}]",
+ "creation": "2026-10-27 17:27:04.365062",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "wallet",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "Money",
+ "links": [
+  {
+   "type": "Card Break",
+   "label": "Purchasing",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 4,
+   "onboard": 0
+  },
+  {
+   "type": "Link",
+   "label": "Purchase Requests",
+   "link_to": "Material Request",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "Orders",
+   "link_to": "Purchase Order",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "Deliveries Received",
+   "link_to": "Purchase Receipt",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "Supplier",
+   "link_to": "Supplier",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Card Break",
+   "label": "Budget",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 4,
+   "onboard": 0
+  },
+  {
+   "type": "Link",
+   "label": "Budgets",
+   "link_to": "Solar Budget",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "Budget Lines",
+   "link_to": "Budget Line",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "Funding",
+   "link_to": "Funding Entry",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "Budget Overview",
+   "link_to": "Budget Overview",
+   "link_type": "Report",
+   "hidden": 0,
+   "is_query_report": 1,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  }
+ ],
+ "modified": "2026-10-27 17:27:04.365062",
+ "modified_by": "Administrator",
+ "module": "Money",
+ "name": "Money",
+ "number_cards": [
+  {
+   "label": "Raised",
+   "number_card_name": "Raised"
+  },
+  {
+   "label": "Minimum Target",
+   "number_card_name": "Minimum Target"
+  },
+  {
+   "label": "Available",
+   "number_card_name": "Available"
+  },
+  {
+   "label": "Pledged",
+   "number_card_name": "Pledged"
+  },
+  {
+   "label": "Committed",
+   "number_card_name": "Committed"
+  },
+  {
+   "label": "Spent",
+   "number_card_name": "Spent"
+  },
+  {
+   "label": "Purchases Waiting for Approval",
+   "number_card_name": "Purchases Waiting for Approval"
+  },
+  {
+   "label": "Purchases to Order",
+   "number_card_name": "Purchases to Order"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "restrict_to_domain": "",
+ "roles": [
+  {
+   "role": "Solar Member"
+  },
+  {
+   "role": "Solar Alumni"
+  },
+  {
+   "role": "System Manager"
+  }
+ ],
+ "sequence_id": 4.0,
+ "shortcuts": [
+  {
+   "label": "Purchase Requests",
+   "link_to": "Material Request",
+   "type": "DocType",
+   "doc_view": "List",
+   "color": "Grey"
+  },
+  {
+   "label": "Budgets",
+   "link_to": "Solar Budget",
+   "type": "DocType",
+   "doc_view": "List",
+   "color": "Grey"
+  },
+  {
+   "label": "Funding",
+   "link_to": "Funding Entry",
+   "type": "DocType",
+   "doc_view": "List",
+   "color": "Grey"
+  },
+  {
+   "label": "Budget Overview",
+   "link_to": "Budget Overview",
+   "type": "Report",
+   "doc_view": "",
+   "color": "Grey"
+  }
+ ],
+ "standard": 1,
+ "title": "Money",
+ "type": "Workspace"
+}

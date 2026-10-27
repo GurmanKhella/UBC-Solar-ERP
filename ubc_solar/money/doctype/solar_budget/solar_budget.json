@@ -2,7 +2,7 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "field:budget_name",
- "creation": "2026-10-27 12:00:00.000000",
+ "creation": "2026-10-27 17:27:04.315447",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
@@ -111,7 +111,7 @@
    "group": "Money in"
   }
  ],
- "modified": "2026-10-27 12:00:00.000000",
+ "modified": "2026-10-27 17:27:04.315447",
  "modified_by": "Administrator",
  "module": "Money",
  "name": "Solar Budget",

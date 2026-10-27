@@ -1,0 +1,20 @@
+{
+ "creation": "2026-10-27 17:27:04.365062",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "document_type": "Material Request",
+ "dynamic_filters_json": "[]",
+ "filters_json": "[[\"Material Request\", \"workflow_state\", \"=\", \"Pending Approval\"]]",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "label": "Purchases Waiting for Approval",
+ "modified": "2026-10-27 17:27:04.365062",
+ "modified_by": "Administrator",
+ "module": "Money",
+ "name": "Purchases Waiting for Approval",
+ "owner": "Administrator",
+ "show_percentage_stats": 0,
+ "type": "Document Type"
+}

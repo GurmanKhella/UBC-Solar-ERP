@@ -1,0 +1,254 @@
+{
+ "charts": [],
+ "content": "[{\"id\": \"par0001sol\", \"type\": \"paragraph\", \"data\": {\"text\": \"The car, from parts up: each car is made of subsystems, each subsystem of projects, and each project of parts. Every designed thing has one project BOM, imported from CAD and approved before anything is bought.\", \"col\": 12}}, {\"id\": \"num0010sol\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"BOMs Waiting for Review\", \"col\": 3}}, {\"id\": \"num0011sol\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Active Projects\", \"col\": 3}}, {\"id\": \"num0012sol\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Open Repairs\", \"col\": 3}}, {\"id\": \"sho0030sol\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Cars\", \"col\": 3}}, {\"id\": \"sho0031sol\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Projects\", \"col\": 3}}, {\"id\": \"sho0032sol\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"BOMs\", \"col\": 3}}, {\"id\": \"sho0033sol\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Import BOM from CAD\", \"col\": 3}}, {\"id\": \"sho0034sol\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Build Records\", \"col\": 3}}, {\"id\": \"sho0035sol\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"All Harnesses\", \"col\": 3}}, {\"id\": \"car0050sol\", \"type\": \"card\", \"data\": {\"card_name\": \"Design\", \"col\": 4}}, {\"id\": \"car0051sol\", \"type\": \"card\", \"data\": {\"card_name\": \"Build\", \"col\": 4}}, {\"id\": \"car0052sol\", \"type\": \"card\", \"data\": {\"card_name\": \"Life of the car\", \"col\": 4}}]",
+ "creation": "2026-10-27 17:27:04.365062",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "car",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "Cars",
+ "links": [
+  {
+   "type": "Card Break",
+   "label": "Design",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 4,
+   "onboard": 0
+  },
+  {
+   "type": "Link",
+   "label": "Projects",
+   "link_to": "Solar Project",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "BOMs",
+   "link_to": "BOM",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "Import BOM from CAD",
+   "link_to": "BOM Import",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "Parts",
+   "link_to": "Item",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Card Break",
+   "label": "Build",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 4,
+   "onboard": 0
+  },
+  {
+   "type": "Link",
+   "label": "Manufacturing Packages",
+   "link_to": "Manufacturing Package",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "Manufacturing Stages",
+   "link_to": "Manufacturing Stage",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "Build Records",
+   "link_to": "Build Record",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "Quality Results",
+   "link_to": "Quality Inspection",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Card Break",
+   "label": "Life of the car",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 4,
+   "onboard": 0
+  },
+  {
+   "type": "Link",
+   "label": "Cars",
+   "link_to": "Car",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "Repairs",
+   "link_to": "Car Repair",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "Competitions",
+   "link_to": "Competition",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "All Harnesses",
+   "link_to": "All Harnesses",
+   "link_type": "Report",
+   "hidden": 0,
+   "is_query_report": 1,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  }
+ ],
+ "modified": "2026-10-27 17:27:04.365062",
+ "modified_by": "Administrator",
+ "module": "Cars",
+ "name": "Cars",
+ "number_cards": [
+  {
+   "label": "BOMs Waiting for Review",
+   "number_card_name": "BOMs Waiting for Review"
+  },
+  {
+   "label": "Active Projects",
+   "number_card_name": "Active Projects"
+  },
+  {
+   "label": "Open Repairs",
+   "number_card_name": "Open Repairs"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "restrict_to_domain": "",
+ "roles": [
+  {
+   "role": "Solar Member"
+  },
+  {
+   "role": "Solar Alumni"
+  },
+  {
+   "role": "System Manager"
+  }
+ ],
+ "sequence_id": 1.0,
+ "shortcuts": [
+  {
+   "label": "Cars",
+   "link_to": "Car",
+   "type": "DocType",
+   "doc_view": "List",
+   "color": "Grey"
+  },
+  {
+   "label": "Projects",
+   "link_to": "Solar Project",
+   "type": "DocType",
+   "doc_view": "List",
+   "color": "Grey"
+  },
+  {
+   "label": "BOMs",
+   "link_to": "BOM",
+   "type": "DocType",
+   "doc_view": "List",
+   "color": "Grey"
+  },
+  {
+   "label": "Import BOM from CAD",
+   "link_to": "BOM Import",
+   "type": "DocType",
+   "doc_view": "List",
+   "color": "Grey"
+  },
+  {
+   "label": "Build Records",
+   "link_to": "Build Record",
+   "type": "DocType",
+   "doc_view": "List",
+   "color": "Grey"
+  },
+  {
+   "label": "All Harnesses",
+   "link_to": "All Harnesses",
+   "type": "Report",
+   "doc_view": "",
+   "color": "Grey"
+  }
+ ],
+ "standard": 1,
+ "title": "Cars",
+ "type": "Workspace"
+}

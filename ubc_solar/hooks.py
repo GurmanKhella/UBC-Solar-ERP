@@ -12,7 +12,7 @@ add_to_apps_screen = [
 		"name": "ubc_solar",
 		"logo": "/assets/ubc_solar/images/logo.svg",
 		"title": "UBC Solar",
-		"route": "/app/cars",
+		"route": "/desk/cars",
 	}
 ]
 

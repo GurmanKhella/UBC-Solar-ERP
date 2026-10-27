@@ -1,0 +1,114 @@
+{
+ "charts": [],
+ "content": "[{\"id\": \"par0001sol\", \"type\": \"paragraph\", \"data\": {\"text\": \"Slack notifications and the /erp lookup bot, Google Drive project and procedure docs, Monday items, and the wiki's Current car page. Each one is switched on in Solar Settings once its credentials are added; failures are logged here and posted to the maintainers' channel.\", \"col\": 12}}, {\"id\": \"num0010sol\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Failed Automations\", \"col\": 3}}, {\"id\": \"sho0030sol\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Solar Settings\", \"col\": 3}}, {\"id\": \"sho0031sol\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Automation Log\", \"col\": 3}}, {\"id\": \"car0050sol\", \"type\": \"card\", \"data\": {\"card_name\": \"Connected tools\", \"col\": 4}}]",
+ "creation": "2026-10-27 17:27:04.365062",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "plug",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "Connected Tools",
+ "links": [
+  {
+   "type": "Card Break",
+   "label": "Connected tools",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 4,
+   "onboard": 0
+  },
+  {
+   "type": "Link",
+   "label": "Solar Settings",
+   "link_to": "Solar Settings",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "Automation Log",
+   "link_to": "Solar Automation Log",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "Error Log",
+   "link_to": "Error Log",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "Scheduled Job Log",
+   "link_to": "Scheduled Job Log",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  }
+ ],
+ "modified": "2026-10-27 17:27:04.365062",
+ "modified_by": "Administrator",
+ "module": "Solar Automation",
+ "name": "Connected Tools",
+ "number_cards": [
+  {
+   "label": "Failed Automations",
+   "number_card_name": "Failed Automations"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "restrict_to_domain": "",
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Solar Admin"
+  },
+  {
+   "role": "Solar Captain"
+  }
+ ],
+ "sequence_id": 7.0,
+ "shortcuts": [
+  {
+   "label": "Solar Settings",
+   "link_to": "Solar Settings",
+   "type": "DocType",
+   "doc_view": "List",
+   "color": "Grey"
+  },
+  {
+   "label": "Automation Log",
+   "link_to": "Solar Automation Log",
+   "type": "DocType",
+   "doc_view": "List",
+   "color": "Grey"
+  }
+ ],
+ "standard": 1,
+ "title": "Connected Tools",
+ "type": "Workspace"
+}

@@ -1,0 +1,20 @@
+{
+ "creation": "2026-10-27 17:27:04.365062",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "document_type": "BOM",
+ "dynamic_filters_json": "[]",
+ "filters_json": "[[\"BOM\", \"workflow_state\", \"=\", \"Ready for Review\"], [\"BOM\", \"docstatus\", \"=\", 0]]",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "label": "BOMs Waiting for Review",
+ "modified": "2026-10-27 17:27:04.365062",
+ "modified_by": "Administrator",
+ "module": "Cars",
+ "name": "BOMs Waiting for Review",
+ "owner": "Administrator",
+ "show_percentage_stats": 0,
+ "type": "Document Type"
+}

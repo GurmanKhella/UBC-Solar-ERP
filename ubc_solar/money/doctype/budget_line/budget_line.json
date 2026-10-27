@@ -1,6 +1,6 @@
 {
  "actions": [],
- "creation": "2026-10-27 12:00:00.000000",
+ "creation": "2026-10-27 17:27:04.315447",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
@@ -113,7 +113,7 @@
    "group": "Purchases"
   }
  ],
- "modified": "2026-10-27 12:00:00.000000",
+ "modified": "2026-10-27 17:27:04.315447",
  "modified_by": "Administrator",
  "module": "Money",
  "name": "Budget Line",

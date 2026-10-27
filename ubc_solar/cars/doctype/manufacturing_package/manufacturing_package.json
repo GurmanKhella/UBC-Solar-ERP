@@ -1,7 +1,7 @@
 {
  "actions": [],
  "autoname": "format:{car} {subsystem}",
- "creation": "2026-10-27 12:00:00.000000",
+ "creation": "2026-10-27 17:27:04.315447",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
@@ -85,7 +85,7 @@
    "group": "Stages"
   }
  ],
- "modified": "2026-10-27 12:00:00.000000",
+ "modified": "2026-10-27 17:27:04.315447",
  "modified_by": "Administrator",
  "module": "Cars",
  "name": "Manufacturing Package",
