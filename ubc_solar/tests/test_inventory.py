@@ -115,6 +115,24 @@ class TestReorderAndExpiry(IntegrationTestCase):
 		mr = frappe.get_doc("Material Request", first["name"])
 		self.assertEqual((mr.workflow_state, mr.solar_source, mr.solar_requested_by), ("Pending Approval", "Two-bin", member.user))
 
+	def test_reorder_card_follows_the_active_budget(self):
+		old = make_budget([("Shop Supplies", None, 100)])
+		old_line = f"Shop Supplies - {old}"
+		frappe.db.set_value("Budget Line", old_line, "is_shop_supplies", 1)
+		member = make_member("Member", subteam="Structures")
+		tape = make_item("Buy", mpn=unique("TAPE"), inventory_type="Shop Consumable")
+		point = frappe.get_doc(
+			{"doctype": "Reorder Point", "item_code": tape.name, "method": "Reorder card", "reorder_qty": 1,
+			 "budget_line": old_line, "subteam": "Structures"}
+		).insert(ignore_permissions=True)
+		new = make_budget([("Shop Supplies", None, 200)])  # a new season becomes the active budget
+		frappe.db.set_value("Budget Line", f"Shop Supplies - {new}", "is_shop_supplies", 1)
+		frappe.get_doc("Solar Budget", new).save(ignore_permissions=True)
+		frappe.clear_document_cache("Solar Settings", "Solar Settings")
+		with as_user(member.user):
+			result = request_reorder(point.name)
+		self.assertEqual(frappe.db.get_value("Material Request", result["name"], "solar_budget_line"), f"Shop Supplies - {new}")
+
 	def test_expiring_batch_is_found(self):
 		from ubc_solar.money.purchasing import make_batch
 

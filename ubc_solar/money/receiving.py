@@ -4,6 +4,19 @@ import frappe
 from frappe.utils import flt
 
 from ubc_solar.cars.utils import default_location
+from ubc_solar.solar_inventory.stock import excluded_locations, stock_by_location
+
+
+def usual_shelf(item_code, receiving):
+	"""The part's own shelf, else the shelf already holding most of it."""
+	shelf = default_location(item_code)
+	if shelf:
+		return shelf
+	skip = excluded_locations() | {receiving}
+	for warehouse, _qty in stock_by_location(item_code):
+		if warehouse not in skip:
+			return warehouse
+	return None
 
 
 @frappe.whitelist()
@@ -24,7 +37,7 @@ def get_receivable(material_request: str):
 			{
 				"item_code": row.item_code,
 				"qty": remaining,
-				"warehouse": default_location(row.item_code) or row.warehouse or receiving,
+				"warehouse": usual_shelf(row.item_code, receiving) or receiving,
 			}
 		)
 	return rows

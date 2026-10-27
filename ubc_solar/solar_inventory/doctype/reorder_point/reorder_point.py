@@ -15,13 +15,20 @@ class ReorderPoint(Document):
 	def validate(self):
 		if flt(self.reorder_qty) <= 0:
 			frappe.throw(_("Enter how much to order."))
-		settings = frappe.get_cached_doc("Solar Settings")
-		if not self.budget_line and frappe.db.get_value("Item", self.item_code, "solar_inventory_type") == "Shop Consumable":
-			self.budget_line = settings.shop_supplies_line
 		if not self.subteam and self.budget_line:
 			self.subteam = frappe.db.get_value("Budget Line", self.budget_line, "subteam")
 		if not self.subteam:
-			self.subteam = settings.shop_supplies_subteam
+			self.subteam = frappe.get_cached_doc("Solar Settings").shop_supplies_subteam
+
+
+def budget_line_for(point, source):
+	"""The card's own line while its budget is active; otherwise the current default
+	(the active budget's shop supplies line for two-bin and reorder cards)."""
+	from ubc_solar.money.purchasing import active_budget, default_budget_line
+
+	if point.budget_line and frappe.db.get_value("Budget Line", point.budget_line, "budget") == active_budget():
+		return point.budget_line
+	return default_budget_line(point.subteam, source)
 
 
 def open_request(reorder_point):
@@ -46,16 +53,17 @@ def request_reorder(reorder_point: str):
 	if existing:
 		return {"name": existing, "created": False}
 
+	source = "Two-bin" if point.method == "Two-bin" else "Reorder card"
 	mr = frappe.get_doc(
 		{
 			"doctype": "Material Request",
 			"material_request_type": "Purchase",
 			"company": frappe.db.get_single_value("Solar Settings", "company"),
 			"transaction_date": nowdate(),
-			"solar_source": "Two-bin" if point.method == "Two-bin" else "Reorder card",
+			"solar_source": source,
 			"solar_reorder_point": point.name,
 			"solar_subteam": point.subteam,
-			"solar_budget_line": point.budget_line,
+			"solar_budget_line": budget_line_for(point, source),
 			"solar_requested_by": frappe.session.user,
 			"items": [
 				{

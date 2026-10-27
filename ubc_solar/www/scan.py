@@ -31,6 +31,12 @@ def get_context(context):
 	elif args.get("e") and frappe.db.exists("Equipment", args.e):
 		context.kind = "equipment"
 		context.equipment = frappe.get_doc("Equipment", args.e).as_dict()
+		context.checked_out_name = (
+			frappe.utils.get_fullname(context.equipment.checked_out_to) if context.equipment.checked_out_to else None
+		)
+		context.last_checked = (
+			frappe.utils.format_date(context.equipment.last_checked_on) if context.equipment.last_checked_on else None
+		)
 		context.title = context.equipment.equipment_name
 	elif args.get("r") and frappe.db.exists("Reorder Point", args.r):
 		from ubc_solar.solar_inventory.doctype.reorder_point.reorder_point import open_request

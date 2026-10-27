@@ -80,10 +80,10 @@
 			<div>{{ _("Condition") }}: <strong>{{ equipment.condition }}</strong></div>
 			<div>{{ _("Home") }}: {{ (equipment.location or equipment.group_location or "-") | e }}</div>
 			{% if equipment.checked_out_to %}
-				<div>{{ _("Checked out to") }}: <strong>{{ frappe.utils.get_fullname(equipment.checked_out_to) | e }}</strong>
+				<div>{{ _("Checked out to") }}: <strong>{{ checked_out_name | e }}</strong>
 				{% if equipment.checkout_purpose %}({{ equipment.checkout_purpose | e }}){% endif %}</div>
 			{% endif %}
-			{% if equipment.last_checked_on %}<div class="muted">{{ _("Last checked") }} {{ frappe.utils.format_date(equipment.last_checked_on) }}</div>{% endif %}
+			{% if last_checked %}<div class="muted">{{ _("Last checked") }} {{ last_checked }}</div>{% endif %}
 		</div>
 		{% if can_edit %}
 		<div class="actions">

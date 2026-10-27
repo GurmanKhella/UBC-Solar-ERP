@@ -97,7 +97,7 @@
    "fieldtype": "Link",
    "label": "Budget Line",
    "options": "Budget Line",
-   "description": "Shared shop consumables are charged to the shop supplies line."
+   "description": "Leave blank to charge the active budget's shop supplies line (right for shared consumables). A line from an old budget is ignored once a new budget is active."
   },
   {
    "fieldname": "subteam",
@@ -144,7 +144,7 @@
  "icon": "repeat",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-10-27 17:34:45.732518",
+ "modified": "2026-10-27 17:48:04.602853",
  "modified_by": "Administrator",
  "module": "Solar Inventory",
  "name": "Reorder Point",
