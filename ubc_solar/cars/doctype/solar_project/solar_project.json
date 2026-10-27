@@ -85,8 +85,7 @@
    "options": "Subsystem",
    "in_list_view": 1,
    "in_standard_filter": 1,
-   "description": "For harnesses this is set automatically from the From and To projects.",
-   "mandatory_depends_on": "eval:doc.project_type!='Harness'"
+   "description": "For harnesses this is set automatically from the From and To projects. Leave blank for Embedded, Strategy and Business projects, which aren't part of the car."
   },
   {
    "fieldname": "subteam",

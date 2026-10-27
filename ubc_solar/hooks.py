@@ -42,6 +42,7 @@ doc_events = {
 		"before_cancel": "ubc_solar.cars.bom.before_cancel",
 	},
 	"Material Request": {
+		"before_validate": "ubc_solar.money.purchasing.before_validate",
 		"validate": "ubc_solar.money.purchasing.validate",
 		"before_submit": "ubc_solar.money.purchasing.before_submit",
 		"on_submit": "ubc_solar.money.purchasing.on_submit",
@@ -49,9 +50,6 @@ doc_events = {
 	},
 	"Purchase Receipt": {
 		"on_submit": "ubc_solar.money.purchasing.purchase_receipt_on_submit",
-	},
-	"Stock Reconciliation": {
-		"on_submit": "ubc_solar.solar_inventory.stock.reconciliation_on_submit",
 	},
 }
 
