@@ -1,0 +1,210 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ title | e }}{% endblock %}
+
+{% block page_content %}
+<style>
+	.solar-scan { max-width: 560px; margin: 0 auto; padding: 8px 0 40px; }
+	.solar-scan h1 { font-size: 1.5rem; margin: 8px 0 4px; }
+	.solar-scan .muted { color: var(--text-muted, #6b7280); font-size: .9rem; }
+	.solar-scan .card { border: 1px solid var(--border-color, #e5e7eb); border-radius: 10px; padding: 12px; margin: 10px 0; }
+	.solar-scan .row-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+	.solar-scan .qty { font-weight: 600; white-space: nowrap; }
+	.solar-scan .actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+	.solar-scan button { min-height: 40px; }
+	.solar-scan input { min-height: 40px; }
+	.solar-scan .msg { padding: 10px; border-radius: 8px; margin: 10px 0; display: none; }
+	.solar-scan .msg.ok { background: #e7f6ec; color: #14532d; display: block; }
+	.solar-scan .msg.err { background: #fde8e8; color: #7f1d1d; display: block; }
+</style>
+<div class="solar-scan">
+	<div id="scan-msg" class="msg"></div>
+
+	{% if kind == "location" %}
+		<p class="muted">{{ _("Location") }}{% if location.parent %} · {{ location.parent | e }}{% endif %}</p>
+		<h1>{{ location.title | e }}</h1>
+		{% if location.children %}
+			<div class="card">
+				<div class="muted">{{ _("Inside") }}</div>
+				{% for c in location.children %}
+					<div><a href="/scan?l={{ c.name | urlencode }}">{{ c.warehouse_name | e }}</a></div>
+				{% endfor %}
+			</div>
+		{% endif %}
+		{% if not location.is_group %}
+			{% for row in location["items"] %}
+				<div class="card" data-item="{{ row.item_code | e }}">
+					<div class="row-item">
+						<div><strong>{{ row.item_name | e }}</strong><div class="muted">{{ row.item_code | e }}</div></div>
+						<div class="qty">{{ row.actual_qty | round(3) }} {{ row.stock_uom | e }}</div>
+					</div>
+					{% if can_edit %}
+					<div class="actions">
+						<button class="btn btn-primary btn-sm" onclick="solarTake('{{ row.item_code | e }}')">{{ _("Take") }}</button>
+						{% if not row.has_batch_no %}
+						<button class="btn btn-default btn-sm" onclick="solarRecount('{{ row.item_code | e }}', {{ row.actual_qty }})">{{ _("Recount") }}</button>
+						{% endif %}
+						<button class="btn btn-default btn-sm" onclick="solarMove('{{ row.item_code | e }}')">{{ _("Move") }}</button>
+					</div>
+					{% endif %}
+				</div>
+			{% else %}
+				<p class="muted">{{ _("Nothing is recorded here yet.") }}</p>
+			{% endfor %}
+			{% if can_edit %}
+			<div class="card">
+				<div class="muted">{{ _("Count a part into this bin (first count, or a part that's here but not listed)") }}</div>
+				<div class="actions">
+					<input id="new-item" class="form-control" list="item-options" placeholder="{{ _('Part number or name') }}" oninput="solarSearch(this.value)">
+					<datalist id="item-options"></datalist>
+					<input id="new-qty" class="form-control" type="number" min="0" step="any" placeholder="{{ _('How many are here') }}">
+					<button class="btn btn-primary btn-sm" onclick="solarCountNew()">{{ _("Save count") }}</button>
+				</div>
+			</div>
+			{% endif %}
+		{% endif %}
+		{% if location.equipment %}
+			<div class="card">
+				<div class="muted">{{ _("Equipment kept here") }}</div>
+				{% for eq in location.equipment %}
+					<div class="row-item"><a href="/scan?e={{ eq.name | urlencode }}">{{ eq.equipment_name | e }}</a>
+					<span class="muted">{{ eq.condition }}{% if eq.checked_out_to %} · {{ _("out") }}{% endif %}</span></div>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+	{% elif kind == "equipment" %}
+		<p class="muted">{{ _("Equipment") }} · {{ equipment.category | e }}</p>
+		<h1>{{ equipment.equipment_name | e }}</h1>
+		<div class="card">
+			<div>{{ _("Condition") }}: <strong>{{ equipment.condition }}</strong></div>
+			<div>{{ _("Home") }}: {{ (equipment.location or equipment.group_location or "-") | e }}</div>
+			{% if equipment.checked_out_to %}
+				<div>{{ _("Checked out to") }}: <strong>{{ frappe.utils.get_fullname(equipment.checked_out_to) | e }}</strong>
+				{% if equipment.checkout_purpose %}({{ equipment.checkout_purpose | e }}){% endif %}</div>
+			{% endif %}
+			{% if equipment.last_checked_on %}<div class="muted">{{ _("Last checked") }} {{ frappe.utils.format_date(equipment.last_checked_on) }}</div>{% endif %}
+		</div>
+		{% if can_edit %}
+		<div class="actions">
+			{% if equipment.tracking != "By toolbox or wall" %}
+				{% if equipment.checked_out_to %}
+					<button class="btn btn-primary" onclick="solarCall('ubc_solar.solar_inventory.doctype.equipment.equipment.return_equipment', {equipment: '{{ equipment.name | e }}'}, '{{ _("Returned") }}')">{{ _("Return it") }}</button>
+				{% else %}
+					<button class="btn btn-primary" onclick="solarCheckOut('{{ equipment.name | e }}')">{{ _("Check out to me") }}</button>
+				{% endif %}
+			{% endif %}
+			<button class="btn btn-default" onclick="solarCall('ubc_solar.solar_inventory.doctype.equipment.equipment.confirm_check', {equipment: '{{ equipment.name | e }}', condition: 'Working'}, '{{ _("Confirmed here and working") }}')">{{ _("Here and working") }}</button>
+			<button class="btn btn-default" onclick="solarCall('ubc_solar.solar_inventory.doctype.equipment.equipment.confirm_check', {equipment: '{{ equipment.name | e }}', condition: 'Needs Repair'}, '{{ _("Marked as needing repair") }}')">{{ _("Needs repair") }}</button>
+			<button class="btn btn-default" onclick="solarCall('ubc_solar.solar_inventory.doctype.equipment.equipment.confirm_check', {equipment: '{{ equipment.name | e }}', condition: 'Missing'}, '{{ _("Marked missing") }}')">{{ _("Missing") }}</button>
+		</div>
+		{% endif %}
+
+	{% elif kind == "reorder" %}
+		<p class="muted">{{ point.method }}</p>
+		<h1>{{ (point.item_name or point.item_code) | e }}</h1>
+		<div class="card">
+			<div>{{ _("Orders") }} <strong>{{ point.reorder_qty }} {{ (point.uom or "") | e }}</strong></div>
+			{% if open_request %}
+				<div>{{ _("Already requested") }}: <strong>{{ open_state }}</strong> ({{ open_request }})</div>
+			{% endif %}
+		</div>
+		{% if can_edit and not open_request %}
+			<button class="btn btn-primary btn-lg" onclick="solarCall('ubc_solar.solar_inventory.doctype.reorder_point.reorder_point.request_reorder', {reorder_point: '{{ point.name | e }}'}, '{{ _("Reorder requested. Thanks! Swap in the backup bin.") }}')">{{ _("Request reorder") }}</button>
+		{% endif %}
+
+	{% elif kind == "item" %}
+		<p class="muted">{{ _("Part") }} · {{ item.name | e }}</p>
+		<h1>{{ item.item_name | e }}</h1>
+		{% for row in stock %}
+			<div class="card row-item"><a href="/scan?l={{ row.warehouse | urlencode }}">{{ row.warehouse | e }}</a><span class="qty">{{ row.qty | round(3) }} {{ item.stock_uom | e }}</span></div>
+		{% else %}
+			<p class="muted">{{ _("None in stock.") }}</p>
+		{% endfor %}
+
+	{% else %}
+		<h1>{{ _("Scan a label") }}</h1>
+		<p class="muted">{{ _("Point your phone's camera at a QR code on a bin, shelf, tool or reorder card.") }}</p>
+	{% endif %}
+	<p class="muted" style="margin-top:24px"><a href="/app">{{ _("Open the ERP") }}</a></p>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+	const SOLAR_LOCATION = {{ (location.name if kind == "location" else "") | tojson }};
+
+	function solarShow(text, ok) {
+		const el = document.getElementById("scan-msg");
+		el.className = "msg " + (ok ? "ok" : "err");
+		el.textContent = text;
+		window.scrollTo(0, 0);
+	}
+
+	function solarCall(method, args, okText) {
+		frappe.call({
+			method: method,
+			args: args,
+			callback: (r) => {
+				solarShow(okText, true);
+				setTimeout(() => window.location.reload(), 1200);
+			},
+			error: (r) => solarShow((r && r.responseJSON && r.responseJSON._server_messages) ? JSON.parse(JSON.parse(r.responseJSON._server_messages)[0]).message : "{{ _('Something went wrong') }}", false),
+		});
+	}
+
+	function solarTake(item) {
+		const qty = prompt("{{ _('How many did you take?') }}");
+		if (!qty) return;
+		solarCall("ubc_solar.solar_inventory.stock.take", { item_code: item, qty: qty, warehouse: SOLAR_LOCATION }, "{{ _('Recorded. Stock updated.') }}");
+	}
+
+	function solarRecount(item, current) {
+		const qty = prompt("{{ _('How many are actually in the bin?') }}", current);
+		if (qty === null || qty === "") return;
+		solarCall("ubc_solar.solar_inventory.stock.recount", { item_code: item, warehouse: SOLAR_LOCATION, counted_qty: qty }, "{{ _('Count saved. The difference is logged.') }}");
+	}
+
+	function solarMove(item) {
+		const qty = prompt("{{ _('How many are you moving?') }}");
+		if (!qty) return;
+		const to = prompt("{{ _('Move to which location? (exact name, e.g. E-A3 - UBCS)') }}");
+		if (!to) return;
+		solarCall("ubc_solar.solar_inventory.stock.move", { item_code: item, qty: qty, from_warehouse: SOLAR_LOCATION, to_warehouse: to }, "{{ _('Moved.') }}");
+	}
+
+	function solarCheckOut(equipment) {
+		const purpose = prompt("{{ _('What is it for? (optional)') }}") || "";
+		solarCall("ubc_solar.solar_inventory.doctype.equipment.equipment.check_out", { equipment: equipment, purpose: purpose }, "{{ _('Checked out to you.') }}");
+	}
+
+	let solarSearchTimer = null;
+	function solarSearch(txt) {
+		clearTimeout(solarSearchTimer);
+		if (!txt || txt.length < 2) return;
+		solarSearchTimer = setTimeout(() => {
+			frappe.call({
+				method: "frappe.desk.search.search_link",
+				args: { doctype: "Item", txt: txt, page_length: 10 },
+				callback: (r) => {
+					const list = document.getElementById("item-options");
+					list.innerHTML = "";
+					(r.message || r.results || []).forEach((row) => {
+						const opt = document.createElement("option");
+						opt.value = row.value;
+						opt.label = row.description || "";
+						list.appendChild(opt);
+					});
+				},
+			});
+		}, 250);
+	}
+
+	function solarCountNew() {
+		const item = document.getElementById("new-item").value.trim();
+		const qty = document.getElementById("new-qty").value;
+		if (!item || qty === "") return solarShow("{{ _('Enter the part and how many are here.') }}", false);
+		solarCall("ubc_solar.solar_inventory.stock.recount", { item_code: item, warehouse: SOLAR_LOCATION, counted_qty: qty }, "{{ _('Count saved.') }}");
+	}
+</script>
+{% endblock %}
