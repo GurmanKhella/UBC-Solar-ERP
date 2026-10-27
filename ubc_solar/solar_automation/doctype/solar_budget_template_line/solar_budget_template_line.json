@@ -1,0 +1,70 @@
+{
+ "actions": [],
+ "creation": "2026-10-27 18:13:59.979582",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "line_name",
+  "subteam",
+  "division",
+  "priority",
+  "is_shop_supplies",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "line_name",
+   "fieldtype": "Data",
+   "label": "Line Name",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "subteam",
+   "fieldtype": "Link",
+   "label": "Subteam",
+   "options": "Subteam",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "division",
+   "fieldtype": "Link",
+   "label": "Division",
+   "options": "Division",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "priority",
+   "fieldtype": "Select",
+   "label": "Priority",
+   "options": "Must-have\nNice-to-have",
+   "default": "Must-have",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "is_shop_supplies",
+   "fieldtype": "Check",
+   "label": "Shop supplies",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Data",
+   "label": "Notes"
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-10-27 18:13:59.979582",
+ "modified_by": "Administrator",
+ "module": "Solar Automation",
+ "name": "Solar Budget Template Line",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

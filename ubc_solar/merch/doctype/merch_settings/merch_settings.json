@@ -1,0 +1,99 @@
+{
+ "actions": [],
+ "creation": "2026-10-27 18:22:40.812925",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "store_open",
+  "store_intro",
+  "payment_instructions",
+  "pickup_info",
+  "column_break_1",
+  "merch_location",
+  "group_merch",
+  "merch_counts_as_raised"
+ ],
+ "fields": [
+  {
+   "fieldname": "store_open",
+   "fieldtype": "Check",
+   "label": "Online store open",
+   "description": "Shows the store at /merch. Untick to close it."
+  },
+  {
+   "fieldname": "store_intro",
+   "fieldtype": "Small Text",
+   "label": "Store Introduction"
+  },
+  {
+   "fieldname": "payment_instructions",
+   "fieldtype": "Small Text",
+   "label": "Payment Instructions",
+   "description": "Shown and emailed after someone orders, e.g. the e-transfer address or where to pay in person."
+  },
+  {
+   "fieldname": "pickup_info",
+   "fieldtype": "Small Text",
+   "label": "Pickup Information"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "merch_location",
+   "fieldtype": "Link",
+   "label": "Merch Stock Location",
+   "options": "Warehouse",
+   "reqd": 1,
+   "description": "Merch is kept and sold from here. Restock with a purchase request received into this location."
+  },
+  {
+   "fieldname": "group_merch",
+   "fieldtype": "Link",
+   "label": "Merch Item Group",
+   "options": "Item Group",
+   "reqd": 1
+  },
+  {
+   "fieldname": "merch_counts_as_raised",
+   "fieldtype": "Check",
+   "label": "Count merch sales toward Raised in the budget",
+   "default": "1",
+   "description": "Each paid order is recorded as a Funding Entry (Merch Sales) on the active budget."
+  }
+ ],
+ "icon": "settings",
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-10-27 18:22:40.812925",
+ "modified_by": "Administrator",
+ "module": "Merch",
+ "name": "Merch Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1
+  },
+  {
+   "role": "Solar Merch Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "states": []
+}

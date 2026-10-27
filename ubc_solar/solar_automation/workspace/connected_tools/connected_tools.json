@@ -65,7 +65,7 @@
    "dependencies": ""
   }
  ],
- "modified": "2026-10-27 17:27:04.365062",
+ "modified": "2026-10-27 18:23:08.142013",
  "modified_by": "Administrator",
  "module": "Solar Automation",
  "name": "Connected Tools",
@@ -86,12 +86,9 @@
   },
   {
    "role": "Solar Admin"
-  },
-  {
-   "role": "Solar Captain"
   }
  ],
- "sequence_id": 7.0,
+ "sequence_id": 8.0,
  "shortcuts": [
   {
    "label": "Solar Settings",

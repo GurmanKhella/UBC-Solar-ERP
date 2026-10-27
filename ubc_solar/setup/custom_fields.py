@@ -4,6 +4,7 @@ Applied on install and on every migrate (idempotent), so they survive upgrades
 without editing ERPNext.
 """
 
+import frappe
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 from frappe.custom.doctype.property_setter.property_setter import make_property_setter
 
@@ -11,7 +12,7 @@ INVENTORY_TYPES = (
 	"\nComponent / Material\nExpensive / Long-lead\nSmall Part\nShop Consumable\nBuild Material\nPerishable"
 )
 PURCHASE_SOURCES = "Manual\nBOM\nTwo-bin\nReorder card\nRepair\nCompetition"
-STOCK_SOURCES = "\nGrab\nBuild\nRepair\nSalvage\nDonation\nMove\nOther"
+STOCK_SOURCES = "\nGrab\nBuild\nRepair\nSalvage\nDonation\nMove\nMerch\nOther"
 
 
 def get_custom_fields():
@@ -523,8 +524,19 @@ def get_property_setters():
 
 
 def apply():
-	create_custom_fields(get_custom_fields(), ignore_validate=True, update=True)
+	"""Add fields and settings that are missing. Existing ones are left alone, so
+	changes made in the ERP (Customize Form) survive migrates and upgrades."""
+	missing = {}
+	for doctype, fields in get_custom_fields().items():
+		todo = [f for f in fields if not frappe.db.exists("Custom Field", {"dt": doctype, "fieldname": f["fieldname"]})]
+		if todo:
+			missing[doctype] = todo
+	if missing:
+		create_custom_fields(missing, ignore_validate=True, update=False)
 	for doctype, fieldname, prop, value, prop_type in get_property_setters():
+		filters = {"doc_type": doctype, "property": prop, "field_name": fieldname or ["in", ["", None]]}
+		if frappe.db.exists("Property Setter", filters):
+			continue
 		make_property_setter(
 			doctype,
 			fieldname,

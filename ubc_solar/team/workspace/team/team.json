@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\": \"par0001sol\", \"type\": \"paragraph\", \"data\": {\"text\": \"Captain, three divisions, nine subteams. Positions decide who approves, who sees what, and who gets @mentioned. Descriptions of each role stay on the wiki.\", \"col\": 12}}, {\"id\": \"num0010sol\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Active Members\", \"col\": 3}}, {\"id\": \"sho0030sol\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Members\", \"col\": 3}}, {\"id\": \"sho0031sol\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Subteam\", \"col\": 3}}, {\"id\": \"sho0032sol\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Attendance\", \"col\": 3}}, {\"id\": \"car0050sol\", \"type\": \"card\", \"data\": {\"card_name\": \"Team\", \"col\": 4}}]",
+ "content": "[{\"id\": \"par0001sol\", \"type\": \"paragraph\", \"data\": {\"text\": \"Captain, three divisions, nine subteams. A member's position decides what they can see and approve; change a whole position under Positions, or one person under their Extra Access. Descriptions of each role stay on the wiki.\", \"col\": 12}}, {\"id\": \"num0010sol\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Active Members\", \"col\": 3}}, {\"id\": \"sho0030sol\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Members\", \"col\": 3}}, {\"id\": \"sho0031sol\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Subteam\", \"col\": 3}}, {\"id\": \"sho0032sol\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Attendance\", \"col\": 3}}, {\"id\": \"sho0033sol\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Who Has What Access\", \"col\": 3}}, {\"id\": \"car0050sol\", \"type\": \"card\", \"data\": {\"card_name\": \"Team\", \"col\": 4}}, {\"id\": \"car0051sol\", \"type\": \"card\", \"data\": {\"card_name\": \"Access\", \"col\": 4}}]",
  "creation": "2026-10-27 17:27:04.365062",
  "custom_blocks": [],
  "docstatus": 0,
@@ -63,9 +63,61 @@
    "link_count": 0,
    "onboard": 0,
    "dependencies": ""
+  },
+  {
+   "type": "Card Break",
+   "label": "Access",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 4,
+   "onboard": 0
+  },
+  {
+   "type": "Link",
+   "label": "Positions",
+   "link_to": "Team Position",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "Access Profiles",
+   "link_to": "Role Profile",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "Who Has What Access",
+   "link_to": "Team Access",
+   "link_type": "Report",
+   "hidden": 0,
+   "is_query_report": 1,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "Record Restrictions",
+   "link_to": "User Permission",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
   }
  ],
- "modified": "2026-10-27 17:27:04.365062",
+ "modified": "2026-10-27 18:11:13.713838",
  "modified_by": "Administrator",
  "module": "Team",
  "name": "Team",
@@ -112,6 +164,13 @@
    "link_to": "Attendance Note",
    "type": "DocType",
    "doc_view": "List",
+   "color": "Grey"
+  },
+  {
+   "label": "Who Has What Access",
+   "link_to": "Team Access",
+   "type": "Report",
+   "doc_view": "",
    "color": "Grey"
   }
  ],

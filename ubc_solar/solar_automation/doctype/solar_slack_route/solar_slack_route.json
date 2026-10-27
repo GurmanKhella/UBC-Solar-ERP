@@ -13,7 +13,7 @@
    "fieldname": "event",
    "fieldtype": "Select",
    "label": "Event",
-   "options": "BOM ready for review\nBOM reviewed\nPurchase needs approval\nPurchase to order\nParts arrived\nApproval waiting too long\nExpiring soon\nSponsor follow-up\nEquipment needs attention",
+   "options": "BOM ready for review\nBOM reviewed\nPurchase needs approval\nPurchase to order\nParts arrived\nApproval waiting too long\nExpiring soon\nSponsor follow-up\nEquipment needs attention\nMerch order",
    "reqd": 1,
    "in_list_view": 1
   },
@@ -28,7 +28,7 @@
  "index_web_pages_for_search": 0,
  "istable": 1,
  "links": [],
- "modified": "2026-10-27 17:27:04.315447",
+ "modified": "2026-10-27 18:16:08.729563",
  "modified_by": "Administrator",
  "module": "Solar Automation",
  "name": "Solar Slack Route",

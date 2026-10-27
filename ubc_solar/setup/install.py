@@ -5,20 +5,10 @@ import frappe
 from frappe import _
 from frappe.utils import getdate, nowdate
 
-from ubc_solar.setup import custom_fields, permissions, workflows
+from ubc_solar.setup import access, custom_fields, permissions, workflows
 
 COMPANY = "UBC Solar"
 ABBR = "UBCS"
-
-ROLES = [
-	"Solar Captain",
-	"Solar Exec",
-	"Solar Lead",
-	"Solar Senior Designer",
-	"Solar Member",
-	"Solar Alumni",
-	"Solar Admin",
-]
 
 DIVISIONS = {
 	"Electrical": ["Power & Signals", "Battery Management", "Embedded", "Strategy"],
@@ -58,6 +48,7 @@ ITEM_GROUPS = [
 	"Vehicles",
 	"Shop Consumables",
 	"Services",
+	"Merch",
 ]
 
 SUPPLIERS = ["Digi-Key", "Mouser", "McMaster-Carr", "LCSC", "JLCPCB", "Amazon", "Other"]
@@ -67,6 +58,7 @@ def after_install():
 	run_setup_wizard()
 	configure_company()
 	sync()
+	configure_settings()
 	create_starting_data()
 	frappe.db.commit()
 
@@ -76,12 +68,12 @@ def after_migrate():
 
 
 def sync():
-	"""Things that must match the code after every migrate."""
-	create_roles()
+	"""Add anything this version of the app needs that's missing. Nothing existing is
+	changed, so everything the team configures in the ERP survives migrates and upgrades."""
+	access.create_all()
 	custom_fields.apply()
 	permissions.apply()
 	workflows.apply()
-	configure_settings()
 
 
 # ------------------------------------------------------------------ setup wizard
@@ -124,14 +116,6 @@ def configure_company():
 	frappe.db.set_value("Company", company, "enable_perpetual_inventory", 0)
 
 
-def create_roles():
-	for role in ROLES:
-		if not frappe.db.exists("Role", role):
-			frappe.get_doc({"doctype": "Role", "role_name": role, "desk_access": 1}).insert(
-				ignore_permissions=True
-			)
-
-
 def configure_settings():
 	stock = frappe.get_single("Stock Settings")
 	stock.item_naming_by = "Item Code"
@@ -169,6 +153,12 @@ def create_starting_data():
 	create_team_structure()
 	create_subsystems()
 	create_harness_categories()
+	if not settings.new_car_budget_lines:
+		from ubc_solar.money.budget import DEFAULT_TEMPLATE
+
+		for row in DEFAULT_TEMPLATE:
+			settings.append("new_car_budget_lines", row)
+		settings.add_line_per_subteam = 1
 	settings.flags.ignore_permissions = True
 	settings.save()
 
@@ -176,7 +166,19 @@ def create_starting_data():
 	frappe.db.set_single_value("Manufacturing Settings", "default_fg_warehouse", warehouses["Build Area"])
 	frappe.db.set_single_value("Manufacturing Settings", "default_wip_warehouse", warehouses["Build Area"])
 
+	set_up_merch(warehouses["Merch Stock"])
 	create_cars()
+
+
+def set_up_merch(location):
+	"""Where merch is kept, its item group, and sales counting toward Raised (all changeable in Merch Settings)."""
+	values = frappe.db.get_singles_dict("Merch Settings")
+	if not values.get("merch_location"):
+		frappe.db.set_single_value("Merch Settings", "merch_location", location)
+	if not values.get("group_merch"):
+		frappe.db.set_single_value("Merch Settings", "group_merch", "Merch")
+	if "merch_counts_as_raised" not in values:
+		frappe.db.set_single_value("Merch Settings", "merch_counts_as_raised", 1)
 
 
 def create_warehouses(company):
@@ -206,6 +208,7 @@ def create_warehouses(company):
 		"Build Area": make("Build Area", workshop),
 		"Fridge and Freezer": make("Fridge and Freezer", workshop),
 		"Competition Spares": make("Competition Spares", root),
+		"Merch Stock": make("Merch Stock", root),
 	}
 	return result
 

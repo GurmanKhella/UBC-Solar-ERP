@@ -36,6 +36,26 @@ def car_subteams():
 	return set(frappe.get_all("Subsystem Subteam", filters={"parenttype": "Subsystem"}, pluck="subteam"))
 
 
+ITEM_GROUP_DEFAULTS = {
+	"electrical": "Electrical Components",
+	"mechanical": "Mechanical Parts",
+	"assemblies": "Assemblies",
+	"harnesses": "Harnesses",
+	"subsystems": "Subsystems",
+	"vehicles": "Vehicles",
+}
+
+
+def item_group(kind):
+	"""The item group for parts the ERP creates (Solar Settings > Parts and purchasing)."""
+	group = frappe.db.get_single_value("Solar Settings", f"group_{kind}") or ITEM_GROUP_DEFAULTS[kind]
+	if not frappe.db.exists("Item Group", group):
+		frappe.throw(
+			_("Item group {0} doesn't exist. Pick one in Solar Settings > Parts and purchasing.").format(group)
+		)
+	return group
+
+
 def make_team_item(item_name, discipline, item_group, project=None, description=None):
 	"""Create a part the team makes, with the next team part number."""
 	item = frappe.get_doc(

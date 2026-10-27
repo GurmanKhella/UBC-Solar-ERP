@@ -86,7 +86,7 @@
    "group": "Donations"
   }
  ],
- "modified": "2026-10-27 17:34:45.732518",
+ "modified": "2026-10-27 18:08:10.286903",
  "modified_by": "Administrator",
  "module": "Sponsors",
  "name": "Outreach Campaign",
@@ -106,7 +106,7 @@
    "delete": 1
   },
   {
-   "role": "Solar Captain",
+   "role": "Solar Admin",
    "read": 1,
    "print": 1,
    "email": 1,

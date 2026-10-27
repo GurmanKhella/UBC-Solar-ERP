@@ -1,32 +1,15 @@
-"""Which built-in ERPNext roles each team position gets, and read-only access for
-alumni on ERPNext's own doctypes."""
+"""Extra rights on ERPNext's own doctypes, added once.
+
+They are Custom DocPerm rows, so the Role Permissions Manager shows and changes
+them like any other permission. They're only added when missing and never reset,
+so changes made in the ERP stay.
+"""
 
 import frappe
 from frappe.permissions import add_permission
 
-# Everyone active on the team: open by default (create and edit parts, BOMs,
-# stock moves, purchase requests, quality results).
-WORKING_ROLES = ["Stock User", "Manufacturing User", "Item Manager", "Quality Manager"]
-
-# Approvers also place orders, receive deliveries, add suppliers and recount stock.
-APPROVER_ROLES = ["Purchase User", "Purchase Master Manager", "Stock Manager"]
-
-POSITION_ROLES = {
-	"Captain": ["Solar Captain", "Solar Member", *WORKING_ROLES, *APPROVER_ROLES],
-	"Exec": ["Solar Exec", "Solar Member", *WORKING_ROLES, *APPROVER_ROLES],
-	"Subteam Lead": ["Solar Lead", "Solar Member", *WORKING_ROLES, *APPROVER_ROLES],
-	"Senior Design Member": ["Solar Senior Designer", "Solar Member", *WORKING_ROLES],
-	"Member": ["Solar Member", *WORKING_ROLES],
-	"Alumni": ["Solar Alumni"],
-}
-
-ADMIN_ROLES = ["System Manager", "Solar Admin"]
-
-# Every role this app hands out; anything else on a user is left alone.
-MANAGED_ROLES = sorted({role for roles in POSITION_ROLES.values() for role in roles} | set(ADMIN_ROLES))
-
-# ERPNext doctypes alumni can read (they can read all of this app's doctypes
-# except recruitment and attendance through the doctype permissions).
+# ERPNext doctypes alumni can read (this app's own doctypes give alumni read access
+# in their definitions, except recruitment and attendance).
 ALUMNI_READ = [
 	"Item",
 	"Item Group",
@@ -44,39 +27,29 @@ ALUMNI_READ = [
 	"UOM",
 ]
 
+READ = {"read": 1, "report": 1, "print": 1, "export": 1}
 
-# Extra rights on ERPNext doctypes that no standard role gives the whole team.
-# Any member can recount a bin (Stock Reconciliation is otherwise Stock Manager only).
-MEMBER_EXTRA = {
-	"Stock Reconciliation": {"read": 1, "write": 1, "create": 1, "submit": 1, "report": 1, "print": 1},
-}
-
-
-# The Captain and Execs can restrict access to anything: a User Permission limits a
-# user to (or away from) specific records.
-TOP_EXTRA = {
-	"User Permission": {"read": 1, "write": 1, "create": 1, "delete": 1},
-}
+GRANTS = [
+	# Any member can recount a bin (normally Stock Manager only).
+	("Stock Reconciliation", "Solar Member", {"read": 1, "write": 1, "create": 1, "submit": 1, "report": 1, "print": 1}),
+	# Restrict access to anything: a User Permission limits a user to specific records.
+	("User Permission", "Solar Access Manager", {"read": 1, "write": 1, "create": 1, "delete": 1}),
+	*[(doctype, "Solar Alumni", READ) for doctype in ALUMNI_READ],
+]
 
 
 def grant(doctype, role, rights):
-	if not frappe.db.exists("Custom DocPerm", {"parent": doctype, "role": role, "permlevel": 0}):
-		add_permission(doctype, role, 0, "read")
+	"""Add a permission row if the role has none on this doctype yet."""
+	if frappe.db.exists("Custom DocPerm", {"parent": doctype, "role": role, "permlevel": 0}):
+		return False
+	add_permission(doctype, role, 0, "read")
 	frappe.db.set_value("Custom DocPerm", {"parent": doctype, "role": role, "permlevel": 0}, rights)
+	return True
 
 
 def apply():
-	for doctype, rights in MEMBER_EXTRA.items():
-		grant(doctype, "Solar Member", rights)
-	for doctype, rights in TOP_EXTRA.items():
-		for role in ("Solar Captain", "Solar Exec"):
-			grant(doctype, role, rights)
-	for doctype in ALUMNI_READ:
-		if not frappe.db.exists("Custom DocPerm", {"parent": doctype, "role": "Solar Alumni", "permlevel": 0}):
-			add_permission(doctype, "Solar Alumni", 0, "read")
-			frappe.db.set_value(
-				"Custom DocPerm",
-				{"parent": doctype, "role": "Solar Alumni", "permlevel": 0},
-				{"report": 1, "print": 1, "export": 1},
-			)
-	frappe.clear_cache()
+	changed = False
+	for doctype, role, rights in GRANTS:
+		changed = grant(doctype, role, rights) or changed
+	if changed:
+		frappe.clear_cache()

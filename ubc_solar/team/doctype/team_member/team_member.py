@@ -6,69 +6,78 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import nowdate
 
-from ubc_solar.setup.permissions import ADMIN_ROLES, MANAGED_ROLES, POSITION_ROLES
+from ubc_solar.setup.access import APPROVER_PROFILE, MAINTAINER_PROFILE
 from ubc_solar.team import scope
+
+PLACEMENT_FIELDS = ("position", "subteam", "division", "is_erp_admin")
+ACCESS_FIELDS = ("extra_access", "also_approves_for")
 
 
 class TeamMember(Document):
 	def validate(self):
 		self.email = (self.email or "").strip().lower()
 		self.full_name = (self.full_name or "").strip()
-		self.status = "Alumni" if self.position == "Alumni" else "Active"
-		self.set_division()
-		self.validate_required_placement()
+		pos = scope.position(self.position)
+		if not pos:
+			frappe.throw(_("Pick a position."))
+		self.status = "Alumni" if pos.is_alumni else "Active"
+		self.set_division(pos)
+		self.validate_required_placement(pos)
 		self.check_permission_to_change()
-		self.track_position_change()
+		self.track_position_change(pos)
 
-	def set_division(self):
-		if self.position != "Exec" and self.subteam:
+	def set_division(self, pos):
+		if self.subteam and not pos.needs_division:
 			self.division = scope.get_division(self.subteam)
-		elif self.position == "Captain":
+		elif pos.team_wide and not pos.needs_division:
 			self.division = None
 
-	def validate_required_placement(self):
-		if self.position in ("Subteam Lead", "Senior Design Member", "Member") and not self.subteam:
+	def validate_required_placement(self, pos):
+		if pos.needs_subteam and not self.subteam:
 			frappe.throw(_("Pick a subteam for {0}.").format(self.position))
-		if self.position == "Exec" and not self.division:
-			frappe.throw(_("Pick the division this Exec leads."))
+		if pos.needs_division and not self.division:
+			frappe.throw(_("Pick the division this {0} leads.").format(self.position))
+
+	def access_changed(self, before):
+		def rows(doc, field, key):
+			return sorted(r.get(key) for r in doc.get(field) or [])
+
+		return rows(before, "extra_access", "role_profile") != rows(self, "extra_access", "role_profile") or rows(
+			before, "also_approves_for", "subteam"
+		) != rows(self, "also_approves_for", "subteam")
 
 	def check_permission_to_change(self):
 		if self.flags.ignore_position_rules:
 			return
 		before = self.get_doc_before_save()
 		if before:
-			unchanged = all(
-				before.get(f) == self.get(f) for f in ("position", "subteam", "division", "is_erp_admin")
-			)
-			if unchanged and before.user == frappe.session.user:
-				return  # people may fix their own name, Slack ID or notes
+			placement_same = all(before.get(f) == self.get(f) for f in PLACEMENT_FIELDS)
+			if placement_same and not self.access_changed(before):
+				return  # name, Slack ID, notes: anyone allowed to edit the record
 			# Offboarding to Alumni follows the rule of the position being left.
 			if not scope.can_manage(before.position, before.subteam, before.division):
 				frappe.throw(
 					_("You can't change {0}: only {1} can.").format(
-						self.full_name, describe_managers(before.position, before.subteam, before.division)
+						self.full_name, scope.describe_managers(before.position, before.subteam, before.division)
 					),
 					frappe.PermissionError,
 				)
-		if self.position != "Alumni" and not scope.can_manage(self.position, self.subteam, self.division):
+		if not scope.position(self.position).is_alumni and not scope.can_manage(self.position, self.subteam, self.division):
 			frappe.throw(
 				_("You can't make someone {0} here: only {1} can.").format(
-					self.position, describe_managers(self.position, self.subteam, self.division)
+					self.position, scope.describe_managers(self.position, self.subteam, self.division)
 				),
 				frappe.PermissionError,
 			)
-		if before and before.is_erp_admin != self.is_erp_admin and not (
-			scope.is_admin() or "System Manager" in frappe.get_roles()
-		):
+		admin_changed = (before.is_erp_admin != self.is_erp_admin) if before else bool(self.is_erp_admin)
+		if admin_changed and not (scope.is_admin() or "System Manager" in frappe.get_roles()):
 			frappe.throw(_("Only an ERP administrator can change who is a maintainer."), frappe.PermissionError)
-		if not before and self.is_erp_admin and not (scope.is_admin() or "System Manager" in frappe.get_roles()):
-			frappe.throw(_("Only an ERP administrator can add a maintainer."), frappe.PermissionError)
 
-	def track_position_change(self):
+	def track_position_change(self, pos):
 		before = self.get_doc_before_save()
 		if before and before.position != self.position:
 			self.previous_position = before.position
-		if self.position == "Alumni":
+		if pos.is_alumni:
 			self.left_on = self.left_on or nowdate()
 			self.is_erp_admin = 0
 		else:
@@ -94,13 +103,6 @@ class TeamMember(Document):
 			)
 
 
-def describe_managers(position, subteam=None, division=None):
-	if position in scope.TOP_POSITIONS:
-		return _("the Captain or an Exec")
-	division = division or scope.get_division(subteam)
-	return _("the {0} Lead, the {1} Exec or the Captain").format(subteam or "?", division or "?")
-
-
 def ensure_user(email, full_name, send_welcome=True):
 	if frappe.db.exists("User", email):
 		return email
@@ -120,23 +122,50 @@ def ensure_user(email, full_name, send_welcome=True):
 	return user.name
 
 
+def role_profiles_for(member):
+	"""The position's Role Profile, plus extra access, plus the automatic ones."""
+	pos = scope.position(member.position)
+	profiles = [pos.role_profile] if pos and pos.role_profile else []
+	if pos and not pos.is_alumni:
+		profiles += [row.role_profile for row in member.get("extra_access") or []]
+		if member.get("also_approves_for") and pos.approval_scope == scope.NONE:
+			profiles.append(APPROVER_PROFILE)
+		if member.is_erp_admin:
+			profiles.append(MAINTAINER_PROFILE)
+	return [p for p in dict.fromkeys(profiles) if p and frappe.db.exists("Role Profile", p)]
+
+
 def sync_user_roles(member):
-	"""Make the user's roles match their position (only roles this app manages)."""
+	"""Give the user exactly the roles of their Role Profiles (Frappe applies them)."""
 	if not member.user or member.user in ("Administrator", "Guest"):
 		return
-	desired = set(POSITION_ROLES[member.position])
-	if member.is_erp_admin and member.position != "Alumni":
-		desired |= set(ADMIN_ROLES)
+	wanted = role_profiles_for(member)
 	user = frappe.get_doc("User", member.user)
-	current = {r.role for r in user.roles}
-	managed_current = current & set(MANAGED_ROLES)
-	if managed_current == desired:
+	current = [row.role_profile for row in user.role_profiles]
+	if sorted(current) == sorted(wanted) and user.roles:
 		return
-	user.roles = [r for r in user.roles if r.role not in MANAGED_ROLES or r.role in desired]
-	for role in sorted(desired - current):
-		user.append("roles", {"role": role})
+	user.set("role_profiles", [{"role_profile": p} for p in wanted])
+	if not wanted:
+		user.set("roles", [])
 	user.flags.ignore_permissions = True
 	user.save()
+
+
+def role_profile_updated(doc, method=None):
+	"""Apply an edited Role Profile to its users now (Frappe also queues this in the background)."""
+	users = frappe.get_all("User Role Profile", filters={"role_profile": doc.name, "parenttype": "User"}, pluck="parent")
+	for user in set(users):
+		if user in ("Administrator", "Guest"):
+			continue
+		user_doc = frappe.get_doc("User", user)
+		user_doc.flags.ignore_permissions = True
+		user_doc.save()
+
+
+def resync_position(position):
+	"""After a position's Role Profile changes, update everyone in it."""
+	for name in frappe.get_all("Team Member", filters={"position": position}, pluck="name"):
+		sync_user_roles(frappe.get_doc("Team Member", name))
 
 
 @frappe.whitelist()
@@ -146,12 +175,15 @@ def offboard(member: str, new_owner: str | None = None, new_approver: str | None
 	Returns a summary of what was moved.
 	"""
 	doc = frappe.get_doc("Team Member", member)
-	if doc.position == "Alumni":
+	alumni = scope.alumni_positions()
+	if not alumni:
+		frappe.throw(_("No position is marked as the alumni position (Team > Positions)."))
+	if doc.position in alumni:
 		frappe.throw(_("{0} is already an alumnus.").format(doc.full_name))
 	if not scope.can_manage(doc.position, doc.subteam, doc.division):
 		frappe.throw(
 			_("Only {0} can offboard {1}.").format(
-				describe_managers(doc.position, doc.subteam, doc.division), doc.full_name
+				scope.describe_managers(doc.position, doc.subteam, doc.division), doc.full_name
 			),
 			frappe.PermissionError,
 		)
@@ -184,8 +216,8 @@ def offboard(member: str, new_owner: str | None = None, new_approver: str | None
 		)
 	if new_approver:
 		mr_subteams = {frappe.db.get_value("Material Request", mr, "solar_subteam") for mr in open_purchases}
-		if not all(scope.can_approve([s], user=new_approver) for s in mr_subteams):
-			frappe.throw(_("{0} can't approve those purchases. Pick their Lead, Exec or the Captain.").format(new_approver))
+		if not all(scope.can_approve([s] if s else [], user=new_approver) for s in mr_subteams):
+			frappe.throw(_("{0} can't approve those purchases. Pick someone who approves for them.").format(new_approver))
 
 	for name in projects:
 		project = frappe.get_doc("Solar Project", name)
@@ -207,14 +239,13 @@ def offboard(member: str, new_owner: str | None = None, new_approver: str | None
 		frappe.db.set_value("Sponsor", name, "relationship_owner", new_owner)
 
 	was_maintainer = doc.is_erp_admin
-	doc.position = "Alumni"
+	doc.position = alumni[0]
 	doc.save()
 
-	summary = {
+	return {
 		"projects": projects,
 		"boms": draft_boms,
 		"purchases": open_purchases,
 		"sponsors": sponsors,
 		"was_maintainer": bool(was_maintainer),
 	}
-	return summary

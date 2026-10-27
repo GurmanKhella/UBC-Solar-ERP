@@ -1,0 +1,158 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ _("UBC Solar Merch") }}{% endblock %}
+
+{% block page_content %}
+<style>
+	.solar-merch { max-width: 960px; margin: 0 auto; padding: 8px 0 48px; }
+	.solar-merch .muted { color: var(--text-muted, #6b7280); font-size: .9rem; }
+	.solar-merch .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin: 16px 0; }
+	.solar-merch .card { border: 1px solid var(--border-color, #e5e7eb); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+	.solar-merch .card img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; background: #f3f4f6; }
+	.solar-merch .price { font-weight: 600; }
+	.solar-merch .row-inline { display: flex; gap: 8px; align-items: center; }
+	.solar-merch .row-inline select, .solar-merch .row-inline input { flex: 1; min-width: 0; }
+	.solar-merch .cart { border: 1px solid var(--border-color, #e5e7eb); border-radius: 10px; padding: 16px; margin-top: 24px; }
+	.solar-merch .cart table { width: 100%; }
+	.solar-merch .cart td { padding: 4px 0; }
+	.solar-merch label { font-weight: 600; margin-top: 12px; display: block; }
+	.solar-merch .msg { padding: 12px; border-radius: 8px; margin: 12px 0; display: none; white-space: pre-line; }
+	.solar-merch .msg.ok { background: #e7f6ec; color: #14532d; display: block; }
+	.solar-merch .msg.err { background: #fde8e8; color: #7f1d1d; display: block; }
+</style>
+<div class="solar-merch">
+	<h1>{{ _("UBC Solar Merch") }}</h1>
+	{% if not store_open %}
+		<p>{{ _("The merch store is closed right now. Check back soon!") }}</p>
+	{% else %}
+		{% if intro %}<div>{{ intro }}</div>{% endif %}
+		{% if is_team %}<p class="muted">{{ _("You're logged in as a team member, so team prices are shown.") }}</p>
+		{% else %}<p class="muted">{{ _("On the team? Log in first to see team prices and team-only items.") }}</p>{% endif %}
+		<div id="merch-msg" class="msg"></div>
+		{% if not products %}
+			<p>{{ _("Nothing is for sale right now.") }}</p>
+		{% else %}
+		<div class="grid" id="merch-products">
+			{% for p in products %}
+			<div class="card" data-product="{{ p.name | e }}" data-price="{{ p.price }}" data-max="{{ p.max_per_order or 0 }}">
+				{% if p.image %}<img src="{{ p.image | e }}" alt="{{ p.product_name | e }}">{% endif %}
+				<div><strong>{{ p.product_name | e }}</strong>{% if p.sold_to == "Team only" %} <span class="muted">· {{ _("Team only") }}</span>{% endif %}</div>
+				<div class="price">{{ frappe.utils.fmt_money(p.price, currency="CAD") }}</div>
+				{% if p.description %}<div class="muted">{{ p.description }}</div>{% endif %}
+				<div class="row-inline">
+					<select class="form-control option">
+						{% for o in p.options %}
+						<option value="{{ o.label | e }}" data-available="{{ o.available }}">{{ o.label | e }}{% if p.allow_preorder and not o.available %} ({{ _("pre-order") }}){% elif o.available < 5 %} ({{ _("{0} left").format(o.available | int) }}){% endif %}</option>
+						{% endfor %}
+					</select>
+					<input class="form-control qty" type="number" min="1" value="1" style="max-width:72px" aria-label="{{ _('Quantity') }}">
+				</div>
+				<button class="btn btn-default add" type="button">{{ _("Add to order") }}</button>
+			</div>
+			{% endfor %}
+		</div>
+
+		<div class="cart" id="merch-cart" style="display:none">
+			<h3>{{ _("Your order") }}</h3>
+			<table><tbody id="cart-rows"></tbody></table>
+			<p class="price">{{ _("Total") }}: <span id="cart-total"></span></p>
+			<form id="merch-form">
+				<label for="buyer_name">{{ _("Name") }}</label>
+				<input class="form-control" id="buyer_name" name="buyer_name" required value="{{ buyer.name | e }}">
+				<label for="email">{{ _("Email") }}</label>
+				<input class="form-control" type="email" id="email" name="email" required value="{{ buyer.email | e }}">
+				<label for="phone">{{ _("Phone (optional)") }}</label>
+				<input class="form-control" id="phone" name="phone">
+				<label for="notes">{{ _("Notes (optional)") }}</label>
+				<textarea class="form-control" id="notes" name="notes" rows="2"></textarea>
+				<p class="muted" style="margin-top:12px">{{ _("You'll get payment and pickup details after placing the order.") }}</p>
+				<button class="btn btn-primary" type="submit">{{ _("Place order") }}</button>
+			</form>
+		</div>
+		{% endif %}
+	{% endif %}
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+(() => {
+	const products = document.getElementById("merch-products");
+	if (!products) return;
+	const cart = [];
+	const money = (v) => new Intl.NumberFormat("en-CA", { style: "currency", currency: "CAD" }).format(v);
+	const msg = document.getElementById("merch-msg");
+	const show = (text, ok) => { msg.className = "msg " + (ok ? "ok" : "err"); msg.textContent = text; };
+
+	function render() {
+		const rows = document.getElementById("cart-rows");
+		rows.innerHTML = "";
+		let total = 0;
+		cart.forEach((line, i) => {
+			total += line.price * line.qty;
+			const tr = document.createElement("tr");
+			const label = document.createElement("td");
+			label.textContent = `${line.qty} × ${line.product} (${line.option})`;
+			const amount = document.createElement("td");
+			amount.textContent = money(line.price * line.qty);
+			const remove = document.createElement("td");
+			const button = document.createElement("button");
+			button.type = "button";
+			button.className = "btn btn-xs btn-link";
+			button.textContent = "{{ _('Remove') }}";
+			button.onclick = () => { cart.splice(i, 1); render(); };
+			remove.appendChild(button);
+			tr.append(label, amount, remove);
+			rows.appendChild(tr);
+		});
+		document.getElementById("cart-total").textContent = money(total);
+		document.getElementById("merch-cart").style.display = cart.length ? "block" : "none";
+	}
+
+	products.addEventListener("click", (event) => {
+		if (!event.target.classList.contains("add")) return;
+		const card = event.target.closest(".card");
+		const option = card.querySelector(".option").value;
+		const qty = parseInt(card.querySelector(".qty").value, 10) || 0;
+		if (qty < 1) return;
+		const product = card.dataset.product;
+		const existing = cart.find((l) => l.product === product && l.option === option);
+		if (existing) existing.qty += qty;
+		else cart.push({ product, option, qty, price: parseFloat(card.dataset.price) });
+		render();
+	});
+
+	document.getElementById("merch-form").addEventListener("submit", async (event) => {
+		event.preventDefault();
+		const form = event.target;
+		const button = form.querySelector("button[type=submit]");
+		button.disabled = true;
+		const body = new FormData(form);
+		body.append("items", JSON.stringify(cart.map(({ product, option, qty }) => ({ product, option, qty }))));
+		const headers = { Accept: "application/json" };
+		if (window.frappe && frappe.csrf_token) headers["X-Frappe-CSRF-Token"] = frappe.csrf_token;
+		try {
+			const response = await fetch("/api/method/ubc_solar.merch.store.place_order", { method: "POST", body, headers });
+			const data = await response.json();
+			if (!response.ok) {
+				let text = "{{ _('Something went wrong. Please try again.') }}";
+				if (data._server_messages) text = JSON.parse(JSON.parse(data._server_messages)[0]).message;
+				throw new Error(text);
+			}
+			const order = data.message;
+			products.style.display = "none";
+			document.getElementById("merch-cart").style.display = "none";
+			show(
+				["{{ _('Thanks! Your order number is') }} " + order.name + " (" + money(order.total) + ").",
+					order.payment_instructions, order.pickup_info].filter(Boolean).join("\n\n"),
+				true
+			);
+		} catch (e) {
+			show(e.message, false);
+			button.disabled = false;
+		}
+		window.scrollTo(0, 0);
+	});
+})();
+</script>
+{% endblock %}

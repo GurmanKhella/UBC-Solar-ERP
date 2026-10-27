@@ -1,13 +1,15 @@
 """The two approval workflows from the plan, built on Frappe's Workflow.
 
-Roles decide who sees the buttons; the server code in `ubc_solar.money.approvals`
-also checks scope (a Lead approves only for their own subteam, an Exec only for
-their division, the Captain for anything).
+The Solar Approver role decides who sees the Approve / Reject / Send Back buttons;
+the server also checks scope from the person's Team Position (own subteam, own
+division, or everything) plus their "Also Approves For" subteams.
+
+Created once; after that the workflows are edited in the ERP (Workflow list).
 """
 
 import frappe
 
-APPROVERS = ["Solar Lead", "Solar Exec", "Solar Captain"]
+APPROVERS = ["Solar Approver"]
 
 STATE_STYLES = {
 	"Draft": "",
@@ -31,7 +33,7 @@ BOM_REVIEW = {
 		("Ready for Review", 0, ["Solar Member"]),
 		("Sent Back", 0, ["Solar Member"]),
 		("Approved", 1, APPROVERS),
-		("Cancelled", 2, ["Solar Captain"]),
+		("Cancelled", 2, ["System Manager"]),
 	],
 	"transitions": [
 		("Draft", "Mark Ready for Review", "Ready for Review", ["Solar Member"]),
@@ -52,7 +54,7 @@ PURCHASE_APPROVAL = {
 		("Approved", 1, APPROVERS),
 		("Ordered", 1, APPROVERS),
 		("Received", 1, APPROVERS),
-		("Cancelled", 2, ["Solar Captain"]),
+		("Cancelled", 2, ["System Manager"]),
 	],
 	"transitions": [
 		("Draft", "Request Approval", "Pending Approval", ["Solar Member"]),
@@ -77,10 +79,13 @@ def apply():
 				ignore_permissions=True
 			)
 	for spec in (BOM_REVIEW, PURCHASE_APPROVAL):
-		make_workflow(spec)
+		if not frappe.db.exists("Workflow", spec["workflow_name"]):
+			make_workflow(spec)
 
 
 def make_workflow(spec):
+	"""Create (or, from a patch, rebuild) a workflow. Normal migrates never call this for an
+	existing workflow, so changes made in the ERP's Workflow screen stay."""
 	if frappe.db.exists("Workflow", spec["workflow_name"]):
 		doc = frappe.get_doc("Workflow", spec["workflow_name"])
 		doc.states = []

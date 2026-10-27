@@ -128,6 +128,41 @@ class TestPartsAndCars(IntegrationTestCase):
 		self.assertEqual(between.subsystem, "Vehicle harnesses")
 		self.assertEqual(frappe.db.get_value("Item", between.part, "item_group"), "Harnesses")
 
+	def test_set_up_car_is_configurable_and_rerunnable(self):
+		from ubc_solar.cars.doctype.car.car import draft_vehicle_bom, set_up_car
+
+		settings = frappe.get_single("Solar Settings")
+		settings.append("new_car_budget_lines", {"line_name": "Merch", "division": "Business", "priority": "Nice-to-have"})
+		settings.save()
+		car = make_car()
+		with as_user("Administrator"):
+			first = set_up_car(car.name)
+		budget = frappe.db.get_value("Car", car.name, "budget")
+		lines = set(frappe.get_all("Budget Line", filters={"budget": budget}, pluck="line_name"))
+		self.assertIn("Merch", lines)
+		self.assertIn("Battery Management", lines)  # one per subteam
+		self.assertEqual(frappe.db.get_value("Budget Line", f"Merch - {budget}", "priority"), "Nice-to-have")
+		self.assertEqual(len(first["packages"]), frappe.db.count("Subsystem", {"enabled": 1}))
+		# A new subsystem and a new subteam: running it again adds only what's missing
+		frappe.get_doc({"doctype": "Subteam", "subteam_name": unique("Solar Array"), "division": "Electrical"}).insert()
+		new_sub = frappe.get_doc({"doctype": "Subsystem", "subsystem_name": unique("Array")}).insert()
+		with as_user("Administrator"):
+			second = set_up_car(car.name)
+		self.assertEqual(second["packages"], [f"{car.name} {new_sub.name}"])
+		self.assertEqual(len(second["lines"]), 1)
+		# Draft vehicle BOM: every finished subsystem plus vehicle harnesses
+		bms = make_project(car.name)
+		mc = make_project(car.name, subteam="Power & Signals", subsystem="Power and Signals")
+		harness = make_project(car.name, project_type="Harness", subteam="Power & Signals", subsystem=None,
+			harness_category="HV", from_project=bms.name, to_project=mc.name)
+		with as_user("Administrator"):
+			bom = frappe.get_doc("BOM", draft_vehicle_bom(car.name))
+		codes = {row.item_code for row in bom.items}
+		packages = frappe.get_all("Manufacturing Package", filters={"car": car.name, "output_item": ["is", "set"]}, pluck="output_item")
+		self.assertTrue(set(packages) <= codes)
+		self.assertIn(frappe.db.get_value("Solar Project", harness.name, "part"), codes)
+		self.assertEqual(bom.solar_bom_kind, "Vehicle")
+
 	def test_retired_car_is_view_only(self):
 		car = make_car("Active")
 		project = make_project(car.name)

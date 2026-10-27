@@ -245,13 +245,10 @@ def _check_owner(mr):
 	if mr.material_request_type != "Purchase" or mr.docstatus != 1:
 		frappe.throw(_("This purchase isn't approved yet."))
 	user = frappe.session.user
-	if user == mr.solar_approver or scope.is_admin(user) or scope.is_captain(user):
-		return
-	division = scope.get_division(mr.solar_subteam)
-	if division and division in scope.exec_divisions(user):
+	if user == mr.solar_approver or scope.has_wider_scope(mr.solar_subteam, user):
 		return
 	frappe.throw(
-		_("{0} approved this purchase, so they order and receive it (or their division's Exec, or the Captain).").format(
+		_("{0} approved this purchase, so they order and receive it (or a division-wide or team-wide approver).").format(
 			frappe.utils.get_fullname(mr.solar_approver)
 		),
 		frappe.PermissionError,

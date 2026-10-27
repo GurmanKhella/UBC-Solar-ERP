@@ -15,6 +15,11 @@ frappe.ui.form.on("Car", {
 			return;
 		}
 		frm.add_custom_button(__("Set Up This Car"), () => set_up(frm), __("Actions"));
+		frm.add_custom_button(__("Draft Vehicle BOM from Subsystems"), () =>
+			frappe.call("ubc_solar.cars.doctype.car.car.draft_vehicle_bom", { car: frm.doc.name }).then((r) =>
+				frappe.set_route("Form", "BOM", r.message)
+			)
+		, __("Actions"));
 		frm.add_custom_button(__("Salvage Parts to Stock"), () => salvage(frm, false), __("Actions"));
 		frm.add_custom_button(__("Retire Car"), () => salvage(frm, true), __("Actions"));
 	},
@@ -45,7 +50,7 @@ function open_vehicle_bom(frm) {
 
 function set_up(frm) {
 	frappe.confirm(
-		__("Create a manufacturing package for every subsystem and a budget with a line per subteam (if this car has none)?"),
+		__("Create a manufacturing package for every enabled subsystem, and the car's budget with its starting lines (Solar Settings > New car)? Running it again only adds what's missing, e.g. after adding a subsystem or subteam."),
 		() =>
 			frappe
 				.call("ubc_solar.cars.doctype.car.car.set_up_car", { car: frm.doc.name, make_budget_active: 1 })

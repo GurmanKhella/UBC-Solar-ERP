@@ -27,7 +27,7 @@
  "icon": "sitemap",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-10-27 17:27:04.315447",
+ "modified": "2026-10-27 18:08:10.286903",
  "modified_by": "Administrator",
  "module": "Team",
  "name": "Division",
@@ -47,7 +47,7 @@
    "delete": 1
   },
   {
-   "role": "Solar Captain",
+   "role": "Solar Access Manager",
    "read": 1,
    "print": 1,
    "email": 1,
@@ -55,18 +55,8 @@
    "export": 1,
    "write": 1,
    "share": 1,
-   "create": 1
-  },
-  {
-   "role": "Solar Exec",
-   "read": 1,
-   "print": 1,
-   "email": 1,
-   "report": 1,
-   "export": 1,
-   "write": 1,
-   "share": 1,
-   "create": 1
+   "create": 1,
+   "delete": 1
   },
   {
    "role": "Solar Member",

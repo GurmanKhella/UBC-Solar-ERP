@@ -1,0 +1,208 @@
+{
+ "actions": [],
+ "autoname": "format:MERCH-{YYYY}-{#####}",
+ "creation": "2026-10-27 18:16:08.729563",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "buyer_name",
+  "email",
+  "phone",
+  "team_member",
+  "column_break_1",
+  "status",
+  "source",
+  "order_date",
+  "total",
+  "section_break_1",
+  "items",
+  "section_break_2",
+  "payment_method",
+  "payment_reference",
+  "paid_on",
+  "column_break_2",
+  "budget",
+  "funding_entry",
+  "stock_entry",
+  "section_break_3",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "buyer_name",
+   "fieldtype": "Data",
+   "label": "Buyer Name",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email",
+   "options": "Email",
+   "description": "Needed for online orders; optional in person."
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Data",
+   "label": "Phone",
+   "options": "Phone"
+  },
+  {
+   "fieldname": "team_member",
+   "fieldtype": "Link",
+   "label": "Team Member",
+   "options": "Team Member",
+   "description": "Team members and alumni get the team price. Filled in when they order logged in."
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Placed\nPaid\nReady for Pickup\nFulfilled\nCancelled",
+   "default": "Placed",
+   "reqd": 1,
+   "read_only": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "description": "Changed with the buttons at the top: Mark Paid, Ready for Pickup, Hand Over, Cancel."
+  },
+  {
+   "fieldname": "source",
+   "fieldtype": "Select",
+   "label": "Ordered",
+   "options": "Online store\nIn person",
+   "default": "In person"
+  },
+  {
+   "fieldname": "order_date",
+   "fieldtype": "Date",
+   "label": "Order Date",
+   "default": "Today",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total",
+   "fieldtype": "Currency",
+   "label": "Total",
+   "options": "CAD",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "section_break_1",
+   "fieldtype": "Section Break",
+   "label": "Items"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Merch Order Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_2",
+   "fieldtype": "Section Break",
+   "label": "Payment"
+  },
+  {
+   "fieldname": "payment_method",
+   "fieldtype": "Select",
+   "label": "Payment Method",
+   "options": "\nE-transfer\nCash\nCard\nOther"
+  },
+  {
+   "fieldname": "payment_reference",
+   "fieldtype": "Data",
+   "label": "Payment Reference"
+  },
+  {
+   "fieldname": "paid_on",
+   "fieldtype": "Date",
+   "label": "Paid On",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "budget",
+   "fieldtype": "Link",
+   "label": "Budget",
+   "options": "Solar Budget",
+   "read_only": 1
+  },
+  {
+   "fieldname": "funding_entry",
+   "fieldtype": "Link",
+   "label": "Recorded As",
+   "options": "Funding Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "stock_entry",
+   "fieldtype": "Link",
+   "label": "Taken From Stock",
+   "options": "Stock Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_3",
+   "fieldtype": "Section Break",
+   "label": "Notes",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  }
+ ],
+ "icon": "shopping-bag",
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-10-27 18:20:45.495768",
+ "modified_by": "Administrator",
+ "module": "Merch",
+ "name": "Merch Order",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Merch Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "buyer_name",
+ "track_changes": 1
+}

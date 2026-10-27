@@ -48,6 +48,9 @@ doc_events = {
 		"on_submit": "ubc_solar.money.purchasing.on_submit",
 		"on_update": "ubc_solar.money.purchasing.on_update",
 	},
+	"Role Profile": {
+		"on_update": "ubc_solar.team.doctype.team_member.team_member.role_profile_updated",
+	},
 	"Purchase Receipt": {
 		"on_submit": "ubc_solar.money.purchasing.purchase_receipt_on_submit",
 	},

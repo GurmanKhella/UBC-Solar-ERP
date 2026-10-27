@@ -98,26 +98,65 @@ def summary(budget: str | None = None):
 	return get_budget_summary(budget)
 
 
+DEFAULT_TEMPLATE = [
+	{"line_name": "Shop Supplies", "is_shop_supplies": 1},
+	{"line_name": "Competition and Travel", "division": "Business"},
+	{"line_name": "Operating Costs", "division": "Business", "notes": "Includes ERP hosting."},
+]
+
+
+def template_lines():
+	"""Lines a new car's budget starts with (Solar Settings > New car), plus one per subteam
+	not listed when that option is on."""
+	settings = frappe.get_single("Solar Settings")
+	rows = [
+		{k: row.get(k) for k in ("line_name", "subteam", "division", "priority", "is_shop_supplies", "notes")}
+		for row in settings.new_car_budget_lines
+	]
+	if settings.add_line_per_subteam:
+		listed = {r["subteam"] for r in rows if r.get("subteam")}
+		names = {r["line_name"] for r in rows}
+		for subteam in frappe.get_all("Subteam", order_by="division asc, subteam_name asc", pluck="name"):
+			if subteam not in listed and subteam not in names:
+				rows.append({"line_name": subteam, "subteam": subteam})
+	return rows
+
+
 def make_budget_for_car(car, make_active=False):
-	"""A budget for a new car with one line per subteam (amounts filled in later)."""
-	name = f"{car.car_title} Budget"
-	if frappe.db.exists("Solar Budget", name):
-		return name
-	budget = frappe.get_doc(
-		{"doctype": "Solar Budget", "budget_name": name, "car": car.name, "is_active": 1 if make_active else 0}
-	)
-	budget.insert(ignore_permissions=True)
-	for subteam in frappe.get_all("Subteam", order_by="division asc, subteam_name asc", pluck="name"):
-		make_line(name, subteam, subteam=subteam)
-	make_line(name, "Shop Supplies", is_shop_supplies=1)
-	make_line(name, "Competition and Travel", division="Business")
-	make_line(name, "Operating Costs", division="Business", notes="Includes ERP hosting.")
+	"""A budget for a car with its starting lines (amounts filled in later). Running it
+	again adds lines that are missing, e.g. for a new subteam."""
+	name = f"{car.car_title or car.name} Budget"
+	if not frappe.db.exists("Solar Budget", name):
+		frappe.get_doc(
+			{"doctype": "Solar Budget", "budget_name": name, "car": car.name, "is_active": 1 if make_active else 0}
+		).insert(ignore_permissions=True)
+	add_missing_lines(name)
 	if make_active:
 		frappe.get_doc("Solar Budget", name).save(ignore_permissions=True)  # applies the active flag
 	return name
 
 
-def make_line(budget, line_name, subteam=None, division=None, is_shop_supplies=0, notes=None):
+def add_missing_lines(budget):
+	existing = set(frappe.get_all("Budget Line", filters={"budget": budget}, pluck="line_name"))
+	added = []
+	for row in template_lines():
+		if row["line_name"] in existing:
+			continue
+		added.append(
+			make_line(
+				budget,
+				row["line_name"],
+				subteam=row.get("subteam"),
+				division=row.get("division"),
+				is_shop_supplies=row.get("is_shop_supplies") or 0,
+				notes=row.get("notes"),
+				priority=row.get("priority") or "Must-have",
+			)
+		)
+	return added
+
+
+def make_line(budget, line_name, subteam=None, division=None, is_shop_supplies=0, notes=None, priority="Must-have"):
 	line = frappe.get_doc(
 		{
 			"doctype": "Budget Line",
@@ -126,7 +165,7 @@ def make_line(budget, line_name, subteam=None, division=None, is_shop_supplies=0
 			"subteam": subteam,
 			"division": division,
 			"amount": 0,
-			"priority": "Must-have",
+			"priority": priority,
 			"is_shop_supplies": is_shop_supplies,
 			"notes": notes,
 		}

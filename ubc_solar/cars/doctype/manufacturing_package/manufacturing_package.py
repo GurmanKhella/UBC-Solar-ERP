@@ -5,7 +5,7 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 
-from ubc_solar.cars.utils import assert_car_editable, make_team_item
+from ubc_solar.cars.utils import assert_car_editable, item_group, make_team_item
 
 
 class ManufacturingPackage(Document):
@@ -18,7 +18,7 @@ class ManufacturingPackage(Document):
 		# The finished subsystem is a stock item used up when the car is built.
 		# Vehicle harnesses aren't one finished thing: the vehicle BOM uses each harness directly.
 		if not self.output_item and not frappe.db.get_value("Subsystem", self.subsystem, "is_vehicle_harnesses"):
-			self.db_set("output_item", make_team_item(f"{self.car} {self.subsystem}", "Assembly", "Subsystems"))
+			self.db_set("output_item", make_team_item(f"{self.car} {self.subsystem}", "Assembly", item_group("subsystems")))
 
 	def onload(self):
 		self.set_onload(

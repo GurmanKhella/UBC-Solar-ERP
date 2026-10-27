@@ -15,13 +15,17 @@
   "division",
   "status",
   "section_break_1",
+  "extra_access",
+  "column_break_2",
+  "also_approves_for",
+  "section_break_2",
   "slack_user_id",
   "is_erp_admin",
-  "column_break_2",
+  "column_break_3",
   "joined_on",
   "left_on",
   "previous_position",
-  "section_break_2",
+  "section_break_3",
   "notes"
  ],
  "fields": [
@@ -54,9 +58,9 @@
   },
   {
    "fieldname": "position",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "label": "Position",
-   "options": "Captain\nExec\nSubteam Lead\nSenior Design Member\nMember\nAlumni",
+   "options": "Team Position",
    "default": "Member",
    "reqd": 1,
    "in_list_view": 1,
@@ -68,8 +72,7 @@
    "label": "Subteam",
    "options": "Subteam",
    "in_list_view": 1,
-   "in_standard_filter": 1,
-   "mandatory_depends_on": "eval:!['Captain','Exec','Alumni'].includes(doc.position)"
+   "in_standard_filter": 1
   },
   {
    "fieldname": "division",
@@ -77,9 +80,7 @@
    "label": "Division",
    "options": "Division",
    "in_standard_filter": 1,
-   "description": "Set automatically from the subteam. For Execs, the division they lead.",
-   "read_only_depends_on": "eval:doc.position!='Exec'",
-   "mandatory_depends_on": "eval:doc.position=='Exec'"
+   "description": "Set automatically from the subteam. For Execs, the division they lead."
   },
   {
    "fieldname": "status",
@@ -92,6 +93,30 @@
   },
   {
    "fieldname": "section_break_1",
+   "fieldtype": "Section Break",
+   "label": "Access",
+   "description": "Most access comes from the position. Use these for exceptions for one person."
+  },
+  {
+   "fieldname": "extra_access",
+   "fieldtype": "Table MultiSelect",
+   "label": "Extra Access",
+   "options": "Team Member Access",
+   "description": "Extra Role Profiles for this person only, e.g. Recruitment Access to let one Lead see recruitment."
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "also_approves_for",
+   "fieldtype": "Table MultiSelect",
+   "label": "Also Approves For",
+   "options": "Team Member Approval Subteam",
+   "description": "Subteams this person can also approve purchases and BOMs for, beyond their position."
+  },
+  {
+   "fieldname": "section_break_2",
    "fieldtype": "Section Break",
    "label": "Accounts"
   },
@@ -108,7 +133,7 @@
    "description": "Embedded maintainers. Gives full administrator access to the ERP."
   },
   {
-   "fieldname": "column_break_2",
+   "fieldname": "column_break_3",
    "fieldtype": "Column Break"
   },
   {
@@ -129,7 +154,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "section_break_2",
+   "fieldname": "section_break_3",
    "fieldtype": "Section Break",
    "label": "Notes",
    "collapsible": 1
@@ -143,7 +168,7 @@
  "icon": "user",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-10-27 17:34:45.732518",
+ "modified": "2026-10-27 18:08:10.286903",
  "modified_by": "Administrator",
  "module": "Team",
  "name": "Team Member",
@@ -163,29 +188,7 @@
    "delete": 1
   },
   {
-   "role": "Solar Captain",
-   "read": 1,
-   "print": 1,
-   "email": 1,
-   "report": 1,
-   "export": 1,
-   "write": 1,
-   "share": 1,
-   "create": 1
-  },
-  {
-   "role": "Solar Exec",
-   "read": 1,
-   "print": 1,
-   "email": 1,
-   "report": 1,
-   "export": 1,
-   "write": 1,
-   "share": 1,
-   "create": 1
-  },
-  {
-   "role": "Solar Lead",
+   "role": "Solar Team Manager",
    "read": 1,
    "print": 1,
    "email": 1,

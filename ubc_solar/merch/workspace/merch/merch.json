@@ -1,0 +1,111 @@
+{
+ "charts": [],
+ "content": "[{\"id\": \"par0001sol\", \"type\": \"paragraph\", \"data\": {\"text\": \"Team merch for members, alumni and anyone else. Add products with their options (sizes, colours); each option is its own stock item kept in the merch location. People order on the public store at /merch (team members logged in get the team price), or record an in-person sale here. Mark orders paid, ready for pickup, then hand over. Open or close the store, and set payment and pickup details, in Merch Settings.\", \"col\": 12}}, {\"id\": \"num0010sol\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Unpaid Merch Orders\", \"col\": 3}}, {\"id\": \"num0011sol\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Merch Orders to Hand Over\", \"col\": 3}}, {\"id\": \"sho0030sol\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Orders\", \"col\": 3}}, {\"id\": \"sho0031sol\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Products\", \"col\": 3}}, {\"id\": \"sho0032sol\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Merch Settings\", \"col\": 3}}, {\"id\": \"car0050sol\", \"type\": \"card\", \"data\": {\"card_name\": \"Merch\", \"col\": 4}}]",
+ "creation": "2026-10-27 18:23:08.142013",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "shirt",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "Merch",
+ "links": [
+  {
+   "type": "Card Break",
+   "label": "Merch",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 3,
+   "onboard": 0
+  },
+  {
+   "type": "Link",
+   "label": "Orders",
+   "link_to": "Merch Order",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "Products",
+   "link_to": "Merch Product",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  },
+  {
+   "type": "Link",
+   "label": "Merch Settings",
+   "link_to": "Merch Settings",
+   "link_type": "DocType",
+   "hidden": 0,
+   "is_query_report": 0,
+   "link_count": 0,
+   "onboard": 0,
+   "dependencies": ""
+  }
+ ],
+ "modified": "2026-10-27 18:23:08.142013",
+ "modified_by": "Administrator",
+ "module": "Merch",
+ "name": "Merch",
+ "number_cards": [
+  {
+   "label": "Unpaid Merch Orders",
+   "number_card_name": "Unpaid Merch Orders"
+  },
+  {
+   "label": "Merch Orders to Hand Over",
+   "number_card_name": "Merch Orders to Hand Over"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "restrict_to_domain": "",
+ "roles": [
+  {
+   "role": "Solar Merch Manager"
+  },
+  {
+   "role": "System Manager"
+  }
+ ],
+ "sequence_id": 7.0,
+ "shortcuts": [
+  {
+   "label": "Orders",
+   "link_to": "Merch Order",
+   "type": "DocType",
+   "doc_view": "List",
+   "color": "Grey"
+  },
+  {
+   "label": "Products",
+   "link_to": "Merch Product",
+   "type": "DocType",
+   "doc_view": "List",
+   "color": "Grey"
+  },
+  {
+   "label": "Merch Settings",
+   "link_to": "Merch Settings",
+   "type": "DocType",
+   "doc_view": "List",
+   "color": "Grey"
+  }
+ ],
+ "standard": 1,
+ "title": "Merch",
+ "type": "Workspace"
+}

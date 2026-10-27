@@ -15,7 +15,7 @@ from frappe.utils import flt
 
 from ubc_solar.cars import bom_parsers
 from ubc_solar.cars.parts import TEAM_NUMBER
-from ubc_solar.cars.utils import assert_car_editable
+from ubc_solar.cars.utils import assert_car_editable, item_group
 
 SMALL_PART_PREFIXES = ("R", "C", "L", "FB")
 
@@ -135,7 +135,7 @@ class Importer:
 			return self.create_item(
 				item_code=line.mpn,
 				item_name=line.description or line.mpn,
-				item_group="Electrical Components",
+				item_group=item_group("electrical"),
 				make_or_buy="Buy",
 				discipline="Electrical",
 				inventory_type="Small Part" if self.is_small_part(line.designators) else "Component / Material",
@@ -145,14 +145,14 @@ class Importer:
 				supplier=line.supplier,
 				supplier_part_number=line.supplier_part_number,
 			)
-		return self.match_or_create_unnumbered(line, "Electrical Components", "Electrical")
+		return self.match_or_create_unnumbered(line, item_group("electrical"), "Electrical")
 
 	def mechanical_item(self, line):
 		code = line.part_number
 		if code and frappe.db.exists("Item", code):
 			return code
 		make = line.make_or_buy == bom_parsers.MAKE
-		group = "Assemblies" if line.children else "Mechanical Parts"
+		group = item_group("assemblies") if line.children else item_group("mechanical")
 		if code:
 			return self.create_item(
 				item_code=code,
@@ -174,7 +174,7 @@ class Importer:
 				material=line.material,
 				vendor=line.vendor,
 			)
-		return self.match_or_create_unnumbered(line, "Mechanical Parts", "Mechanical")
+		return self.match_or_create_unnumbered(line, item_group("mechanical"), "Mechanical")
 
 	def match_or_create_unnumbered(self, line, group, discipline):
 		"""A bought part with no part number: reuse one with the same description, or number it."""

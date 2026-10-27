@@ -37,7 +37,7 @@
    "fieldtype": "Data",
    "label": "Email",
    "options": "Email",
-   "reqd": 1
+   "description": "Needed for online orders; optional in person."
   },
   {
    "fieldname": "phone",
@@ -150,7 +150,7 @@
    "group": "Interviews"
   }
  ],
- "modified": "2026-10-27 17:34:45.732518",
+ "modified": "2026-10-27 18:20:01.496533",
  "modified_by": "Administrator",
  "module": "Recruitment",
  "name": "Applicant",
@@ -170,19 +170,7 @@
    "delete": 1
   },
   {
-   "role": "Solar Captain",
-   "read": 1,
-   "print": 1,
-   "email": 1,
-   "report": 1,
-   "export": 1,
-   "write": 1,
-   "share": 1,
-   "create": 1,
-   "delete": 1
-  },
-  {
-   "role": "Solar Exec",
+   "role": "Solar Recruitment",
    "read": 1,
    "print": 1,
    "email": 1,

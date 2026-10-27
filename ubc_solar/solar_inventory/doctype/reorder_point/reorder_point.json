@@ -144,7 +144,7 @@
  "icon": "repeat",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-10-27 17:48:04.602853",
+ "modified": "2026-10-27 18:08:10.286903",
  "modified_by": "Administrator",
  "module": "Solar Inventory",
  "name": "Reorder Point",
@@ -164,7 +164,7 @@
    "delete": 1
   },
   {
-   "role": "Solar Captain",
+   "role": "Solar Admin",
    "read": 1,
    "print": 1,
    "email": 1,

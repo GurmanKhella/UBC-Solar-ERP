@@ -6,7 +6,7 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import flt, nowdate
 
-from ubc_solar.cars.utils import make_team_item
+from ubc_solar.cars.utils import item_group, make_team_item
 from ubc_solar.team import scope
 
 
@@ -25,7 +25,7 @@ class Car(Document):
 
 	def after_insert(self):
 		if not self.vehicle_item:
-			item = make_team_item(f"{self.car_title} vehicle", "Assembly", "Vehicles")
+			item = make_team_item(f"{self.car_title} vehicle", "Assembly", item_group("vehicles"))
 			self.db_set("vehicle_item", item)
 
 	def onload(self):
@@ -48,8 +48,8 @@ def get_overview(car):
 
 
 def _require_top_position():
-	if not (scope.is_admin() or scope.is_captain() or scope.exec_divisions()):
-		frappe.throw(_("Only the Captain or an Exec can do this."), frappe.PermissionError)
+	if not (scope.is_admin() or "Solar Car Manager" in frappe.get_roles()):
+		frappe.throw(_("You need the Solar Car Manager role to do this (the Captain and Execs have it)."), frappe.PermissionError)
 
 
 @frappe.whitelist()
@@ -67,13 +67,64 @@ def set_up_car(car: str, make_budget_active: int = 0):
 			pkg.insert()
 			created["packages"].append(pkg.name)
 
-	if not doc.budget:
-		from ubc_solar.money.budget import make_budget_for_car
+	from ubc_solar.money.budget import add_missing_lines, make_budget_for_car
 
+	if not doc.budget:
 		budget = make_budget_for_car(doc, make_active=bool(int(make_budget_active)))
 		doc.db_set("budget", budget)
 		created["budget"] = budget
+	else:
+		created["lines"] = add_missing_lines(doc.budget)
 	return created
+
+
+@frappe.whitelist()
+def draft_vehicle_bom(car: str):
+	"""A draft vehicle BOM from the car's finished subsystems and vehicle harnesses.
+	Add installation materials (brackets, fasteners) before sending it for review."""
+	doc = frappe.get_doc("Car", car)
+	doc.check_permission("read")
+	if not frappe.has_permission("BOM", "create"):
+		frappe.throw(_("You can't create BOMs."), frappe.PermissionError)
+	rows = [
+		{"item_code": item, "qty": 1}
+		for item in frappe.get_all(
+			"Manufacturing Package",
+			filters={"car": car, "output_item": ["is", "set"]},
+			order_by="subsystem asc",
+			pluck="output_item",
+		)
+	]
+	harness_section = frappe.get_all("Subsystem", filters={"is_vehicle_harnesses": 1}, pluck="name")
+	if harness_section:
+		rows += [
+			{"item_code": part, "qty": 1}
+			for part in frappe.get_all(
+				"Solar Project",
+				filters={"car": car, "project_type": "Harness", "subsystem": ["in", harness_section],
+					"status": ["!=", "Cancelled"], "part": ["is", "set"]},
+				order_by="project_name asc",
+				pluck="part",
+			)
+		]
+	if not rows:
+		frappe.throw(_("Set up the car first: it has no manufacturing packages or vehicle harnesses yet."))
+	company = frappe.db.get_single_value("Solar Settings", "company")
+	bom = frappe.get_doc(
+		{
+			"doctype": "BOM",
+			"item": doc.vehicle_item,
+			"quantity": 1,
+			"company": company,
+			"currency": frappe.get_cached_value("Company", company, "default_currency"),
+			"rm_cost_as_per": "Valuation Rate",
+			"solar_bom_kind": "Vehicle",
+			"solar_car": car,
+			"items": rows,
+		}
+	)
+	bom.insert()
+	return bom.name
 
 
 @frappe.whitelist()

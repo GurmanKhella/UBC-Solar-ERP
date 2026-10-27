@@ -8,6 +8,7 @@ from frappe.model.document import Document
 from ubc_solar.cars.utils import (
 	assert_car_editable,
 	car_subteams,
+	item_group,
 	make_team_item,
 	vehicle_harness_subsystem,
 )
@@ -93,10 +94,10 @@ class SolarProject(Document):
 		if self.part:
 			return
 		if self.project_type == "Harness":
-			discipline, group = "Electrical", "Harnesses"
+			discipline, group = "Electrical", item_group("harnesses")
 		else:
 			discipline = {"Electrical": "Electrical", "Mechanical": "Mechanical"}.get(self.division, "Assembly")
-			group = "Assemblies"
+			group = item_group("assemblies")
 		item = make_team_item(self.external_name, discipline, group, project=self.name)
 		self.db_set("part", item)
 

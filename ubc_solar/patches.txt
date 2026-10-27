@@ -1,3 +1,6 @@
 [pre_model_sync]
 
 [post_model_sync]
+ubc_solar.patches.v0_2.configurable_access
+ubc_solar.patches.v0_2.new_car_budget_lines
+ubc_solar.patches.v0_2.merch_setup
