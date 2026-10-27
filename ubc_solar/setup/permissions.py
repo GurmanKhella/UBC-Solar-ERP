@@ -34,22 +34,27 @@ GRANTS = [
 	("Stock Reconciliation", "Solar Member", {"read": 1, "write": 1, "create": 1, "submit": 1, "report": 1, "print": 1}),
 	# Restrict access to anything: a User Permission limits a user to specific records.
 	("User Permission", "Solar Access Manager", {"read": 1, "write": 1, "create": 1, "delete": 1}),
+	# Edit access profiles, limited to roles they have themselves (team_member.check_role_profile_change).
+	# The roles table is permission level 1 on Role Profile.
+	("Role Profile", "Solar Access Manager", {"read": 1, "write": 1, "create": 1}),
+	("Role Profile", "Solar Access Manager", {"read": 1, "write": 1}, 1),
+	("Role", "Solar Access Manager", {"read": 1}),
 	*[(doctype, "Solar Alumni", READ) for doctype in ALUMNI_READ],
 ]
 
 
-def grant(doctype, role, rights):
+def grant(doctype, role, rights, permlevel=0):
 	"""Add a permission row if the role has none on this doctype yet."""
-	if frappe.db.exists("Custom DocPerm", {"parent": doctype, "role": role, "permlevel": 0}):
+	if frappe.db.exists("Custom DocPerm", {"parent": doctype, "role": role, "permlevel": permlevel}):
 		return False
-	add_permission(doctype, role, 0, "read")
-	frappe.db.set_value("Custom DocPerm", {"parent": doctype, "role": role, "permlevel": 0}, rights)
+	add_permission(doctype, role, permlevel, "read")
+	frappe.db.set_value("Custom DocPerm", {"parent": doctype, "role": role, "permlevel": permlevel}, rights)
 	return True
 
 
 def apply():
 	changed = False
-	for doctype, role, rights in GRANTS:
-		changed = grant(doctype, role, rights) or changed
+	for doctype, role, rights, *level in GRANTS:
+		changed = grant(doctype, role, rights, *level) or changed
 	if changed:
 		frappe.clear_cache()

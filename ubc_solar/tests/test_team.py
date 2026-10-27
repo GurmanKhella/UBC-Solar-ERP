@@ -195,6 +195,71 @@ class TestConfigurableAccess(IntegrationTestCase):
 		self.assertIn("Solar Recruitment", roles_of(lead.user))
 		self.assertNotIn("Solar Approver", roles_of(lead.user))
 
+	def test_nobody_hands_out_more_access_than_they_have(self):
+		lead = make_member("Subteam Lead", subteam="Aeroshell")
+		member = make_member("Member", subteam="Aeroshell")
+		for profile in ("Captain Access", "ERP Maintainer Access", "Recruitment Access"):
+			with as_user(lead.user), self.assertRaises(frappe.PermissionError):
+				member.reload()
+				member.append("extra_access", {"role_profile": profile})
+				member.save()
+		with as_user(lead.user):
+			member.reload()
+			member.append("extra_access", {"role_profile": "Attendance Access"})  # a Lead has attendance
+			member.save()
+			with self.assertRaises(frappe.PermissionError):
+				lead.reload()
+				lead.append("extra_access", {"role_profile": "Attendance Access"})
+				lead.save()  # not on themselves
+			with self.assertRaises(frappe.PermissionError):
+				member.reload()
+				member.append("also_approves_for", {"subteam": "Power & Signals"})  # outside the Lead's own approvals
+				member.save()
+		self.assertIn("Solar Attendance", roles_of(member.user))
+
+		exec_ = make_member("Exec", division="Mechanical")
+		with as_user(exec_.user):
+			position = frappe.get_doc("Team Position", "Member")
+			position.role_profile = "ERP Maintainer Access"
+			with self.assertRaises(frappe.PermissionError):
+				position.save()
+		with as_user("Administrator"):
+			member.reload()
+			member.append("extra_access", {"role_profile": "Recruitment Access"})
+			member.save()
+		self.assertIn("Solar Recruitment", roles_of(member.user))
+
+	def test_captain_edits_access_profiles_within_their_own_roles(self):
+		captain = make_member("Captain")
+		lead = make_member("Subteam Lead", subteam="Embedded")
+		profile = frappe.copy_doc(frappe.get_doc("Role Profile", "Lead Access"))
+		profile.role_profile = unique("Lead Access")
+		profile.insert()
+		admin_profile = frappe.get_doc(
+			{"doctype": "Role Profile", "role_profile": unique("Maintainers"), "roles": [{"role": "System Manager"}]}
+		).insert()
+		lead.reload()
+		lead.append("extra_access", {"role_profile": profile.name})
+		lead.save()
+		with as_user(captain.user):
+			editable = frappe.get_doc("Role Profile", profile.name)
+			editable.append("roles", {"role": "Solar Recruitment"})
+			editable.save()
+		frappe.clear_cache(user=lead.user)
+		self.assertIn("Solar Recruitment", roles_of(lead.user))
+		with as_user(captain.user):
+			editable.reload()
+			editable.append("roles", {"role": "System Manager"})
+			with self.assertRaises(frappe.PermissionError):
+				editable.save()
+			maintainer = frappe.get_doc("Role Profile", admin_profile.name)
+			maintainer.set("roles", [])
+			with self.assertRaises(frappe.PermissionError):
+				maintainer.save()
+		member = make_member("Member", subteam="Embedded")
+		with as_user(member.user), self.assertRaises(frappe.PermissionError):
+			frappe.get_doc("Role Profile", profile.name).save()
+
 	def test_only_people_who_manage_them_can_change_access(self):
 		member = make_member("Member", subteam="Aeroshell")
 		other_lead = make_member("Subteam Lead", subteam="Dynamics")
@@ -246,6 +311,26 @@ class TestConfigurableAccess(IntegrationTestCase):
 			member.save()
 		self.assertIn("Solar Approver", roles_of(member.user))
 
+	def test_approval_scope_alone_decides_who_approves(self):
+		profile = frappe.get_doc({"doctype": "Role Profile", "role_profile": unique("Plain"), "roles": [{"role": "Solar Member"}]}).insert()
+		frappe.get_doc(
+			{
+				"doctype": "Team Position",
+				"position_name": "Purchasing Lead",
+				"role_profile": profile.name,
+				"approval_scope": "Own subteam",
+				"needs_subteam": 1,
+				"assigned_by": [{"position": "Captain"}],
+			}
+		).insert()
+		person = make_member("Purchasing Lead", subteam="Aeroshell")
+		self.assertIn("Solar Approver", roles_of(person.user))
+		position = frappe.get_doc("Team Position", "Purchasing Lead")
+		position.approval_scope = "None"
+		position.save()
+		self.assertNotIn("Solar Approver", roles_of(person.user))
+		self.assertFalse(scope.can_approve(["Aeroshell"], user=person.user))
+
 	def test_who_can_assign_a_position_is_configurable(self):
 		member = make_member("Member", subteam="Aeroshell")
 		senior = make_member("Senior Design Member", subteam="Aeroshell")
@@ -280,6 +365,7 @@ class TestConfigurableAccess(IntegrationTestCase):
 		pos = frappe.get_doc("Team Position", "Subteam Lead")
 		pos.approval_scope = "Own division"
 		pos.save()
+		self.addCleanup(lambda: frappe.get_doc("Team Position", "Subteam Lead").update({"approval_scope": "Own subteam"}).save())
 		install.sync()
 		self.assertFalse(any(t.allow_self_approval for t in frappe.get_doc("Workflow", "Purchase Approval").transitions))
 		self.assertEqual(frappe.db.get_value("Custom Field", {"dt": "Item", "fieldname": "solar_vendor"}, "label"), "Supplier / Shop")

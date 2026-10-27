@@ -1,6 +1,6 @@
 {
  "actions": [],
- "autoname": "format:CHK-{YYYY}-{#####}",
+ "autoname": "CHK-.YYYY.-.#####",
  "creation": "2026-10-27 17:27:04.315447",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -70,11 +70,11 @@
  "icon": "arrow-right-left",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-10-27 17:34:45.732518",
+ "modified": "2026-10-27 18:31:08.753992",
  "modified_by": "Administrator",
  "module": "Solar Inventory",
  "name": "Equipment Checkout",
- "naming_rule": "Expression",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {

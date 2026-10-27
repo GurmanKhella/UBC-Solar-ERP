@@ -6,6 +6,7 @@ these rules in the ERP (Team > Positions) rather than in code.
 """
 
 import frappe
+from frappe import _
 
 EVERYTHING, DIVISION, SUBTEAM, NONE = "Everything", "Own division", "Own subteam", "None"
 
@@ -52,6 +53,28 @@ def get_division(subteam):
 
 def is_admin(user=None):
 	return (user or frappe.session.user) == "Administrator"
+
+
+def is_maintainer(user=None):
+	user = user or frappe.session.user
+	return is_admin(user) or "System Manager" in frappe.get_roles(user)
+
+
+def check_can_grant(role_profiles, user=None):
+	"""People can only hand out access they have themselves (maintainers can hand out anything)."""
+	user = user or frappe.session.user
+	if is_maintainer(user):
+		return
+	mine = set(frappe.get_roles(user))
+	for profile in role_profiles:
+		missing = set(frappe.get_all("Has Role", filters={"parent": profile, "parenttype": "Role Profile"}, pluck="role")) - mine
+		if missing:
+			frappe.throw(
+				_("You can't give {0}: it includes {1}, which you don't have. Ask an ERP maintainer.").format(
+					profile, ", ".join(sorted(missing))
+				),
+				frappe.PermissionError,
+			)
 
 
 def approval_scope(member):

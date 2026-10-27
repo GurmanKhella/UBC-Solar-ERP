@@ -69,9 +69,30 @@ class TeamMember(Document):
 				),
 				frappe.PermissionError,
 			)
+		self.check_access_grants(before)
 		admin_changed = (before.is_erp_admin != self.is_erp_admin) if before else bool(self.is_erp_admin)
 		if admin_changed and not (scope.is_admin() or "System Manager" in frappe.get_roles()):
 			frappe.throw(_("Only an ERP administrator can change who is a maintainer."), frappe.PermissionError)
+
+	def check_access_grants(self, before):
+		"""Extra access and extra approvals can't go beyond what the person granting them has."""
+		if scope.is_maintainer():
+			return
+		old_profiles = {r.role_profile for r in before.get("extra_access") or []} if before else set()
+		old_subteams = {r.subteam for r in before.get("also_approves_for") or []} if before else set()
+		added_profiles = {r.role_profile for r in self.get("extra_access") or []} - old_profiles
+		added_subteams = {r.subteam for r in self.get("also_approves_for") or []} - old_subteams
+		if not (added_profiles or added_subteams) and not (before and self.access_changed(before)):
+			return
+		if self.user == frappe.session.user:
+			frappe.throw(_("You can't change your own access. Ask someone who manages your position."), frappe.PermissionError)
+		scope.check_can_grant(added_profiles)
+		for subteam in added_subteams:
+			if not scope.can_approve([subteam]):
+				frappe.throw(
+					_("You can't let someone approve for {0}: you don't approve for it yourself.").format(subteam),
+					frappe.PermissionError,
+				)
 
 	def track_position_change(self, pos):
 		before = self.get_doc_before_save()
@@ -128,7 +149,9 @@ def role_profiles_for(member):
 	profiles = [pos.role_profile] if pos and pos.role_profile else []
 	if pos and not pos.is_alumni:
 		profiles += [row.role_profile for row in member.get("extra_access") or []]
-		if member.get("also_approves_for") and pos.approval_scope == scope.NONE:
+		# Approving is decided by the position's approval scope (and Also Approves For),
+		# whatever its Role Profile holds.
+		if member.get("also_approves_for") or (pos.approval_scope or scope.NONE) != scope.NONE:
 			profiles.append(APPROVER_PROFILE)
 		if member.is_erp_admin:
 			profiles.append(MAINTAINER_PROFILE)
@@ -151,15 +174,22 @@ def sync_user_roles(member):
 	user.save()
 
 
-def role_profile_updated(doc, method=None):
-	"""Apply an edited Role Profile to its users now (Frappe also queues this in the background)."""
-	users = frappe.get_all("User Role Profile", filters={"role_profile": doc.name, "parenttype": "User"}, pluck="parent")
-	for user in set(users):
-		if user in ("Administrator", "Guest"):
-			continue
-		user_doc = frappe.get_doc("User", user)
-		user_doc.flags.ignore_permissions = True
-		user_doc.save()
+def check_role_profile_change(doc, method=None):
+	"""Captain and Execs (Solar Access Manager) may edit access profiles, but only with
+	roles they have themselves, so nobody can hand out more than they hold."""
+	if scope.is_maintainer():
+		return
+	before = doc.get_doc_before_save()
+	roles = {r.role for r in doc.roles} | ({r.role for r in before.roles} if before else set())
+	missing = roles - set(frappe.get_roles())
+	if missing:
+		frappe.throw(
+			_("Only an ERP maintainer can change {0}: it involves {1}, which you don't have.").format(
+				doc.name, ", ".join(sorted(missing))
+			),
+			frappe.PermissionError,
+		)
+
 
 
 def resync_position(position):

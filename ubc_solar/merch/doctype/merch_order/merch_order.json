@@ -1,6 +1,6 @@
 {
  "actions": [],
- "autoname": "format:MERCH-{YYYY}-{#####}",
+ "autoname": "MERCH-.YYYY.-.#####",
  "creation": "2026-10-27 18:16:08.729563",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -167,11 +167,11 @@
  "icon": "shopping-bag",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-10-27 18:20:45.495768",
+ "modified": "2026-10-27 18:31:08.753992",
  "modified_by": "Administrator",
  "module": "Merch",
  "name": "Merch Order",
- "naming_rule": "Expression",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {

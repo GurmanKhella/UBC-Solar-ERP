@@ -4,3 +4,5 @@
 ubc_solar.patches.v0_2.configurable_access
 ubc_solar.patches.v0_2.new_car_budget_lines
 ubc_solar.patches.v0_2.merch_setup
+ubc_solar.patches.v0_2.own_number_series
+ubc_solar.patches.v0_2.unlock_role_profiles

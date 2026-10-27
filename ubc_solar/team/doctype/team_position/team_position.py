@@ -17,11 +17,16 @@ class TeamPosition(Document):
 			self.manage_scope = "None"
 		if self.needs_division and self.needs_subteam:
 			frappe.throw(_("A position belongs either to a subteam or leads a division, not both."))
+		before = self.get_doc_before_save()
+		if not before or before.role_profile != self.role_profile:
+			from ubc_solar.team import scope
+
+			scope.check_can_grant([self.role_profile])
 
 	def on_update(self):
+		frappe.clear_document_cache("Team Position", self.name)
 		before = self.get_doc_before_save()
-		if before and before.role_profile != self.role_profile:
+		if before and (before.role_profile, before.approval_scope) != (self.role_profile, self.approval_scope):
 			from ubc_solar.team.doctype.team_member.team_member import resync_position
 
 			resync_position(self.name)
-		frappe.clear_document_cache("Team Position", self.name)

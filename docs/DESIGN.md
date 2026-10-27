@@ -18,29 +18,62 @@ file says *which ERPNext pieces* do it and what the `ubc_solar` app adds.
   background jobs and scheduled jobs (the plan's "small services on the server"),
   configured in **Solar Settings**. Each one is off until its credentials are
   entered, and every failure is logged and posted to the maintainers' Slack channel.
-- The eight sections are Frappe modules, each with a workspace (home page with
+- The plan's eight sections are Frappe modules, each with a workspace (home page with
   live numbers) and a sidebar: Cars, Inventory, Team, Money, Sponsors, Recruitment,
   **Connected Tools** (5G; "Automation" is taken by Frappe) and **ERP Maintenance**
-  (5H; "Maintenance" is an ERPNext module).
+  (5H; "Maintenance" is an ERPNext module). **Merch** was added after the plan.
+- Configurable without code: what the code ships (roles, access profiles,
+  positions, custom fields, workflows, permissions, starting data) is created only
+  when missing, so changes made in the ERP are never overwritten by a migrate. This
+  replaces the plan's idea of exporting UI settings into the app (5H): the team's
+  configuration lives in the database and is covered by the daily backups.
 
 ## Roles
 
-Positions live on **Team Member**; saving a member sets the user's roles.
+Access is built from three layers, all editable in the ERP:
 
-| Position | Frappe roles given |
-| --- | --- |
-| Captain | Solar Captain + Solar Member + ERPNext working roles |
-| Exec | Solar Exec + Solar Member + ERPNext working roles |
-| Subteam Lead | Solar Lead + Solar Member + ERPNext working roles |
-| Senior Design Member | Solar Senior Designer + Solar Member + ERPNext working roles |
-| Member | Solar Member + ERPNext working roles |
-| Alumni | Solar Alumni (read-only) |
-| Administrator (maintainers) | System Manager + Solar Admin (in addition to their position) |
+1. **Functional roles** (`setup/access.py`): Solar Member, Solar Alumni, Solar
+   Approver, Solar Recruitment, Solar Attendance, Solar Manufacturing Editor, Solar
+   Budget Manager, Solar Team Manager, Solar Car Manager, Solar Access Manager,
+   Solar Merch Manager, Solar Admin. Doctype permissions and workflows refer only to
+   these, never to positions.
+2. **Role Profiles** bundle roles: Captain / Exec / Lead / Senior Designer / Member /
+   Alumni Access for positions, and single-purpose ones (Recruitment Access, Merch
+   Manager Access, ...) for extra access.
+3. **Team Position** (custom doctype): links a Role Profile and sets the approval
+   scope and team-management scope (None / Own subteam / Own division / Everything),
+   which positions may assign it, and whether it needs a subteam or division.
 
-"ERPNext working roles" = Stock User, Manufacturing User, Purchase User, Item
-Manager, Quality Manager, so the open-by-default rule holds for built-in
-doctypes. Scope rules that roles can't express (a Lead approves only for their
-own subteam, an Exec only for their division) are enforced in server code.
+A user's roles are the union of their position's profile, the **Extra Access**
+profiles on their Team Member record, Approver Access when their position has an
+approval scope or they have **Also Approves For** subteams, and ERP Maintainer Access
+when ticked.
+Frappe's own `User.role_profiles` holds them, so editing a Role Profile updates
+every user that has it.
+
+Scope rules that roles can't express (a Lead approves only for their own subteam,
+an Exec only for their division) are enforced in server code (`team/scope.py`),
+reading the scopes from the positions.
+
+Changing access is itself limited: Solar Access Manager (Captain, Execs) can edit
+Role Profiles and positions, and Leads can edit their subteam's members, but only
+with roles they hold themselves (`scope.check_can_grant`,
+`team_member.check_role_profile_change`), never on their own record, and "Also
+Approves For" only for subteams they approve for. Role Profile is overridden
+(`team/role_profile.py`) to apply edits to users immediately instead of Frappe's
+queued, document-locking job.
+
+| Starting position | Profile roles | Approves | Changes positions in |
+| --- | --- | --- | --- |
+| Captain | Member, Approver, Recruitment, Attendance, Manufacturing Editor, Budget/Team/Car/Access Manager + ERPNext working and ordering roles | Everything | Everything |
+| Exec | Same as Captain | Own division | Own division |
+| Subteam Lead | Member, Approver, Attendance, Manufacturing Editor, Team Manager + working and ordering roles | Own subteam | Own subteam |
+| Senior Design Member | Member, Manufacturing Editor + working roles | — | — |
+| Member | Member + working roles | — | — |
+| Alumni | Alumni (read-only) | — | — |
+
+"Working roles" = Stock User, Manufacturing User, Item Manager, Quality Manager;
+"ordering roles" = Purchase User, Purchase Master Manager, Stock Manager.
 
 ## 5A Cars
 
@@ -81,7 +114,7 @@ own subteam, an Exec only for their division) are enforced in server code.
 
 ## 5C Team
 
-**Division**, **Subteam**, **Team Member** (custom). ERPNext Employee is not used:
+**Division**, **Subteam**, **Team Position**, **Team Member** (custom). ERPNext Employee is not used:
 it requires date of birth, gender, joining date and HR setup the team doesn't
 need. **Attendance Note** (custom) for absences, visible to Leads, Execs,
 Captain. Offboarding is an action on Team Member.
@@ -94,7 +127,7 @@ Captain. Offboarding is an action on Team Member.
 | One approval | BOM-generated requests are created already approved by the BOM approver. Others need a Lead (subteam), Exec (division) or Captain. |
 | Approver orders | "Mark Ordered" (receipt attachment required) creates and submits the ERPNext **Purchase Order**. Only the approver (or Exec/Captain) can do it. |
 | Received | "Mark Received" creates the ERPNext **Purchase Receipt** into each item's shelf, records batch expiry, pings the requester. |
-| Budget | **Solar Budget** (season/car, minimum target = sum of lines), **Budget Line** (subteam, amount, must-have/nice-to-have, owner), **Funding Entry** (grants, events, other; pledged or received). Sponsor money comes from Sponsor Donations. Committed = approved, not ordered; Spent = ordered; Available = raised − spent − committed. |
+| Budget | **Solar Budget** (season/car, minimum target = sum of lines), **Budget Line** (subteam, amount, must-have/nice-to-have, owner), **Funding Entry** (grants, events, merch sales, other; pledged, received or refunded). The lines a new car's budget starts with are set in Solar Settings > New car. Sponsor money comes from Sponsor Donations. Committed = approved, not ordered; Spent = ordered; Available = raised − spent − committed. |
 | Reimbursements | Fields on the purchase request (paid by member, reimbursement status). |
 
 ## 5E Sponsors
@@ -129,3 +162,20 @@ alerts. All in `ubc_solar/solar_automation/`.
 section and README for the routine, upgrades via a staging copy, and starting a
 new car (Car > Actions > Set Up This Car creates the subsystem packages and the
 budget).
+
+## Merch (added after the plan)
+
+**Merch Product** (custom): price, optional team price, who can buy (everyone or
+team only), pre-orders, a per-order limit, and options (sizes/colours). Each option
+is its own ERPNext stock **Item** in the Merch item group, kept in the Merch Stock
+location, so restocking is a normal purchase request and counts use the scan page.
+**Merch Order** (custom): Placed → Paid → Ready for Pickup → Fulfilled, or
+Cancelled. Paying creates a **Funding Entry** (Merch Sales) on the active budget;
+handing over posts a Material Issue from the merch location; cancelling marks the
+funding Refunded and cancels the stock issue if there was one. The public store is
+`/merch` (a custom page like `/apply`): prices come from the server, and the team
+price only applies to a logged-in team member or alumni, never from a typed email.
+**Merch Settings** (single) holds the store's open/closed switch and texts so merch
+managers don't need Solar Settings, which holds the integration secrets. ERPNext's
+Selling module (Sales Order, Sales Invoice, POS) isn't used: it needs customers,
+price lists and accounting the team doesn't run.

@@ -1,7 +1,7 @@
 # UBC Solar ERP
 
 UBC Solar's operations system: one linked database for parts, BOMs, inventory,
-purchasing, budget, sponsors and recruitment. It is a custom app (`ubc_solar`) on
+purchasing, budget, sponsors, recruitment and team merch. It is a custom app (`ubc_solar`) on
 [ERPNext](https://frappe.io/erpnext) version 16 (Frappe Framework v16).
 
 **Status:** built to the plan and running locally. It isn't hosted on a server yet.
@@ -10,18 +10,21 @@ See [What's still open](#whats-still-open) for the decisions that come before la
 The plan this is built from is condensed in [docs/PLAN.md](docs/PLAN.md); how each
 part of it maps onto ERPNext is in [docs/DESIGN.md](docs/DESIGN.md).
 
-## The eight sections
+## The sections
+
+The first eight are the plan's sections; Merch was added afterwards.
 
 | Section | What's in it |
 | --- | --- |
 | **Cars** | Cars and their status (In Design → Building → Active → Retired), subsystems, projects, part numbers, project BOMs imported from Altium/SolidWorks with review and approval, manufacturing packages and stages, build records with quality checks, harnesses, repairs, competitions and their support BOMs, the vehicle BOM |
 | **Inventory** | Stock by location (shelves and bins), QR scan page for phones, recounts, two-bin and reorder cards, perishables with expiry dates, the equipment list with checkout, printable QR labels |
-| **Team** | Divisions, subteams, members and positions (which decide roles and approvals), offboarding to Alumni, attendance |
+| **Team** | Divisions, subteams, members, positions and access (all editable in the ERP), offboarding to Alumni, attendance, the "Who Has What Access" report |
 | **Money** | Purchase requests → approval → order (with receipt) → received into stock; the fundraising budget: minimum target, raised, pledged, committed, spent, available |
 | **Sponsors** | Sponsor records with contacts and conversation history, money and parts donations, outreach campaigns |
 | **Recruitment** | Cycles, openings with technical challenges, the public application form at `/apply`, applicants, interviews, accepting someone straight into the team |
 | **Connected Tools** | Slack notifications and the `/erp` lookup command, Google Drive docs, Monday items, the wiki's Current car page and end-of-car snapshots, the automation log |
 | **ERP Maintenance** | The maintenance routine, users, permissions, backups |
+| **Merch** | Team merch products with sizes/colours, the public store at `/merch` (team price for logged-in members), orders from placed to paid to handed over, sales counted toward the budget |
 
 ## Run it locally
 
@@ -54,17 +57,20 @@ with an SSH key, or clone it into `apps/ubc_solar` and run `bench get-app ubc_so
 
 1. **Team > Members:** add the Captain first (as Administrator), then the Execs, Leads
    and members. Each member gets a login with their personal email, and their position
-   sets their access. Tick **ERP Maintainer** for the two Embedded maintainers. The
-   Captain should also have a backup admin login.
+   sets their access (see [Changing who can see what](#changing-who-can-see-what)).
+   Tick **ERP Maintainer** for the two Embedded maintainers. The Captain should also
+   have a backup admin login.
 2. **Sign in with Google** (optional, for Gmail addresses): create an OAuth client in
    Google Cloud with the redirect URI
    `https://<erp address>/api/method/frappe.integrations.oauth2_logins.login_via_google`,
    then add it in the ERP under **Social Login Key** (provider Google). Everyone else
    uses email and password.
-3. **Connected Tools > Solar Settings:** check the locations and part-number prefixes,
-   and set **ERP Address** once it's hosted (QR labels link to it).
+3. **Connected Tools > Solar Settings:** check the locations, part-number prefixes,
+   item groups and the budget lines a new car starts with, and set **ERP Address**
+   once it's hosted (QR labels link to it).
 4. **Cars > V5 > Actions > Set Up This Car:** this creates a manufacturing package per
-   subsystem and a budget with a line per subteam. Then fill in each subsystem's Leads
+   subsystem and a budget with the lines from Solar Settings > New car. It can be run
+   again after adding subsystems; it only adds what's missing. Then fill in each subsystem's Leads
    (Cars > Setup > Subsystems) and each budget line's amount (Money > Budgets).
 5. **Inventory > Locations:** add shelves and bins under Electrical Storage and
    Mechanical Storage, print their labels (**Print Label** on each location), and add
@@ -99,18 +105,77 @@ with an SSH key, or clone it into `apps/ubc_solar` and run `bench get-app ubc_so
   donation; grants and events go in Funding.
 - **Recruitment.** Publish an opening and applicants apply at `/apply`. Execs and the
   Captain review applicants, schedule interviews, and use **Accept and Create Account**.
+- **Merch.** Give someone **Merch Manager Access** (Team Member > Extra Access). They:
+  - set the payment and pickup text and open the store in **Merch > Merch Settings**;
+  - add products with a price, an optional team price and options (S, M, L...);
+    each option becomes a stock item in the Merch Stock location;
+  - get stock in with **Order More** on the product (a normal purchase request,
+    received into the merch location), or count existing stock in with the scan page.
+
+  People order at `/merch`; logged-in members and alumni see team prices and
+  team-only products. An in-person sale is a new Merch Order. Each order then goes
+  **Mark Paid** (recorded as Merch Sales funding on the active budget, unless that's
+  switched off in Merch Settings) → **Ready for Pickup** (emails the buyer if outgoing
+  email is set up) → **Hand Over** (takes the items out of stock). **Cancel / Refund**
+  marks the funding refunded and puts handed-over items back in stock.
 
 ## Roles
 
+The starting positions (all of this can be changed in the ERP):
+
 | Position | Can |
 | --- | --- |
-| Captain | Approve and order any purchase; change any position; see recruitment and attendance; set up and retire cars; restrict access (User Permissions) |
-| Exec | Approve and order purchases for their division; change positions in their division; see recruitment and attendance; set up and retire cars; restrict access (User Permissions) |
+| Captain | Approve and order any purchase; change any position; see recruitment and attendance; set up and retire cars; manage access |
+| Exec | Approve and order purchases for their division; change positions in their division; see recruitment and attendance; set up and retire cars; manage access |
 | Subteam Lead | Approve and order purchases for their subteam; change positions in their subteam; edit manufacturing packages; fill in attendance |
 | Senior Design Member | Edit manufacturing packages |
-| Member | View, comment on and edit almost everything, including any BOM; request purchases; record builds; scan and recount |
+| Member | View, comment on and edit almost everything, including any BOM; request purchases; record builds; scan and recount; buy merch at the team price |
 | Alumni | View only |
 | ERP Maintainer | Full administrator access (System Manager) |
+
+## Changing who can see what
+
+Nothing about access needs a code change. Each section only appears for people who
+can open something in it. The Captain and Execs can do everything below except Role
+Permissions, which is for ERP maintainers. One rule holds throughout: nobody can give
+access they don't have themselves (so only maintainers can make someone a
+maintainer), and nobody changes their own access.
+
+| To... | Do this |
+| --- | --- |
+| Change what a whole position can do (e.g. let every Lead see Recruitment) | **Team > Access > Access Profiles**, open the position's profile (e.g. *Lead Access*) and add or remove roles (e.g. *Solar Recruitment*). Everyone with that profile is updated on save. |
+| Give one person something extra (e.g. one Lead sees Recruitment, or a member runs merch) | Their **Team Member** record > **Extra Access**: add *Recruitment Access*, *Merch Manager Access*, *Budget Manager Access*, *Attendance Access*, etc. Remove it to take it away. Leads can do this for their own subteam, with access they have. |
+| Let someone approve for another subteam | Their Team Member record > **Also Approves For** |
+| Add or change a position | **Team > Access > Positions**: its access profile, what it approves (own subteam / division / everything), whose positions it can change, and who can assign it |
+| Make a new bundle of access | **Team > Access > Access Profiles > New**, pick roles, then use it on a position or as extra access |
+| Change what a role can read, edit or delete on a type of record | **Team > Access > Role Permissions** (pick the document type; ERP maintainers only) |
+| Limit someone to certain records (e.g. only one car's records) | **Team > Access > Restrict to Specific Records** (User Permissions) |
+| Check who has what | **Team > Access > Who Has What Access** |
+
+What each role is for:
+
+| Role | Gives |
+| --- | --- |
+| Solar Member | The open-by-default working access every member has |
+| Solar Alumni | View only |
+| Solar Approver | Approving purchases and BOMs, within the position's approval scope |
+| Solar Recruitment | The Recruitment section and applicant data |
+| Solar Attendance | Attendance notes |
+| Solar Manufacturing Editor | Editing manufacturing packages and stages |
+| Solar Budget Manager | Editing budgets, budget lines and funding |
+| Solar Team Manager | Editing team members (within the position's scope) |
+| Solar Car Manager | Setting up and retiring cars; editing subsystems and harness categories |
+| Solar Access Manager | Divisions, subteams, positions and record restrictions |
+| Solar Merch Manager | The Merch section, orders and Merch Settings |
+| Solar Admin | ERP maintenance (with System Manager) |
+
+Other settings that live in the ERP, not the code:
+- **Subsystems, subteams, divisions, harness categories:** add or change them in their lists.
+- **Dropdown choices** on any form: **Customize Form**.
+- **Solar Settings:** part-number prefixes, item groups for parts the ERP creates,
+  the budget lines a new car starts with, purchasing rules, and the connected tools.
+- `bench migrate` only adds what's missing (fields, permissions, workflows, roles,
+  positions); it never overwrites changes made in the ERP.
 
 ## Connect the tools
 
@@ -148,7 +213,7 @@ holding a backup admin login.
 | --- | --- |
 | Daily (automatic) | `scripts/backup.sh` from cron: database and files copied off the server (see the script header). Backups include the site config, so keep the destination private. |
 | Monthly | `bench update --pull` after a backup, then run the tests on a copy; confirm backups are arriving |
-| Each term | Offboard members who left (Team Member > **Offboard to Alumni**); review roles; equipment walk-through (Inventory > Equipment Needing Attention) |
+| Each term | Offboard members who left (Team Member > **Offboard to Alumni**); review access (Team > Who Has What Access); equipment walk-through (Inventory > Equipment Needing Attention) |
 | Each summer | Maintainer handover; restore a backup onto a test site; update this README; check https://frappe.io/support-versions; review hosting cost |
 | Start of each car | Create the car, then **Set Up This Car** |
 | About every 2 years | Major ERPNext upgrade on a staging copy first, testing BOM import, purchasing and approvals, Slack, the lookup bot, the wiki page, and the Drive and Monday connections |
@@ -159,8 +224,12 @@ To restore a backup onto a test site:
 **Upgrade safety.** Never edit ERPNext's or Frappe's code. All customization lives in
 this app:
 - custom doctypes;
-- custom fields and workflows, applied in code on every `bench migrate`;
+- custom fields, workflows, roles and starting positions, added on every
+  `bench migrate` only if they're missing, so changes made in the ERP are kept;
 - extra permissions on ERPNext doctypes, added as Custom DocPerm.
+
+Configuration done in the ERP (positions, access profiles, settings, permissions)
+lives in the database, so it's in the daily backups rather than in this repo.
 
 Custom DocPerm means future ERPNext permission changes to Item, BOM, Stock
 Reconciliation and similar doctypes won't arrive automatically, so check them after
@@ -170,12 +239,14 @@ each major upgrade.
 
 ```
 ubc_solar/
-  cars/ solar_inventory/ team/ money/ sponsors/ recruitment/   one module per section
+  cars/ solar_inventory/ team/ money/ sponsors/ recruitment/ merch/   one module per section
   solar_automation/      Slack, Drive, Monday, Wiki.js, notifications, lookup bot
   solar_maintenance/     the ERP Maintenance section
-  setup/                 installer, custom fields on ERPNext doctypes, workflows, permissions
-  www/                   /scan (phone page) and /apply (application form)
-  public/js/             extensions to ERPNext forms (Item, BOM, Material Request, Warehouse)
+  setup/                 installer, roles and starting positions, custom fields on ERPNext
+                         doctypes, workflows, permissions
+  patches/               one-off data updates run by `bench migrate`
+  www/                   /scan (phone page), /apply (application form), /merch (store)
+  public/js/             extensions to ERPNext/Frappe forms (Item, BOM, Material Request, Warehouse, Role Profile)
   tests/                 integration tests
 scripts/backup.sh        off-server backups
 docs/                    plan, design, Slack app manifest

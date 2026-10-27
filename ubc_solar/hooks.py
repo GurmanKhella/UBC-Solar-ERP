@@ -27,7 +27,10 @@ doctype_js = {
 	"BOM": "public/js/bom.js",
 	"Material Request": "public/js/material_request.js",
 	"Warehouse": "public/js/warehouse.js",
+	"Role Profile": "public/js/role_profile.js",
 }
+
+override_doctype_class = {"Role Profile": "ubc_solar.team.role_profile.SolarRoleProfile"}
 
 doc_events = {
 	"Item": {
@@ -49,7 +52,7 @@ doc_events = {
 		"on_update": "ubc_solar.money.purchasing.on_update",
 	},
 	"Role Profile": {
-		"on_update": "ubc_solar.team.doctype.team_member.team_member.role_profile_updated",
+		"validate": "ubc_solar.team.doctype.team_member.team_member.check_role_profile_change",
 	},
 	"Purchase Receipt": {
 		"on_submit": "ubc_solar.money.purchasing.purchase_receipt_on_submit",
