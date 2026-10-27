@@ -4,17 +4,13 @@ UBC Solar's operations system: one linked database for parts, BOMs, inventory,
 purchasing, budget, sponsors, and recruitment, built on
 [ERPNext](https://frappe.io/erpnext) (Frappe Framework, version 16).
 
-**Status:** pre-prototype. The plan was presented to the Captain and Electrical
-Exec on 2026-10-26; the feedback was "show us a prototype." Next milestone is a
-working prototype for DR1.
+**Status:** in development, running locally (not hosted on a server yet).
 
 ## Docs
 
 | File | What it is |
 | --- | --- |
 | [docs/PLAN.md](docs/PLAN.md) | Condensed version of the full operations-system plan |
-| [docs/FEEDBACK-2026-10-26.md](docs/FEEDBACK-2026-10-26.md) | What the walkthrough meeting asked for |
-| [docs/OPEN-QUESTIONS.md](docs/OPEN-QUESTIONS.md) | Decisions needed before and during the build |
 | [CLAUDE.md](CLAUDE.md) | Context for Claude Code sessions working on this repo |
 
 ## Planned layout

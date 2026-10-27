@@ -1,0 +1,11 @@
+# Local bench (ERPNext install, sites, databases) lives outside the repo
+/bench/
+*.pyc
+__pycache__/
+*.egg-info/
+node_modules/
+.env
+*.sql.gz
+*.tar
+backups/
+.DS_Store
