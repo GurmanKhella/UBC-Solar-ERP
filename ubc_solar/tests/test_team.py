@@ -139,6 +139,12 @@ class TestTeam(IntegrationTestCase):
 		self.assertIn(elec.user, scope.get_approvers(["Strategy"]))
 		self.assertIn(elec.user, scope.get_approvers(["Power & Signals"], level="exec"))
 
+	def test_top_positions_can_restrict_access(self):
+		captain = make_member("Captain")
+		member = make_member("Member", subteam="Embedded")
+		self.assertTrue(frappe.has_permission("User Permission", "create", user=captain.user))
+		self.assertFalse(frappe.has_permission("User Permission", "create", user=member.user))
+
 	def test_members_are_not_deleted(self):
 		member = make_member("Member", subteam="Embedded")
 		lead = make_member("Subteam Lead", subteam="Embedded")

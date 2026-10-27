@@ -85,25 +85,9 @@
    "link_to": "Applicant Interview",
    "link_type": "DocType",
    "icon": "messages-square"
-  },
-  {
-   "added": 0,
-   "child": 0,
-   "collapsible": 0,
-   "is_default_module": 0,
-   "hidden": 0,
-   "indent": 0,
-   "keep_closed": 0,
-   "open_in_new_tab": 0,
-   "show_arrow": 0,
-   "type": "Link",
-   "label": "Public Application Form",
-   "link_to": "/apply",
-   "link_type": "URL",
-   "icon": "external-link"
   }
  ],
- "modified": "2026-10-27 17:27:04.365062",
+ "modified": "2026-10-27 17:54:44.302941",
  "modified_by": "Administrator",
  "module": "Recruitment",
  "name": "Recruitment",

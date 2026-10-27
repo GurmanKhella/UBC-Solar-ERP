@@ -15,9 +15,13 @@ file says *which ERPNext pieces* do it and what the `ubc_solar` app adds.
   budget (5D) is tracked in this app's own budget doctypes, which is what the
   plan describes (fundraising-based, not a chart of accounts).
 - Integrations (Slack, Google Drive, Monday, Wiki.js) run inside the app as
-  background jobs and scheduled jobs, configured in **Solar Settings**. Each one
-  is off until its credentials are entered, and every failure is logged and
-  posted to the maintainers' Slack channel.
+  background jobs and scheduled jobs (the plan's "small services on the server"),
+  configured in **Solar Settings**. Each one is off until its credentials are
+  entered, and every failure is logged and posted to the maintainers' Slack channel.
+- The eight sections are Frappe modules, each with a workspace (home page with
+  live numbers) and a sidebar: Cars, Inventory, Team, Money, Sponsors, Recruitment,
+  **Connected Tools** (5G; "Automation" is taken by Frappe) and **ERP Maintenance**
+  (5H; "Maintenance" is an ERPNext module).
 
 ## Roles
 
@@ -71,7 +75,9 @@ own subteam, an Exec only for their division) are enforced in server code.
 | Perishables | ERPNext Batch with expiry date, entered once on receipt. Daily job flags batches expiring soon. |
 | Low stock flags | ERPNext reorder levels on Item; "Low Stock" report. No scheduled auto-ordering. |
 | Equipment | **Equipment** (custom; ERPNext Asset needs purchase accounting and depreciation the team doesn't track) with category, location, condition, tracking level, checkout; **Equipment Checkout** log; "Equipment Needing Attention" report. |
-| Labels | Print formats with QR codes for locations, equipment, reorder cards. |
+| Recounts by anyone | Team members get create/submit on Stock Reconciliation (normally Stock Manager only). |
+| Reorder cards across seasons | A card's budget line is used only while its budget is active; otherwise the active budget's shop supplies line. |
+| Labels | Print formats with QR codes for locations, equipment, reorder cards (each QR links to `/scan`). |
 
 ## 5C Team
 
@@ -101,20 +107,25 @@ go into stock linked to the donation). **Outreach Campaign** with materials.
 ## 5F Recruitment
 
 **Recruitment Cycle**, **Recruitment Opening** (challenge instructions and
-files; copy from a previous opening), **Applicant** (public web form with data
-disclosure), **Applicant Interview** (notes, rating). Accepting an applicant
-creates their user and Team Member. Execs and Captain only. (HRMS is not
-installed; its job applicant flow assumes employees and payroll setup.)
+files; copy from a previous opening), **Applicant**, **Applicant Interview**
+(notes, rating). Applicants apply at `/apply`, a small custom page rather than a
+generic Web Form, so only published openings are listed and résumés are stored as
+private files (guest uploads stay switched off site-wide). The form shows the data
+disclosure and requires consent. Accepting an applicant creates their user and Team
+Member. Execs and Captain only. (HRMS is not installed; its job applicant flow
+assumes employees and payroll setup.)
 
 ## 5G Automation
 
-Slack notifications (channel + @mentions), `/erp` slash command, Drive doc
-creation and rename sync, Monday item creation and rename sync, Wiki.js
-"current car" page and end-of-car snapshot, escalation of stale approvals,
-failure alerts. All in `ubc_solar/integrations/`.
+Slack notifications (channel + @mentions, never DMs; also shown in the ERP's
+notification bell), `/erp` slash command, Drive doc creation and rename sync,
+Monday item creation and rename sync, Wiki.js "current car" page (hourly) and
+end-of-car snapshot, daily escalation of approvals waiting too long, failure
+alerts. All in `ubc_solar/solar_automation/`.
 
 ## 5H Maintenance
 
-`scripts/backup.sh` (daily backup copied off the server), README sections for
-the maintenance routine, upgrades via a staging copy, and starting a new car
-("Start new car" sets up subsystem packages and the budget).
+`scripts/backup.sh` (daily backup copied off the server), the ERP Maintenance
+section and README for the routine, upgrades via a staging copy, and starting a
+new car (Car > Actions > Set Up This Car creates the subsystem packages and the
+budget).

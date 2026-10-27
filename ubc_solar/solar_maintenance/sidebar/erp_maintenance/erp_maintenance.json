@@ -33,26 +33,10 @@
    "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link",
-   "label": "Team Members (maintainers)",
-   "link_to": "Team Member",
+   "label": "Solar Settings",
+   "link_to": "Solar Settings",
    "link_type": "DocType",
-   "icon": "users"
-  },
-  {
-   "added": 0,
-   "child": 0,
-   "collapsible": 0,
-   "is_default_module": 0,
-   "hidden": 0,
-   "indent": 0,
-   "keep_closed": 0,
-   "open_in_new_tab": 0,
-   "show_arrow": 0,
-   "type": "Link",
-   "label": "Users",
-   "link_to": "User",
-   "link_type": "DocType",
-   "icon": "user"
+   "icon": "settings"
   },
   {
    "added": 0,
@@ -119,7 +103,7 @@
    "icon": "bug"
   }
  ],
- "modified": "2026-10-27 17:27:04.365062",
+ "modified": "2026-10-27 17:55:24.904315",
  "modified_by": "Administrator",
  "module": "Solar Maintenance",
  "name": "ERP Maintenance",

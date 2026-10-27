@@ -1,0 +1,30 @@
+# Slack app for the ERP. Create it at https://api.slack.com/apps > Create New App >
+# From a manifest, paste this, and replace https://erp.example.com with the ERP's address.
+# Then install it to the workspace and copy the Bot User OAuth Token (xoxb-...) and the
+# Signing Secret into the ERP: Solar Settings > Slack.
+display_information:
+  name: UBC Solar ERP
+  description: Notifications and quick lookups from the team's ERP
+  background_color: "#0b3d91"
+features:
+  bot_user:
+    display_name: ERP
+    always_online: true
+  slash_commands:
+    - command: /erp
+      url: https://erp.example.com/api/method/ubc_solar.solar_automation.slack.command
+      description: Ask the ERP (part, bom, budget, equipment, project)
+      usage_hint: part M5 bolt
+      should_escape: false
+oauth_config:
+  scopes:
+    bot:
+      - chat:write          # post notifications
+      - chat:write.public   # post in public channels without being invited first
+      - commands            # the /erp command
+      - users:read          # needed with users:read.email
+      - users:read.email    # link team members to their Slack accounts for @mentions
+settings:
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  token_rotation_enabled: false

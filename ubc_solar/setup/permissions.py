@@ -52,13 +52,25 @@ MEMBER_EXTRA = {
 }
 
 
+# The Captain and Execs can restrict access to anything: a User Permission limits a
+# user to (or away from) specific records.
+TOP_EXTRA = {
+	"User Permission": {"read": 1, "write": 1, "create": 1, "delete": 1},
+}
+
+
+def grant(doctype, role, rights):
+	if not frappe.db.exists("Custom DocPerm", {"parent": doctype, "role": role, "permlevel": 0}):
+		add_permission(doctype, role, 0, "read")
+	frappe.db.set_value("Custom DocPerm", {"parent": doctype, "role": role, "permlevel": 0}, rights)
+
+
 def apply():
 	for doctype, rights in MEMBER_EXTRA.items():
-		if not frappe.db.exists("Custom DocPerm", {"parent": doctype, "role": "Solar Member", "permlevel": 0}):
-			add_permission(doctype, "Solar Member", 0, "read")
-		frappe.db.set_value(
-			"Custom DocPerm", {"parent": doctype, "role": "Solar Member", "permlevel": 0}, rights
-		)
+		grant(doctype, "Solar Member", rights)
+	for doctype, rights in TOP_EXTRA.items():
+		for role in ("Solar Captain", "Solar Exec"):
+			grant(doctype, role, rights)
 	for doctype in ALUMNI_READ:
 		if not frappe.db.exists("Custom DocPerm", {"parent": doctype, "role": "Solar Alumni", "permlevel": 0}):
 			add_permission(doctype, "Solar Alumni", 0, "read")
