@@ -1,0 +1,98 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ _("Apply to UBC Solar") }}{% endblock %}
+
+{% block page_content %}
+<style>
+	.solar-apply { max-width: 640px; margin: 0 auto; padding: 8px 0 48px; }
+	.solar-apply label { font-weight: 600; margin-top: 12px; display: block; }
+	.solar-apply .muted { color: var(--text-muted, #6b7280); font-size: .9rem; }
+	.solar-apply .opening { border: 1px solid var(--border-color, #e5e7eb); border-radius: 10px; padding: 12px; margin: 8px 0; }
+	.solar-apply .notice { background: var(--subtle-fg, #f3f4f6); border-radius: 8px; padding: 12px; margin: 16px 0; font-size: .9rem; }
+	.solar-apply .msg { padding: 12px; border-radius: 8px; margin: 12px 0; display: none; }
+	.solar-apply .msg.ok { background: #e7f6ec; color: #14532d; display: block; }
+	.solar-apply .msg.err { background: #fde8e8; color: #7f1d1d; display: block; }
+</style>
+<div class="solar-apply">
+	<h1>{{ _("Apply to UBC Solar") }}</h1>
+	{% if not openings %}
+		<p>{{ _("There are no open positions right now. Check back at the start of the next recruitment cycle.") }}</p>
+	{% else %}
+		{% for o in openings %}
+			<details class="opening">
+				<summary><strong>{{ o.opening_title | e }}</strong> <span class="muted">· {{ o.cycle | e }}{% if o.subteam %} · {{ o.subteam | e }}{% endif %}</span></summary>
+				{% if o.description %}<div>{{ o.description }}</div>{% endif %}
+				{% if o.challenge_instructions %}<h5>{{ _("Technical challenge") }}</h5><div>{{ o.challenge_instructions }}</div>{% endif %}
+			</details>
+		{% endfor %}
+
+		<div id="apply-msg" class="msg"></div>
+		<form id="apply-form" enctype="multipart/form-data">
+			<label for="opening">{{ _("Opening") }}</label>
+			<select class="form-control" name="opening" id="opening" required>
+				{% for o in openings %}<option value="{{ o.name | e }}">{{ o.opening_title | e }}</option>{% endfor %}
+			</select>
+			<label for="full_name">{{ _("Full name") }}</label>
+			<input class="form-control" name="full_name" id="full_name" required>
+			<label for="email">{{ _("Email") }}</label>
+			<input class="form-control" type="email" name="email" id="email" required>
+			<label for="phone">{{ _("Phone (optional)") }}</label>
+			<input class="form-control" name="phone" id="phone">
+			<label for="program_and_year">{{ _("Program and year") }}</label>
+			<input class="form-control" name="program_and_year" id="program_and_year">
+			<label for="resume">{{ _("Résumé (PDF or Word, up to 10 MB)") }}</label>
+			<input class="form-control" type="file" name="resume" id="resume" accept=".pdf,.doc,.docx">
+			<label for="challenge_submission">{{ _("Technical challenge files (optional)") }}</label>
+			<input class="form-control" type="file" name="challenge_submission" id="challenge_submission">
+			<label for="challenge_link">{{ _("Or a link to your challenge work (e.g. GitHub)") }}</label>
+			<input class="form-control" type="url" name="challenge_link" id="challenge_link">
+			<label for="why_solar">{{ _("Why UBC Solar?") }}</label>
+			<textarea class="form-control" name="why_solar" id="why_solar" rows="5"></textarea>
+
+			<div class="notice">
+				<strong>{{ _("How your application data is kept") }}</strong><br>
+				{{ _("UBC Solar keeps every application, including your résumé, challenge work and interview notes, in the team's ERP after the recruitment cycle ends. Only the team's Execs and Captain can see applications. To ask for your data to be removed, contact the team.") }}
+			</div>
+			<label><input type="checkbox" name="consent" value="1" required> {{ _("I understand how my application data is kept") }}</label>
+			<button class="btn btn-primary" style="margin-top:16px" type="submit">{{ _("Submit application") }}</button>
+		</form>
+	{% endif %}
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+	const form = document.getElementById("apply-form");
+	if (form) {
+		form.addEventListener("submit", async (event) => {
+			event.preventDefault();
+			const msg = document.getElementById("apply-msg");
+			const button = form.querySelector("button[type=submit]");
+			button.disabled = true;
+			try {
+				const response = await fetch("/api/method/ubc_solar.recruitment.apply.submit", {
+					method: "POST",
+					body: new FormData(form),
+					headers: { Accept: "application/json" },
+				});
+				const data = await response.json();
+				if (!response.ok) {
+					let text = "{{ _('Something went wrong. Please try again.') }}";
+					if (data._server_messages) {
+						text = JSON.parse(JSON.parse(data._server_messages)[0]).message;
+					}
+					throw new Error(text);
+				}
+				form.style.display = "none";
+				msg.className = "msg ok";
+				msg.textContent = "{{ _('Thanks! Your application was received. We will email you about next steps.') }}";
+			} catch (e) {
+				msg.className = "msg err";
+				msg.textContent = e.message;
+				button.disabled = false;
+			}
+			window.scrollTo(0, 0);
+		});
+	}
+</script>
+{% endblock %}

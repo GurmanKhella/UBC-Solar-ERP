@@ -45,7 +45,20 @@ ALUMNI_READ = [
 ]
 
 
+# Extra rights on ERPNext doctypes that no standard role gives the whole team.
+# Any member can recount a bin (Stock Reconciliation is otherwise Stock Manager only).
+MEMBER_EXTRA = {
+	"Stock Reconciliation": {"read": 1, "write": 1, "create": 1, "submit": 1, "report": 1, "print": 1},
+}
+
+
 def apply():
+	for doctype, rights in MEMBER_EXTRA.items():
+		if not frappe.db.exists("Custom DocPerm", {"parent": doctype, "role": "Solar Member", "permlevel": 0}):
+			add_permission(doctype, "Solar Member", 0, "read")
+		frappe.db.set_value(
+			"Custom DocPerm", {"parent": doctype, "role": "Solar Member", "permlevel": 0}, rights
+		)
 	for doctype in ALUMNI_READ:
 		if not frappe.db.exists("Custom DocPerm", {"parent": doctype, "role": "Solar Alumni", "permlevel": 0}):
 			add_permission(doctype, "Solar Alumni", 0, "read")

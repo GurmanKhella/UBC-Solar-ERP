@@ -137,8 +137,12 @@ def configure_settings():
 	stock.item_naming_by = "Item Code"
 	stock.allow_negative_stock = 0
 	stock.auto_indent = 0
-	if stock.meta.has_field("use_serial_batch_fields"):
-		stock.use_serial_batch_fields = 1
+	# Batches carry expiry dates for perishables; outgoing batches are picked
+	# automatically, first-expiring first.
+	stock.enable_serial_and_batch_no_for_item = 1
+	stock.use_serial_batch_fields = 1
+	stock.auto_create_serial_and_batch_bundle_for_outward = 1
+	stock.pick_serial_and_batch_based_on = "Expiry"
 	stock.flags.ignore_permissions = True
 	stock.save()
 
