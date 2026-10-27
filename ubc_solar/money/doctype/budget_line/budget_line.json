@@ -8,14 +8,14 @@
   "line_name",
   "subteam",
   "division",
-  "column_break_29",
+  "column_break_1",
   "amount",
   "priority",
   "line_owner",
   "is_shop_supplies",
-  "section_break_32",
+  "section_break_1",
   "summary_html",
-  "section_break_33",
+  "section_break_2",
   "notes"
  ],
  "fields": [
@@ -52,7 +52,7 @@
    "description": "Set from the subteam, or pick a division for division-wide lines."
   },
   {
-   "fieldname": "column_break_29",
+   "fieldname": "column_break_1",
    "fieldtype": "Column Break"
   },
   {
@@ -83,7 +83,7 @@
    "label": "Shop supplies line (shared consumables)"
   },
   {
-   "fieldname": "section_break_32",
+   "fieldname": "section_break_1",
    "fieldtype": "Section Break",
    "label": "Where it stands"
   },
@@ -93,7 +93,7 @@
    "label": "Summary"
   },
   {
-   "fieldname": "section_break_33",
+   "fieldname": "section_break_2",
    "fieldtype": "Section Break",
    "label": "Notes",
    "collapsible": 1
@@ -113,7 +113,7 @@
    "group": "Purchases"
   }
  ],
- "modified": "2026-10-27 17:27:04.315447",
+ "modified": "2026-10-27 17:34:45.732518",
  "modified_by": "Administrator",
  "module": "Money",
  "name": "Budget Line",

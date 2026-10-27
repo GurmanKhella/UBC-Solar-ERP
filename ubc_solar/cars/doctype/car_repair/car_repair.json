@@ -9,19 +9,19 @@
   "car",
   "solar_subsystem",
   "solar_project",
-  "column_break_19",
+  "column_break_1",
   "status",
   "repair_type",
   "reported_by",
   "fixed_by",
   "fixed_on",
-  "section_break_21",
+  "section_break_1",
   "what_changed",
   "why",
   "changes_design",
   "new_bom",
   "project_doc_url",
-  "section_break_22",
+  "section_break_2",
   "parts"
  ],
  "fields": [
@@ -55,7 +55,7 @@
    "options": "Solar Project"
   },
   {
-   "fieldname": "column_break_19",
+   "fieldname": "column_break_1",
    "fieldtype": "Column Break"
   },
   {
@@ -94,7 +94,7 @@
    "label": "Fixed On"
   },
   {
-   "fieldname": "section_break_21",
+   "fieldname": "section_break_1",
    "fieldtype": "Section Break",
    "label": "What changed and why"
   },
@@ -129,7 +129,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "section_break_22",
+   "fieldname": "section_break_2",
    "fieldtype": "Section Break",
    "label": "Parts used",
    "description": "Deducted from stock (or competition spares) when the repair is marked Fixed."
@@ -150,7 +150,7 @@
    "group": "Purchases"
   }
  ],
- "modified": "2026-10-27 17:27:04.315447",
+ "modified": "2026-10-27 17:34:45.732518",
  "modified_by": "Administrator",
  "module": "Cars",
  "name": "Car Repair",

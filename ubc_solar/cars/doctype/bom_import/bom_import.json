@@ -8,11 +8,11 @@
   "solar_project",
   "source",
   "bom_file",
-  "column_break_13",
+  "column_break_1",
   "design_revision",
   "status",
   "bom",
-  "section_break_11",
+  "section_break_1",
   "summary",
   "log"
  ],
@@ -41,7 +41,7 @@
    "description": "Altium: Reports > Bill of Materials, export as CSV or Excel. SolidWorks: BOM table > Save As Excel/CSV (indented)."
   },
   {
-   "fieldname": "column_break_13",
+   "fieldname": "column_break_1",
    "fieldtype": "Column Break"
   },
   {
@@ -67,7 +67,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "section_break_11",
+   "fieldname": "section_break_1",
    "fieldtype": "Section Break",
    "label": "Result"
   },
@@ -87,7 +87,7 @@
  "icon": "upload",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-10-27 17:27:04.315447",
+ "modified": "2026-10-27 17:34:45.732518",
  "modified_by": "Administrator",
  "module": "Cars",
  "name": "BOM Import",

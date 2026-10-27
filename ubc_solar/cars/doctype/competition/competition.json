@@ -9,16 +9,16 @@
   "competition_name",
   "competition_type",
   "status",
-  "column_break_20",
+  "column_break_1",
   "car",
   "vehicle_bom",
-  "column_break_21",
+  "column_break_2",
   "start_date",
   "end_date",
   "location",
-  "tab_break_23",
+  "tab_break_1",
   "support_items",
-  "tab_break_24",
+  "tab_break_2",
   "travel_plan",
   "planning_notes"
  ],
@@ -48,7 +48,7 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "column_break_20",
+   "fieldname": "column_break_1",
    "fieldtype": "Column Break"
   },
   {
@@ -67,7 +67,7 @@
    "description": "The vehicle BOM version raced. Updating the car for a competition makes a new version."
   },
   {
-   "fieldname": "column_break_21",
+   "fieldname": "column_break_2",
    "fieldtype": "Column Break"
   },
   {
@@ -86,7 +86,7 @@
    "label": "Location"
   },
   {
-   "fieldname": "tab_break_23",
+   "fieldname": "tab_break_1",
    "fieldtype": "Tab Break",
    "label": "Support BOM"
   },
@@ -98,7 +98,7 @@
    "description": "Everything brought: spares, tools, chargers and power, safety gear, pit and trailer equipment. Tick Packed when it's loaded."
   },
   {
-   "fieldname": "tab_break_24",
+   "fieldname": "tab_break_2",
    "fieldtype": "Tab Break",
    "label": "Travel and planning"
   },
@@ -122,7 +122,7 @@
    "group": "Spending"
   }
  ],
- "modified": "2026-10-27 17:27:04.315447",
+ "modified": "2026-10-27 17:34:45.732518",
  "modified_by": "Administrator",
  "module": "Cars",
  "name": "Competition",

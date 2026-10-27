@@ -9,18 +9,18 @@
   "email",
   "phone",
   "program_and_year",
-  "column_break_37",
+  "column_break_1",
   "opening",
   "cycle",
   "subteam",
   "status",
-  "section_break_45",
+  "section_break_1",
   "resume",
   "challenge_submission",
   "challenge_link",
   "why_solar",
   "consent",
-  "section_break_46",
+  "section_break_2",
   "decision_notes",
   "team_member"
  ],
@@ -51,7 +51,7 @@
    "label": "Program and Year"
   },
   {
-   "fieldname": "column_break_37",
+   "fieldname": "column_break_1",
    "fieldtype": "Column Break"
   },
   {
@@ -92,7 +92,7 @@
    "in_standard_filter": 1
   },
   {
-   "fieldname": "section_break_45",
+   "fieldname": "section_break_1",
    "fieldtype": "Section Break",
    "label": "Application"
   },
@@ -124,7 +124,7 @@
    "reqd": 1
   },
   {
-   "fieldname": "section_break_46",
+   "fieldname": "section_break_2",
    "fieldtype": "Section Break",
    "label": "Decision"
   },
@@ -150,7 +150,7 @@
    "group": "Interviews"
   }
  ],
- "modified": "2026-10-27 17:27:04.315447",
+ "modified": "2026-10-27 17:34:45.732518",
  "modified_by": "Administrator",
  "module": "Recruitment",
  "name": "Applicant",

@@ -4,66 +4,66 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "tab_break_48",
+  "tab_break_1",
   "company",
   "active_budget",
   "shop_supplies_line",
   "shop_supplies_subteam",
-  "column_break_39",
+  "column_break_1",
   "receiving_warehouse",
   "build_area_warehouse",
   "competition_spares_warehouse",
   "site_url",
-  "tab_break_49",
+  "tab_break_2",
   "mechanical_prefix",
   "electrical_prefix",
   "assembly_prefix",
   "bought_prefix",
   "number_digits",
   "first_revision",
-  "column_break_40",
+  "column_break_2",
   "bom_purchase_quantity",
   "default_lead_days",
   "escalate_after_days",
   "recount_window_days",
   "expiry_warning_days",
   "equipment_check_days",
-  "tab_break_50",
+  "tab_break_3",
   "slack_enabled",
   "slack_bot_token",
   "slack_signing_secret",
-  "column_break_41",
+  "column_break_3",
   "default_channel",
   "maintainers_channel",
-  "section_break_51",
+  "section_break_1",
   "slack_routes",
-  "tab_break_52",
+  "tab_break_4",
   "drive_enabled",
   "drive_service_account",
-  "column_break_42",
+  "column_break_4",
   "drive_projects_folder",
   "drive_manufacturing_folder",
   "drive_project_template",
   "drive_procedure_template",
-  "tab_break_53",
+  "tab_break_5",
   "monday_enabled",
   "monday_api_token",
-  "column_break_43",
+  "column_break_5",
   "monday_board_id",
   "monday_group_id",
   "monday_link_column",
-  "tab_break_54",
+  "tab_break_6",
   "wiki_enabled",
   "wiki_url",
   "wiki_api_key",
-  "column_break_44",
+  "column_break_6",
   "wiki_current_car_path",
   "wiki_snapshot_prefix",
   "wiki_locale"
  ],
  "fields": [
   {
-   "fieldname": "tab_break_48",
+   "fieldname": "tab_break_1",
    "fieldtype": "Tab Break",
    "label": "General"
   },
@@ -92,7 +92,7 @@
    "options": "Subteam"
   },
   {
-   "fieldname": "column_break_39",
+   "fieldname": "column_break_1",
    "fieldtype": "Column Break"
   },
   {
@@ -123,7 +123,7 @@
    "description": "Public address of the ERP, used in QR codes and links (e.g. https://erp.ubcsolar.com)."
   },
   {
-   "fieldname": "tab_break_49",
+   "fieldname": "tab_break_2",
    "fieldtype": "Tab Break",
    "label": "Parts and purchasing"
   },
@@ -166,7 +166,7 @@
    "default": "A"
   },
   {
-   "fieldname": "column_break_40",
+   "fieldname": "column_break_2",
    "fieldtype": "Column Break"
   },
   {
@@ -207,7 +207,7 @@
    "default": "120"
   },
   {
-   "fieldname": "tab_break_50",
+   "fieldname": "tab_break_3",
    "fieldtype": "Tab Break",
    "label": "Slack"
   },
@@ -229,7 +229,7 @@
    "length": 255
   },
   {
-   "fieldname": "column_break_41",
+   "fieldname": "column_break_3",
    "fieldtype": "Column Break"
   },
   {
@@ -246,7 +246,7 @@
    "description": "Automation failures are posted here."
   },
   {
-   "fieldname": "section_break_51",
+   "fieldname": "section_break_1",
    "fieldtype": "Section Break",
    "label": "Which channel gets which notification",
    "description": "Subteam notifications go to the subteam's own channel when it has one."
@@ -258,7 +258,7 @@
    "options": "Solar Slack Route"
   },
   {
-   "fieldname": "tab_break_52",
+   "fieldname": "tab_break_4",
    "fieldtype": "Tab Break",
    "label": "Google Drive"
   },
@@ -274,7 +274,7 @@
    "description": "Upload the robot account's key file as a private file. Share the Shared Drive with the service account's email."
   },
   {
-   "fieldname": "column_break_42",
+   "fieldname": "column_break_4",
    "fieldtype": "Column Break"
   },
   {
@@ -299,7 +299,7 @@
    "label": "Procedure Doc Template ID"
   },
   {
-   "fieldname": "tab_break_53",
+   "fieldname": "tab_break_5",
    "fieldtype": "Tab Break",
    "label": "Monday"
   },
@@ -315,7 +315,7 @@
    "length": 500
   },
   {
-   "fieldname": "column_break_43",
+   "fieldname": "column_break_5",
    "fieldtype": "Column Break"
   },
   {
@@ -335,7 +335,7 @@
    "description": "A Link column on the board for the ERP link. Without one, the link is posted as an update."
   },
   {
-   "fieldname": "tab_break_54",
+   "fieldname": "tab_break_6",
    "fieldtype": "Tab Break",
    "label": "Wiki"
   },
@@ -358,7 +358,7 @@
    "length": 1000
   },
   {
-   "fieldname": "column_break_44",
+   "fieldname": "column_break_6",
    "fieldtype": "Column Break"
   },
   {
@@ -384,7 +384,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-10-27 17:27:04.315447",
+ "modified": "2026-10-27 17:34:45.732518",
  "modified_by": "Administrator",
  "module": "Solar Automation",
  "name": "Solar Settings",

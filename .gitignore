@@ -10,3 +10,4 @@ node_modules/
 backups/
 .DS_Store
 /ubc_solar/_dev/
+dump.rdb

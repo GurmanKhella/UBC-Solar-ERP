@@ -8,10 +8,10 @@
   "integration",
   "action",
   "status",
-  "column_break_45",
+  "column_break_1",
   "reference_doctype",
   "reference_name",
-  "section_break_55",
+  "section_break_1",
   "message"
  ],
  "fields": [
@@ -38,7 +38,7 @@
    "in_standard_filter": 1
   },
   {
-   "fieldname": "column_break_45",
+   "fieldname": "column_break_1",
    "fieldtype": "Column Break"
   },
   {
@@ -54,7 +54,7 @@
    "options": "reference_doctype"
   },
   {
-   "fieldname": "section_break_55",
+   "fieldname": "section_break_1",
    "fieldtype": "Section Break"
   },
   {
@@ -66,7 +66,7 @@
  "icon": "scroll-text",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-10-27 17:27:04.315447",
+ "modified": "2026-10-27 17:34:45.732518",
  "modified_by": "Administrator",
  "module": "Solar Automation",
  "name": "Solar Automation Log",

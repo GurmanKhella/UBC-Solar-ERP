@@ -7,12 +7,12 @@
  "field_order": [
   "car",
   "subsystem",
-  "column_break_14",
+  "column_break_1",
   "status",
   "output_item",
-  "section_break_12",
+  "section_break_1",
   "stages_html",
-  "section_break_13",
+  "section_break_2",
   "notes"
  ],
  "fields": [
@@ -35,7 +35,7 @@
    "in_standard_filter": 1
   },
   {
-   "fieldname": "column_break_14",
+   "fieldname": "column_break_1",
    "fieldtype": "Column Break"
   },
   {
@@ -55,7 +55,7 @@
    "description": "The finished subsystem, used up when the car is recorded as built."
   },
   {
-   "fieldname": "section_break_12",
+   "fieldname": "section_break_1",
    "fieldtype": "Section Break",
    "label": "Stages"
   },
@@ -65,7 +65,7 @@
    "label": "Stages"
   },
   {
-   "fieldname": "section_break_13",
+   "fieldname": "section_break_2",
    "fieldtype": "Section Break",
    "label": "Notes",
    "collapsible": 1
@@ -85,7 +85,7 @@
    "group": "Stages"
   }
  ],
- "modified": "2026-10-27 17:27:04.315447",
+ "modified": "2026-10-27 17:34:45.732518",
  "modified_by": "Administrator",
  "module": "Cars",
  "name": "Manufacturing Package",

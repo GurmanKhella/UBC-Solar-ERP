@@ -8,17 +8,17 @@
   "sponsor",
   "donation_type",
   "status",
-  "column_break_32",
+  "column_break_1",
   "amount",
   "budget",
   "campaign",
-  "column_break_33",
+  "column_break_2",
   "date_pledged",
   "date_received",
-  "section_break_38",
+  "section_break_1",
   "items",
   "stock_entry",
-  "section_break_39",
+  "section_break_2",
   "notes"
  ],
  "fields": [
@@ -52,7 +52,7 @@
    "in_standard_filter": 1
   },
   {
-   "fieldname": "column_break_32",
+   "fieldname": "column_break_1",
    "fieldtype": "Column Break"
   },
   {
@@ -78,7 +78,7 @@
    "options": "Outreach Campaign"
   },
   {
-   "fieldname": "column_break_33",
+   "fieldname": "column_break_2",
    "fieldtype": "Column Break"
   },
   {
@@ -93,7 +93,7 @@
    "label": "Date Received"
   },
   {
-   "fieldname": "section_break_38",
+   "fieldname": "section_break_1",
    "fieldtype": "Section Break",
    "label": "Donated parts",
    "depends_on": "eval:doc.donation_type=='Parts'"
@@ -112,7 +112,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "section_break_39",
+   "fieldname": "section_break_2",
    "fieldtype": "Section Break",
    "label": "Notes",
    "collapsible": 1
@@ -126,7 +126,7 @@
  "icon": "gift",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-10-27 17:27:04.315447",
+ "modified": "2026-10-27 17:34:45.732518",
  "modified_by": "Administrator",
  "module": "Sponsors",
  "name": "Sponsor Donation",

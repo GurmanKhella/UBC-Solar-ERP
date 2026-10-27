@@ -9,14 +9,14 @@
   "budget_name",
   "car",
   "is_active",
-  "column_break_28",
+  "column_break_1",
   "start_date",
   "end_date",
   "minimum_target",
   "enforce_must_have",
-  "section_break_30",
+  "section_break_1",
   "summary_html",
-  "section_break_31",
+  "section_break_2",
   "notes"
  ],
  "fields": [
@@ -44,7 +44,7 @@
    "description": "The budget new purchases are charged to."
   },
   {
-   "fieldname": "column_break_28",
+   "fieldname": "column_break_1",
    "fieldtype": "Column Break"
   },
   {
@@ -71,7 +71,7 @@
    "label": "Until the minimum target is raised, only approve must-have lines"
   },
   {
-   "fieldname": "section_break_30",
+   "fieldname": "section_break_1",
    "fieldtype": "Section Break",
    "label": "Where it stands"
   },
@@ -81,7 +81,7 @@
    "label": "Summary"
   },
   {
-   "fieldname": "section_break_31",
+   "fieldname": "section_break_2",
    "fieldtype": "Section Break",
    "label": "Notes",
    "collapsible": 1
@@ -111,7 +111,7 @@
    "group": "Money in"
   }
  ],
- "modified": "2026-10-27 17:27:04.315447",
+ "modified": "2026-10-27 17:34:45.732518",
  "modified_by": "Administrator",
  "module": "Money",
  "name": "Solar Budget",

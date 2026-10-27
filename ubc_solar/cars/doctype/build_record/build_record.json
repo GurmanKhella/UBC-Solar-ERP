@@ -8,22 +8,22 @@
   "bom",
   "item_code",
   "qty",
-  "column_break_17",
+  "column_break_1",
   "build_date",
   "built_by",
   "target_warehouse",
-  "column_break_18",
+  "column_break_2",
   "car",
   "solar_project",
   "manufacturing_stage",
-  "section_break_17",
+  "section_break_1",
   "items",
-  "section_break_18",
+  "section_break_2",
   "serial_numbers",
-  "section_break_19",
+  "section_break_3",
   "quality_inspection_template",
   "quality_results",
-  "section_break_20",
+  "section_break_4",
   "stock_entry",
   "quality_status",
   "amended_from"
@@ -56,7 +56,7 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "column_break_17",
+   "fieldname": "column_break_1",
    "fieldtype": "Column Break"
   },
   {
@@ -82,7 +82,7 @@
    "reqd": 1
   },
   {
-   "fieldname": "column_break_18",
+   "fieldname": "column_break_2",
    "fieldtype": "Column Break"
   },
   {
@@ -107,7 +107,7 @@
    "options": "Manufacturing Stage"
   },
   {
-   "fieldname": "section_break_17",
+   "fieldname": "section_break_1",
    "fieldtype": "Section Break",
    "label": "Parts used",
    "description": "Filled from the BOM. Adjust quantities if extra parts were used."
@@ -119,7 +119,7 @@
    "options": "Build Record Item"
   },
   {
-   "fieldname": "section_break_18",
+   "fieldname": "section_break_2",
    "fieldtype": "Section Break",
    "label": "Serial numbers",
    "collapsible": 1
@@ -131,7 +131,7 @@
    "description": "Optional. One per line, for tracking individual units (e.g. module #3)."
   },
   {
-   "fieldname": "section_break_19",
+   "fieldname": "section_break_3",
    "fieldtype": "Section Break",
    "label": "Quality checks"
   },
@@ -148,7 +148,7 @@
    "options": "Build Quality Result"
   },
   {
-   "fieldname": "section_break_20",
+   "fieldname": "section_break_4",
    "fieldtype": "Section Break",
    "label": "Result"
   },
@@ -180,7 +180,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-10-27 17:27:04.315447",
+ "modified": "2026-10-27 17:34:45.732518",
  "modified_by": "Administrator",
  "module": "Cars",
  "name": "Build Record",

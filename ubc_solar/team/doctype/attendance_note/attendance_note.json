@@ -8,11 +8,11 @@
   "member",
   "member_name",
   "subteam",
-  "column_break_4",
+  "column_break_1",
   "date",
   "until_date",
   "note_type",
-  "section_break_3",
+  "section_break_1",
   "notes",
   "recorded_by"
  ],
@@ -43,7 +43,7 @@
    "in_standard_filter": 1
   },
   {
-   "fieldname": "column_break_4",
+   "fieldname": "column_break_1",
    "fieldtype": "Column Break"
   },
   {
@@ -71,7 +71,7 @@
    "in_standard_filter": 1
   },
   {
-   "fieldname": "section_break_3",
+   "fieldname": "section_break_1",
    "fieldtype": "Section Break"
   },
   {
@@ -91,7 +91,7 @@
  "icon": "calendar",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-10-27 17:27:04.315447",
+ "modified": "2026-10-27 17:34:45.732518",
  "modified_by": "Administrator",
  "module": "Team",
  "name": "Attendance Note",

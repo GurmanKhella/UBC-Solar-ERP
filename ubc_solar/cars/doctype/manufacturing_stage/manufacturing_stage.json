@@ -8,20 +8,20 @@
   "manufacturing_package",
   "stage_name",
   "sequence",
-  "column_break_15",
+  "column_break_1",
   "car",
   "subsystem",
   "is_final_stage",
-  "section_break_14",
+  "section_break_1",
   "output_item",
   "manufacturing_bom",
-  "column_break_16",
+  "column_break_2",
   "quality_inspection_template",
   "procedure_doc_url",
   "drive_doc_id",
-  "section_break_15",
+  "section_break_2",
   "tools",
-  "section_break_16",
+  "section_break_3",
   "steps",
   "total_minutes",
   "people_needed"
@@ -52,7 +52,7 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "column_break_15",
+   "fieldname": "column_break_1",
    "fieldtype": "Column Break"
   },
   {
@@ -77,7 +77,7 @@
    "label": "Final stage (produces the finished subsystem)"
   },
   {
-   "fieldname": "section_break_14",
+   "fieldname": "section_break_1",
    "fieldtype": "Section Break",
    "label": "What it uses and makes"
   },
@@ -96,7 +96,7 @@
    "description": "Only what gets used up: the projects, materials and consumables this stage uses."
   },
   {
-   "fieldname": "column_break_16",
+   "fieldname": "column_break_2",
    "fieldtype": "Column Break"
   },
   {
@@ -121,7 +121,7 @@
    "hidden": 1
   },
   {
-   "fieldname": "section_break_15",
+   "fieldname": "section_break_2",
    "fieldtype": "Section Break",
    "label": "Tools and equipment"
   },
@@ -132,7 +132,7 @@
    "options": "Manufacturing Stage Tool"
   },
   {
-   "fieldname": "section_break_16",
+   "fieldname": "section_break_3",
    "fieldtype": "Section Break",
    "label": "Time and people"
   },
@@ -159,7 +159,7 @@
  "icon": "list-ordered",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-10-27 17:27:04.315447",
+ "modified": "2026-10-27 17:34:45.732518",
  "modified_by": "Administrator",
  "module": "Cars",
  "name": "Manufacturing Stage",

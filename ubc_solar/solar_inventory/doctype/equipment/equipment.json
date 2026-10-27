@@ -8,26 +8,26 @@
   "equipment_name",
   "category",
   "condition",
-  "column_break_22",
+  "column_break_1",
   "tracking",
   "location",
   "group_location",
-  "section_break_25",
+  "section_break_1",
   "checked_out_to",
   "checked_out_on",
-  "column_break_23",
+  "column_break_2",
   "checkout_purpose",
   "competition",
-  "section_break_26",
+  "section_break_2",
   "manufacturer",
   "model",
   "serial_number",
-  "column_break_24",
+  "column_break_3",
   "value",
   "last_checked_on",
   "last_checked_by",
   "image",
-  "section_break_27",
+  "section_break_3",
   "notes"
  ],
  "fields": [
@@ -59,7 +59,7 @@
    "in_standard_filter": 1
   },
   {
-   "fieldname": "column_break_22",
+   "fieldname": "column_break_1",
    "fieldtype": "Column Break"
   },
   {
@@ -85,7 +85,7 @@
    "depends_on": "eval:doc.tracking=='By toolbox or wall'"
   },
   {
-   "fieldname": "section_break_25",
+   "fieldname": "section_break_1",
    "fieldtype": "Section Break",
    "label": "Checked out"
   },
@@ -104,7 +104,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "column_break_23",
+   "fieldname": "column_break_2",
    "fieldtype": "Column Break"
   },
   {
@@ -121,7 +121,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "section_break_26",
+   "fieldname": "section_break_2",
    "fieldtype": "Section Break",
    "label": "Details",
    "collapsible": 1
@@ -142,7 +142,7 @@
    "label": "Serial Number"
   },
   {
-   "fieldname": "column_break_24",
+   "fieldname": "column_break_3",
    "fieldtype": "Column Break"
   },
   {
@@ -170,7 +170,7 @@
    "label": "Image"
   },
   {
-   "fieldname": "section_break_27",
+   "fieldname": "section_break_3",
    "fieldtype": "Section Break",
    "label": "Notes",
    "collapsible": 1
@@ -191,7 +191,7 @@
    "group": "History"
   }
  ],
- "modified": "2026-10-27 17:27:04.315447",
+ "modified": "2026-10-27 17:34:45.732518",
  "modified_by": "Administrator",
  "module": "Solar Inventory",
  "name": "Equipment",
