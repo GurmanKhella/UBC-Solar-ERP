@@ -1,0 +1,164 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:subsystem_name",
+ "creation": "2026-10-27 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "subsystem_name",
+  "is_vehicle_harnesses",
+  "enabled",
+  "column_break_7",
+  "sort_order",
+  "lead_note",
+  "section_break_6",
+  "subteams",
+  "leads",
+  "section_break_7",
+  "description"
+ ],
+ "fields": [
+  {
+   "fieldname": "subsystem_name",
+   "fieldtype": "Data",
+   "label": "Subsystem",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "is_vehicle_harnesses",
+   "fieldtype": "Check",
+   "label": "This is the Vehicle harnesses section",
+   "description": "Harnesses between projects in different subsystems are placed here automatically."
+  },
+  {
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enabled",
+   "default": "1",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "column_break_7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sort_order",
+   "fieldtype": "Int",
+   "label": "Sort Order",
+   "default": "0"
+  },
+  {
+   "fieldname": "lead_note",
+   "fieldtype": "Small Text",
+   "label": "Who leads it",
+   "description": "e.g. Electrical and Mechanical Execs together, with the Battery Mech Lead and Battery Management Lead"
+  },
+  {
+   "fieldname": "section_break_6",
+   "fieldtype": "Section Break",
+   "label": "Subteams and leads"
+  },
+  {
+   "fieldname": "subteams",
+   "fieldtype": "Table",
+   "label": "Subteams",
+   "options": "Subsystem Subteam"
+  },
+  {
+   "fieldname": "leads",
+   "fieldtype": "Table",
+   "label": "Leads",
+   "options": "Subsystem Lead"
+  },
+  {
+   "fieldname": "section_break_7",
+   "fieldtype": "Section Break",
+   "label": "Notes",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  }
+ ],
+ "icon": "layers",
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-10-27 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Cars",
+ "name": "Subsystem",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Captain",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1
+  },
+  {
+   "role": "Solar Exec",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1
+  },
+  {
+   "role": "Solar Lead",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1
+  },
+  {
+   "role": "Solar Member",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1
+  },
+  {
+   "role": "Solar Alumni",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "sort_order",
+ "sort_order": "ASC",
+ "states": []
+}

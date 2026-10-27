@@ -1,0 +1,155 @@
+{
+ "actions": [],
+ "autoname": "format:ATT-{YYYY}-{#####}",
+ "creation": "2026-10-27 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "member",
+  "member_name",
+  "subteam",
+  "column_break_4",
+  "date",
+  "until_date",
+  "note_type",
+  "section_break_3",
+  "notes",
+  "recorded_by"
+ ],
+ "fields": [
+  {
+   "fieldname": "member",
+   "fieldtype": "Link",
+   "label": "Member",
+   "options": "Team Member",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "member_name",
+   "fieldtype": "Data",
+   "label": "Member Name",
+   "fetch_from": "member.full_name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "subteam",
+   "fieldtype": "Link",
+   "label": "Subteam",
+   "options": "Subteam",
+   "fetch_from": "member.subteam",
+   "read_only": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date",
+   "reqd": 1,
+   "default": "Today",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "until_date",
+   "fieldtype": "Date",
+   "label": "Until",
+   "description": "For absences longer than a day."
+  },
+  {
+   "fieldname": "note_type",
+   "fieldtype": "Select",
+   "label": "Type",
+   "options": "Absent\nSick\nAway\nLate\nLeft early\nNote",
+   "default": "Absent",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "section_break_3",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "recorded_by",
+   "fieldtype": "Link",
+   "label": "Recorded By",
+   "options": "User",
+   "default": "__user",
+   "read_only": 1
+  }
+ ],
+ "icon": "calendar",
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-10-27 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Team",
+ "name": "Attendance Note",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Captain",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Exec",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Lead",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "member_name"
+}

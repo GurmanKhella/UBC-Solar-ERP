@@ -1,0 +1,250 @@
+{
+ "actions": [],
+ "autoname": "format:{manufacturing_package} - {stage_name}",
+ "creation": "2026-10-27 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "manufacturing_package",
+  "stage_name",
+  "sequence",
+  "column_break_15",
+  "car",
+  "subsystem",
+  "is_final_stage",
+  "section_break_14",
+  "output_item",
+  "manufacturing_bom",
+  "column_break_16",
+  "quality_inspection_template",
+  "procedure_doc_url",
+  "drive_doc_id",
+  "section_break_15",
+  "tools",
+  "section_break_16",
+  "steps",
+  "total_minutes",
+  "people_needed"
+ ],
+ "fields": [
+  {
+   "fieldname": "manufacturing_package",
+   "fieldtype": "Link",
+   "label": "Manufacturing Package",
+   "options": "Manufacturing Package",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "stage_name",
+   "fieldtype": "Data",
+   "label": "Procedure / Stage Name",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "e.g. Battery pack module assembly"
+  },
+  {
+   "fieldname": "sequence",
+   "fieldtype": "Int",
+   "label": "Sequence",
+   "default": "1",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "column_break_15",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "car",
+   "fieldtype": "Link",
+   "label": "Car",
+   "options": "Car",
+   "fetch_from": "manufacturing_package.car",
+   "read_only": 1
+  },
+  {
+   "fieldname": "subsystem",
+   "fieldtype": "Link",
+   "label": "Subsystem",
+   "options": "Subsystem",
+   "fetch_from": "manufacturing_package.subsystem",
+   "read_only": 1
+  },
+  {
+   "fieldname": "is_final_stage",
+   "fieldtype": "Check",
+   "label": "Final stage (produces the finished subsystem)"
+  },
+  {
+   "fieldname": "section_break_14",
+   "fieldtype": "Section Break",
+   "label": "What it uses and makes"
+  },
+  {
+   "fieldname": "output_item",
+   "fieldtype": "Link",
+   "label": "Produces",
+   "options": "Item",
+   "description": "What this stage builds, e.g. the battery module part. The final stage produces the finished subsystem."
+  },
+  {
+   "fieldname": "manufacturing_bom",
+   "fieldtype": "Link",
+   "label": "Manufacturing BOM",
+   "options": "BOM",
+   "description": "Only what gets used up: the projects, materials and consumables this stage uses."
+  },
+  {
+   "fieldname": "column_break_16",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "quality_inspection_template",
+   "fieldtype": "Link",
+   "label": "Quality Checks",
+   "options": "Quality Inspection Template",
+   "description": "What to check and the pass criteria. Results are recorded for every build."
+  },
+  {
+   "fieldname": "procedure_doc_url",
+   "fieldtype": "Data",
+   "label": "Procedure Doc (Drive)",
+   "options": "URL",
+   "read_only": 1
+  },
+  {
+   "fieldname": "drive_doc_id",
+   "fieldtype": "Data",
+   "label": "Drive Doc Id",
+   "read_only": 1,
+   "hidden": 1
+  },
+  {
+   "fieldname": "section_break_15",
+   "fieldtype": "Section Break",
+   "label": "Tools and equipment"
+  },
+  {
+   "fieldname": "tools",
+   "fieldtype": "Table",
+   "label": "Tools",
+   "options": "Manufacturing Stage Tool"
+  },
+  {
+   "fieldname": "section_break_16",
+   "fieldtype": "Section Break",
+   "label": "Time and people"
+  },
+  {
+   "fieldname": "steps",
+   "fieldtype": "Table",
+   "label": "Steps",
+   "options": "Manufacturing Stage Step"
+  },
+  {
+   "fieldname": "total_minutes",
+   "fieldtype": "Int",
+   "label": "Total Minutes",
+   "read_only": 1
+  },
+  {
+   "fieldname": "people_needed",
+   "fieldtype": "Int",
+   "label": "People Needed",
+   "read_only": 1,
+   "description": "Most people needed at once"
+  }
+ ],
+ "icon": "list-ordered",
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-10-27 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Cars",
+ "name": "Manufacturing Stage",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Captain",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Exec",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Lead",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1
+  },
+  {
+   "role": "Solar Senior Designer",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1
+  },
+  {
+   "role": "Solar Member",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1
+  },
+  {
+   "role": "Solar Alumni",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "sequence",
+ "sort_order": "ASC",
+ "states": [],
+ "title_field": "stage_name",
+ "track_changes": 1
+}

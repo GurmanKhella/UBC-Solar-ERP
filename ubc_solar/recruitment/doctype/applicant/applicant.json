@@ -1,0 +1,205 @@
+{
+ "actions": [],
+ "autoname": "format:APP-{YYYY}-{#####}",
+ "creation": "2026-10-27 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "full_name",
+  "email",
+  "phone",
+  "program_and_year",
+  "column_break_37",
+  "opening",
+  "cycle",
+  "subteam",
+  "status",
+  "section_break_45",
+  "resume",
+  "challenge_submission",
+  "challenge_link",
+  "why_solar",
+  "consent",
+  "section_break_46",
+  "decision_notes",
+  "team_member"
+ ],
+ "fields": [
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "label": "Full Name",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email",
+   "options": "Email",
+   "reqd": 1
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Data",
+   "label": "Phone",
+   "options": "Phone"
+  },
+  {
+   "fieldname": "program_and_year",
+   "fieldtype": "Data",
+   "label": "Program and Year"
+  },
+  {
+   "fieldname": "column_break_37",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "opening",
+   "fieldtype": "Link",
+   "label": "Opening",
+   "options": "Recruitment Opening",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "cycle",
+   "fieldtype": "Link",
+   "label": "Cycle",
+   "options": "Recruitment Cycle",
+   "fetch_from": "opening.cycle",
+   "read_only": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "subteam",
+   "fieldtype": "Link",
+   "label": "Subteam",
+   "options": "Subteam",
+   "fetch_from": "opening.subteam",
+   "read_only": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Applied\nInterviewing\nAccepted\nRejected",
+   "default": "Applied",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "section_break_45",
+   "fieldtype": "Section Break",
+   "label": "Application"
+  },
+  {
+   "fieldname": "resume",
+   "fieldtype": "Attach",
+   "label": "R\u00e9sum\u00e9"
+  },
+  {
+   "fieldname": "challenge_submission",
+   "fieldtype": "Attach",
+   "label": "Challenge Submission"
+  },
+  {
+   "fieldname": "challenge_link",
+   "fieldtype": "Data",
+   "label": "Challenge Link (e.g. GitHub)",
+   "options": "URL"
+  },
+  {
+   "fieldname": "why_solar",
+   "fieldtype": "Long Text",
+   "label": "Why UBC Solar?"
+  },
+  {
+   "fieldname": "consent",
+   "fieldtype": "Check",
+   "label": "I understand how my application data is kept",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_46",
+   "fieldtype": "Section Break",
+   "label": "Decision"
+  },
+  {
+   "fieldname": "decision_notes",
+   "fieldtype": "Small Text",
+   "label": "Decision Notes"
+  },
+  {
+   "fieldname": "team_member",
+   "fieldtype": "Link",
+   "label": "Team Member",
+   "options": "Team Member",
+   "read_only": 1
+  }
+ ],
+ "icon": "user-plus",
+ "index_web_pages_for_search": 1,
+ "links": [
+  {
+   "link_doctype": "Applicant Interview",
+   "link_fieldname": "applicant",
+   "group": "Interviews"
+  }
+ ],
+ "modified": "2026-10-27 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Recruitment",
+ "name": "Applicant",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Captain",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Exec",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "search_fields": "full_name,email,opening",
+ "show_title_field_in_link": 1,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "full_name",
+ "track_changes": 1
+}

@@ -1,0 +1,181 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:competition_name",
+ "creation": "2026-10-27 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "competition_name",
+  "competition_type",
+  "status",
+  "column_break_20",
+  "car",
+  "vehicle_bom",
+  "column_break_21",
+  "start_date",
+  "end_date",
+  "location",
+  "tab_break_23",
+  "support_items",
+  "tab_break_24",
+  "travel_plan",
+  "planning_notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "competition_name",
+   "fieldtype": "Data",
+   "label": "Competition Name",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1,
+   "description": "e.g. FSGP 2027"
+  },
+  {
+   "fieldname": "competition_type",
+   "fieldtype": "Select",
+   "label": "Type",
+   "options": "ASC\nFSGP\nWSC\nOther",
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Planning\nPacking\nAt Competition\nDone",
+   "default": "Planning",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "column_break_20",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "car",
+   "fieldtype": "Link",
+   "label": "Car",
+   "options": "Car",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "vehicle_bom",
+   "fieldtype": "Link",
+   "label": "Car Revision Raced",
+   "options": "BOM",
+   "description": "The vehicle BOM version raced. Updating the car for a competition makes a new version."
+  },
+  {
+   "fieldname": "column_break_21",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Start Date"
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "End Date"
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "label": "Location"
+  },
+  {
+   "fieldname": "tab_break_23",
+   "fieldtype": "Tab Break",
+   "label": "Support BOM"
+  },
+  {
+   "fieldname": "support_items",
+   "fieldtype": "Table",
+   "label": "Support BOM",
+   "options": "Competition Support Item",
+   "description": "Everything brought: spares, tools, chargers and power, safety gear, pit and trailer equipment. Tick Packed when it's loaded."
+  },
+  {
+   "fieldname": "tab_break_24",
+   "fieldtype": "Tab Break",
+   "label": "Travel and planning"
+  },
+  {
+   "fieldname": "travel_plan",
+   "fieldtype": "Text Editor",
+   "label": "Travel Plan"
+  },
+  {
+   "fieldname": "planning_notes",
+   "fieldtype": "Text Editor",
+   "label": "Planning Notes"
+  }
+ ],
+ "icon": "flag",
+ "index_web_pages_for_search": 1,
+ "links": [
+  {
+   "link_doctype": "Material Request",
+   "link_fieldname": "solar_competition",
+   "group": "Spending"
+  }
+ ],
+ "modified": "2026-10-27 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Cars",
+ "name": "Competition",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Captain",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Member",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1
+  },
+  {
+   "role": "Solar Alumni",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

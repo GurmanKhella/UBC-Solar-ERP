@@ -1,0 +1,223 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:email",
+ "creation": "2026-10-27 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "full_name",
+  "email",
+  "user",
+  "column_break_2",
+  "position",
+  "subteam",
+  "division",
+  "status",
+  "section_break_1",
+  "slack_user_id",
+  "is_erp_admin",
+  "column_break_3",
+  "joined_on",
+  "left_on",
+  "previous_position",
+  "section_break_2",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "label": "Full Name",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Personal Email",
+   "options": "Email",
+   "reqd": 1,
+   "unique": 1,
+   "description": "Used to log in. Gmail addresses can use Sign in with Google."
+  },
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "User",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "position",
+   "fieldtype": "Select",
+   "label": "Position",
+   "options": "Captain\nExec\nSubteam Lead\nSenior Design Member\nMember\nAlumni",
+   "default": "Member",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "subteam",
+   "fieldtype": "Link",
+   "label": "Subteam",
+   "options": "Subteam",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "mandatory_depends_on": "eval:!['Captain','Exec','Alumni'].includes(doc.position)"
+  },
+  {
+   "fieldname": "division",
+   "fieldtype": "Link",
+   "label": "Division",
+   "options": "Division",
+   "in_standard_filter": 1,
+   "description": "Set automatically from the subteam. For Execs, the division they lead.",
+   "read_only_depends_on": "eval:doc.position!='Exec'",
+   "mandatory_depends_on": "eval:doc.position=='Exec'"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Active\nAlumni",
+   "default": "Active",
+   "read_only": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "section_break_1",
+   "fieldtype": "Section Break",
+   "label": "Accounts"
+  },
+  {
+   "fieldname": "slack_user_id",
+   "fieldtype": "Data",
+   "label": "Slack User ID",
+   "description": "Filled in automatically from Slack when Slack is connected. Needed for @mentions."
+  },
+  {
+   "fieldname": "is_erp_admin",
+   "fieldtype": "Check",
+   "label": "ERP Maintainer (administrator)",
+   "description": "Embedded maintainers. Gives full administrator access to the ERP."
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "joined_on",
+   "fieldtype": "Date",
+   "label": "Joined On"
+  },
+  {
+   "fieldname": "left_on",
+   "fieldtype": "Date",
+   "label": "Left On",
+   "read_only": 1
+  },
+  {
+   "fieldname": "previous_position",
+   "fieldtype": "Data",
+   "label": "Previous Position",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_2",
+   "fieldtype": "Section Break",
+   "label": "Notes",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  }
+ ],
+ "icon": "user",
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-10-27 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Team",
+ "name": "Team Member",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Captain",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1
+  },
+  {
+   "role": "Solar Exec",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1
+  },
+  {
+   "role": "Solar Lead",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1
+  },
+  {
+   "role": "Solar Member",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1
+  },
+  {
+   "role": "Solar Alumni",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "search_fields": "full_name,subteam,position",
+ "show_title_field_in_link": 1,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "full_name",
+ "track_changes": 1
+}

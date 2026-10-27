@@ -1,0 +1,344 @@
+{
+ "actions": [],
+ "autoname": "format:PRJ-{#####}",
+ "creation": "2026-10-27 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "project_name",
+  "car",
+  "project_type",
+  "status",
+  "column_break_8",
+  "subsystem",
+  "subteam",
+  "division",
+  "column_break_9",
+  "project_owner",
+  "co_owners",
+  "part",
+  "section_break_8",
+  "harness_category",
+  "column_break_10",
+  "from_project",
+  "from_subsystem",
+  "column_break_11",
+  "to_project",
+  "to_subsystem",
+  "section_break_9",
+  "design_revision",
+  "design_link",
+  "column_break_12",
+  "drive_doc_url",
+  "monday_item_url",
+  "monday_item_id",
+  "drive_doc_id",
+  "drive_folder_id",
+  "erpnext_project",
+  "section_break_10",
+  "description"
+ ],
+ "fields": [
+  {
+   "fieldname": "project_name",
+   "fieldtype": "Data",
+   "label": "Project Name",
+   "reqd": 1,
+   "in_list_view": 1,
+   "bold": 1
+  },
+  {
+   "fieldname": "car",
+   "fieldtype": "Link",
+   "label": "Car",
+   "options": "Car",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "project_type",
+   "fieldtype": "Select",
+   "label": "Type",
+   "options": "Design\nHarness",
+   "default": "Design",
+   "reqd": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Planning\nDesign\nReview\nManufacturing\nBuilt\nOn Hold\nCancelled",
+   "default": "Planning",
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "column_break_8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "subsystem",
+   "fieldtype": "Link",
+   "label": "Subsystem",
+   "options": "Subsystem",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "description": "For harnesses this is set automatically from the From and To projects.",
+   "mandatory_depends_on": "eval:doc.project_type!='Harness'"
+  },
+  {
+   "fieldname": "subteam",
+   "fieldtype": "Link",
+   "label": "Subteam",
+   "options": "Subteam",
+   "reqd": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "division",
+   "fieldtype": "Link",
+   "label": "Division",
+   "options": "Division",
+   "fetch_from": "subteam.division",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "project_owner",
+   "fieldtype": "Link",
+   "label": "Owner",
+   "options": "User",
+   "reqd": 1,
+   "default": "__user",
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "co_owners",
+   "fieldtype": "Table MultiSelect",
+   "label": "Co-owners",
+   "options": "Solar Project Co-owner"
+  },
+  {
+   "fieldname": "part",
+   "fieldtype": "Link",
+   "label": "Part Number",
+   "options": "Item",
+   "read_only": 1,
+   "description": "The team part number for what this project produces. Created automatically."
+  },
+  {
+   "fieldname": "section_break_8",
+   "fieldtype": "Section Break",
+   "label": "Harness",
+   "depends_on": "eval:doc.project_type=='Harness'"
+  },
+  {
+   "fieldname": "harness_category",
+   "fieldtype": "Link",
+   "label": "Category",
+   "options": "Harness Category",
+   "mandatory_depends_on": "eval:doc.project_type=='Harness'"
+  },
+  {
+   "fieldname": "column_break_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "from_project",
+   "fieldtype": "Link",
+   "label": "From",
+   "options": "Solar Project",
+   "mandatory_depends_on": "eval:doc.project_type=='Harness'"
+  },
+  {
+   "fieldname": "from_subsystem",
+   "fieldtype": "Link",
+   "label": "From Subsystem",
+   "options": "Subsystem",
+   "fetch_from": "from_project.subsystem",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_11",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "to_project",
+   "fieldtype": "Link",
+   "label": "To",
+   "options": "Solar Project",
+   "mandatory_depends_on": "eval:doc.project_type=='Harness'"
+  },
+  {
+   "fieldname": "to_subsystem",
+   "fieldtype": "Link",
+   "label": "To Subsystem",
+   "options": "Subsystem",
+   "fetch_from": "to_project.subsystem",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_9",
+   "fieldtype": "Section Break",
+   "label": "Design and links"
+  },
+  {
+   "fieldname": "design_revision",
+   "fieldtype": "Data",
+   "label": "Design Revision",
+   "description": "e.g. BMS PCB rev B"
+  },
+  {
+   "fieldname": "design_link",
+   "fieldtype": "Data",
+   "label": "3DEXPERIENCE / Altium 365 Project",
+   "options": "URL"
+  },
+  {
+   "fieldname": "column_break_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "drive_doc_url",
+   "fieldtype": "Data",
+   "label": "Project Doc (Drive)",
+   "options": "URL",
+   "read_only": 1
+  },
+  {
+   "fieldname": "monday_item_url",
+   "fieldtype": "Data",
+   "label": "Monday Item",
+   "options": "URL",
+   "read_only": 1
+  },
+  {
+   "fieldname": "monday_item_id",
+   "fieldtype": "Data",
+   "label": "Monday Item Id",
+   "read_only": 1,
+   "hidden": 1
+  },
+  {
+   "fieldname": "drive_doc_id",
+   "fieldtype": "Data",
+   "label": "Drive Doc Id",
+   "read_only": 1,
+   "hidden": 1
+  },
+  {
+   "fieldname": "drive_folder_id",
+   "fieldtype": "Data",
+   "label": "Drive Folder Id",
+   "read_only": 1,
+   "hidden": 1
+  },
+  {
+   "fieldname": "erpnext_project",
+   "fieldtype": "Link",
+   "label": "Erpnext Project",
+   "options": "Project",
+   "read_only": 1,
+   "hidden": 1
+  },
+  {
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break",
+   "label": "Description",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Description"
+  }
+ ],
+ "icon": "folder-kanban",
+ "index_web_pages_for_search": 1,
+ "links": [
+  {
+   "link_doctype": "BOM",
+   "link_fieldname": "solar_project",
+   "group": "BOMs"
+  },
+  {
+   "link_doctype": "BOM Import",
+   "link_fieldname": "solar_project",
+   "group": "BOMs"
+  },
+  {
+   "link_doctype": "Material Request",
+   "link_fieldname": "solar_project",
+   "group": "Purchases"
+  },
+  {
+   "link_doctype": "Car Repair",
+   "link_fieldname": "solar_project",
+   "group": "Repairs"
+  }
+ ],
+ "modified": "2026-10-27 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Cars",
+ "name": "Solar Project",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Captain",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Member",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1
+  },
+  {
+   "role": "Solar Alumni",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "search_fields": "project_name,car,subsystem,subteam",
+ "show_title_field_in_link": 1,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "project_name",
+ "track_changes": 1
+}

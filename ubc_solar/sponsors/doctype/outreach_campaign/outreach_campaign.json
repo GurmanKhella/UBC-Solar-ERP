@@ -1,0 +1,144 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:campaign_name",
+ "creation": "2026-10-27 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "campaign_name",
+  "status",
+  "campaign_owner",
+  "column_break_34",
+  "start_date",
+  "end_date",
+  "section_break_40",
+  "sponsors",
+  "section_break_41",
+  "description"
+ ],
+ "fields": [
+  {
+   "fieldname": "campaign_name",
+   "fieldtype": "Data",
+   "label": "Campaign Name",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Planning\nActive\nDone",
+   "default": "Planning",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "campaign_owner",
+   "fieldtype": "Link",
+   "label": "Owner",
+   "options": "User"
+  },
+  {
+   "fieldname": "column_break_34",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Start Date"
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "End Date"
+  },
+  {
+   "fieldname": "section_break_40",
+   "fieldtype": "Section Break",
+   "label": "Sponsors contacted"
+  },
+  {
+   "fieldname": "sponsors",
+   "fieldtype": "Table",
+   "label": "Sponsors",
+   "options": "Campaign Sponsor"
+  },
+  {
+   "fieldname": "section_break_41",
+   "fieldtype": "Section Break",
+   "label": "Description and materials"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Description",
+   "description": "Master sponsorship deck, logos, photos and brochures are attached to this record (sidebar > Attachments)."
+  }
+ ],
+ "icon": "megaphone",
+ "index_web_pages_for_search": 1,
+ "links": [
+  {
+   "link_doctype": "Sponsor Donation",
+   "link_fieldname": "campaign",
+   "group": "Donations"
+  }
+ ],
+ "modified": "2026-10-27 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Sponsors",
+ "name": "Outreach Campaign",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Captain",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Member",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1
+  },
+  {
+   "role": "Solar Alumni",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,0 +1,141 @@
+{
+ "actions": [],
+ "autoname": "format:INT-{YYYY}-{#####}",
+ "creation": "2026-10-27 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "applicant",
+  "applicant_name",
+  "scheduled_at",
+  "place_or_link",
+  "column_break_38",
+  "interview_status",
+  "interviewers",
+  "rating",
+  "recommendation",
+  "section_break_47",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "applicant",
+   "fieldtype": "Link",
+   "label": "Applicant",
+   "options": "Applicant",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "applicant_name",
+   "fieldtype": "Data",
+   "label": "Applicant Name",
+   "fetch_from": "applicant.full_name",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "scheduled_at",
+   "fieldtype": "Datetime",
+   "label": "Scheduled At",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "place_or_link",
+   "fieldtype": "Data",
+   "label": "Where / Call Link"
+  },
+  {
+   "fieldname": "column_break_38",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "interview_status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Scheduled\nDone\nCancelled",
+   "default": "Scheduled",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "interviewers",
+   "fieldtype": "Table MultiSelect",
+   "label": "Interviewers",
+   "options": "Applicant Interviewer"
+  },
+  {
+   "fieldname": "rating",
+   "fieldtype": "Rating",
+   "label": "Rating"
+  },
+  {
+   "fieldname": "recommendation",
+   "fieldtype": "Select",
+   "label": "Recommendation",
+   "options": "\nStrong yes\nYes\nNo\nStrong no"
+  },
+  {
+   "fieldname": "section_break_47",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Text Editor",
+   "label": "Notes"
+  }
+ ],
+ "icon": "messages-square",
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-10-27 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Recruitment",
+ "name": "Applicant Interview",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Captain",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Exec",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "applicant_name"
+}

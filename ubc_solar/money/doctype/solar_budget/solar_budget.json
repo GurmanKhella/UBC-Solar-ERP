@@ -1,0 +1,178 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:budget_name",
+ "creation": "2026-10-27 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "budget_name",
+  "car",
+  "is_active",
+  "column_break_28",
+  "start_date",
+  "end_date",
+  "minimum_target",
+  "enforce_must_have",
+  "section_break_30",
+  "summary_html",
+  "section_break_31",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "budget_name",
+   "fieldtype": "Data",
+   "label": "Budget Name",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1,
+   "description": "e.g. 2026-27 Season (V5)"
+  },
+  {
+   "fieldname": "car",
+   "fieldtype": "Link",
+   "label": "Car",
+   "options": "Car"
+  },
+  {
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Active Budget",
+   "default": "1",
+   "in_list_view": 1,
+   "description": "The budget new purchases are charged to."
+  },
+  {
+   "fieldname": "column_break_28",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Start Date"
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "End Date"
+  },
+  {
+   "fieldname": "minimum_target",
+   "fieldtype": "Currency",
+   "label": "Minimum Target",
+   "options": "CAD",
+   "read_only": 1,
+   "description": "The least the team needs: the total of all budget lines."
+  },
+  {
+   "fieldname": "enforce_must_have",
+   "fieldtype": "Check",
+   "label": "Until the minimum target is raised, only approve must-have lines"
+  },
+  {
+   "fieldname": "section_break_30",
+   "fieldtype": "Section Break",
+   "label": "Where it stands"
+  },
+  {
+   "fieldname": "summary_html",
+   "fieldtype": "HTML",
+   "label": "Summary"
+  },
+  {
+   "fieldname": "section_break_31",
+   "fieldtype": "Section Break",
+   "label": "Notes",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  }
+ ],
+ "icon": "piggy-bank",
+ "index_web_pages_for_search": 1,
+ "links": [
+  {
+   "link_doctype": "Budget Line",
+   "link_fieldname": "budget",
+   "group": "Lines"
+  },
+  {
+   "link_doctype": "Funding Entry",
+   "link_fieldname": "budget",
+   "group": "Money in"
+  },
+  {
+   "link_doctype": "Sponsor Donation",
+   "link_fieldname": "budget",
+   "group": "Money in"
+  }
+ ],
+ "modified": "2026-10-27 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Money",
+ "name": "Solar Budget",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Captain",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Exec",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1
+  },
+  {
+   "role": "Solar Member",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1
+  },
+  {
+   "role": "Solar Alumni",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

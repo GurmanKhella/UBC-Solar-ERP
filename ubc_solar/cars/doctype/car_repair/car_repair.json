@@ -1,0 +1,210 @@
+{
+ "actions": [],
+ "autoname": "format:REP-{YYYY}-{#####}",
+ "creation": "2026-10-27 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "title",
+  "car",
+  "solar_subsystem",
+  "solar_project",
+  "column_break_19",
+  "status",
+  "repair_type",
+  "reported_by",
+  "fixed_by",
+  "fixed_on",
+  "section_break_21",
+  "what_changed",
+  "why",
+  "changes_design",
+  "new_bom",
+  "project_doc_url",
+  "section_break_22",
+  "parts"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "label": "What needs fixing",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "car",
+   "fieldtype": "Link",
+   "label": "Car",
+   "options": "Car",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "solar_subsystem",
+   "fieldtype": "Link",
+   "label": "Subsystem",
+   "options": "Subsystem",
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "solar_project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Solar Project"
+  },
+  {
+   "fieldname": "column_break_19",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Reported\nIn Progress\nFixed",
+   "default": "Reported",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "repair_type",
+   "fieldtype": "Select",
+   "label": "Repair Type",
+   "options": "Fix\nModification / upgrade\nCompetition rebuild",
+   "default": "Fix"
+  },
+  {
+   "fieldname": "reported_by",
+   "fieldtype": "Link",
+   "label": "Reported By",
+   "options": "User",
+   "default": "__user"
+  },
+  {
+   "fieldname": "fixed_by",
+   "fieldtype": "Link",
+   "label": "Fixed By",
+   "options": "User"
+  },
+  {
+   "fieldname": "fixed_on",
+   "fieldtype": "Date",
+   "label": "Fixed On"
+  },
+  {
+   "fieldname": "section_break_21",
+   "fieldtype": "Section Break",
+   "label": "What changed and why"
+  },
+  {
+   "fieldname": "what_changed",
+   "fieldtype": "Small Text",
+   "label": "What Changed"
+  },
+  {
+   "fieldname": "why",
+   "fieldtype": "Small Text",
+   "label": "Why"
+  },
+  {
+   "fieldname": "changes_design",
+   "fieldtype": "Check",
+   "label": "This changes the design (e.g. a new PCB revision)"
+  },
+  {
+   "fieldname": "new_bom",
+   "fieldtype": "Link",
+   "label": "New BOM Version",
+   "options": "BOM",
+   "depends_on": "changes_design"
+  },
+  {
+   "fieldname": "project_doc_url",
+   "fieldtype": "Data",
+   "label": "Technical write-up goes in the project doc",
+   "options": "URL",
+   "fetch_from": "solar_project.drive_doc_url",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_22",
+   "fieldtype": "Section Break",
+   "label": "Parts used",
+   "description": "Deducted from stock (or competition spares) when the repair is marked Fixed."
+  },
+  {
+   "fieldname": "parts",
+   "fieldtype": "Table",
+   "label": "Parts",
+   "options": "Car Repair Part"
+  }
+ ],
+ "icon": "wrench",
+ "index_web_pages_for_search": 1,
+ "links": [
+  {
+   "link_doctype": "Material Request",
+   "link_fieldname": "solar_repair",
+   "group": "Purchases"
+  }
+ ],
+ "modified": "2026-10-27 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Cars",
+ "name": "Car Repair",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Captain",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Member",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1
+  },
+  {
+   "role": "Solar Alumni",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "title",
+ "track_changes": 1
+}

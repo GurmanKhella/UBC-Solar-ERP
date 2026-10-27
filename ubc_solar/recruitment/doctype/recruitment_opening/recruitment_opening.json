@@ -1,0 +1,153 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:opening_title",
+ "creation": "2026-10-27 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "opening_title",
+  "cycle",
+  "status",
+  "column_break_36",
+  "subteam",
+  "position",
+  "copied_from",
+  "section_break_43",
+  "description",
+  "section_break_44",
+  "challenge_instructions"
+ ],
+ "fields": [
+  {
+   "fieldname": "opening_title",
+   "fieldtype": "Data",
+   "label": "Opening Title",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1,
+   "description": "e.g. Electrical member, Fall 2026"
+  },
+  {
+   "fieldname": "cycle",
+   "fieldtype": "Link",
+   "label": "Cycle",
+   "options": "Recruitment Cycle",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nPublished\nClosed",
+   "default": "Draft",
+   "in_list_view": 1,
+   "description": "Published openings appear on the online application form."
+  },
+  {
+   "fieldname": "column_break_36",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "subteam",
+   "fieldtype": "Link",
+   "label": "Subteam",
+   "options": "Subteam",
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "position",
+   "fieldtype": "Select",
+   "label": "Joins As",
+   "options": "Member\nSenior Design Member",
+   "default": "Member"
+  },
+  {
+   "fieldname": "copied_from",
+   "fieldtype": "Link",
+   "label": "Copied From",
+   "options": "Recruitment Opening",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_43",
+   "fieldtype": "Section Break",
+   "label": "Description"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Description"
+  },
+  {
+   "fieldname": "section_break_44",
+   "fieldtype": "Section Break",
+   "label": "Technical challenge"
+  },
+  {
+   "fieldname": "challenge_instructions",
+   "fieldtype": "Text Editor",
+   "label": "Challenge Instructions",
+   "description": "Challenge files can be attached to this opening (sidebar > Attachments)."
+  }
+ ],
+ "icon": "door-open",
+ "index_web_pages_for_search": 1,
+ "links": [
+  {
+   "link_doctype": "Applicant",
+   "link_fieldname": "opening",
+   "group": "Applicants"
+  }
+ ],
+ "modified": "2026-10-27 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Recruitment",
+ "name": "Recruitment Opening",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Captain",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Exec",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

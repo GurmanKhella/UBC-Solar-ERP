@@ -1,0 +1,420 @@
+{
+ "actions": [],
+ "creation": "2026-10-27 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "tab_break_48",
+  "company",
+  "active_budget",
+  "shop_supplies_line",
+  "shop_supplies_subteam",
+  "column_break_39",
+  "receiving_warehouse",
+  "build_area_warehouse",
+  "competition_spares_warehouse",
+  "site_url",
+  "tab_break_49",
+  "mechanical_prefix",
+  "electrical_prefix",
+  "assembly_prefix",
+  "bought_prefix",
+  "number_digits",
+  "first_revision",
+  "column_break_40",
+  "bom_purchase_quantity",
+  "default_lead_days",
+  "escalate_after_days",
+  "recount_window_days",
+  "expiry_warning_days",
+  "equipment_check_days",
+  "tab_break_50",
+  "slack_enabled",
+  "slack_bot_token",
+  "slack_signing_secret",
+  "column_break_41",
+  "default_channel",
+  "maintainers_channel",
+  "section_break_51",
+  "slack_routes",
+  "tab_break_52",
+  "drive_enabled",
+  "drive_service_account",
+  "column_break_42",
+  "drive_projects_folder",
+  "drive_manufacturing_folder",
+  "drive_project_template",
+  "drive_procedure_template",
+  "tab_break_53",
+  "monday_enabled",
+  "monday_api_token",
+  "column_break_43",
+  "monday_board_id",
+  "monday_group_id",
+  "monday_link_column",
+  "tab_break_54",
+  "wiki_enabled",
+  "wiki_url",
+  "wiki_api_key",
+  "column_break_44",
+  "wiki_current_car_path",
+  "wiki_snapshot_prefix",
+  "wiki_locale"
+ ],
+ "fields": [
+  {
+   "fieldname": "tab_break_48",
+   "fieldtype": "Tab Break",
+   "label": "General"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "active_budget",
+   "fieldtype": "Link",
+   "label": "Active Budget",
+   "options": "Solar Budget"
+  },
+  {
+   "fieldname": "shop_supplies_line",
+   "fieldtype": "Link",
+   "label": "Shop Supplies Budget Line",
+   "options": "Budget Line"
+  },
+  {
+   "fieldname": "shop_supplies_subteam",
+   "fieldtype": "Link",
+   "label": "Shop Supplies Approving Subteam",
+   "options": "Subteam"
+  },
+  {
+   "fieldname": "column_break_39",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "receiving_warehouse",
+   "fieldtype": "Link",
+   "label": "Receiving Location",
+   "options": "Warehouse",
+   "description": "Where received parts go when the part has no shelf of its own."
+  },
+  {
+   "fieldname": "build_area_warehouse",
+   "fieldtype": "Link",
+   "label": "Build Area Location",
+   "options": "Warehouse",
+   "description": "Default place finished builds are put."
+  },
+  {
+   "fieldname": "competition_spares_warehouse",
+   "fieldtype": "Link",
+   "label": "Competition Spares Location",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "site_url",
+   "fieldtype": "Data",
+   "label": "ERP Address",
+   "options": "URL",
+   "description": "Public address of the ERP, used in QR codes and links (e.g. https://erp.ubcsolar.com)."
+  },
+  {
+   "fieldname": "tab_break_49",
+   "fieldtype": "Tab Break",
+   "label": "Parts and purchasing"
+  },
+  {
+   "fieldname": "mechanical_prefix",
+   "fieldtype": "Data",
+   "label": "Mechanical Part Prefix",
+   "default": "M"
+  },
+  {
+   "fieldname": "electrical_prefix",
+   "fieldtype": "Data",
+   "label": "Electrical Part Prefix",
+   "default": "E"
+  },
+  {
+   "fieldname": "assembly_prefix",
+   "fieldtype": "Data",
+   "label": "Assembly Prefix",
+   "default": "A",
+   "description": "Subsystems, vehicles and other mixed assemblies."
+  },
+  {
+   "fieldname": "bought_prefix",
+   "fieldtype": "Data",
+   "label": "Bought Part Prefix",
+   "default": "B",
+   "description": "Only used for bought parts that have no manufacturer part number."
+  },
+  {
+   "fieldname": "number_digits",
+   "fieldtype": "Int",
+   "label": "Number Digits",
+   "default": "4"
+  },
+  {
+   "fieldname": "first_revision",
+   "fieldtype": "Data",
+   "label": "First Revision",
+   "default": "A"
+  },
+  {
+   "fieldname": "column_break_40",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "bom_purchase_quantity",
+   "fieldtype": "Select",
+   "label": "Purchases From an Approved BOM",
+   "options": "Only what's short in stock\nFull BOM quantity",
+   "default": "Only what's short in stock"
+  },
+  {
+   "fieldname": "default_lead_days",
+   "fieldtype": "Int",
+   "label": "Default Days Until Parts Needed",
+   "default": "7"
+  },
+  {
+   "fieldname": "escalate_after_days",
+   "fieldtype": "Int",
+   "label": "Escalate Unapproved Items After (days)",
+   "default": "2"
+  },
+  {
+   "fieldname": "recount_window_days",
+   "fieldtype": "Int",
+   "label": "Expensive Parts: Recount Within (days) Before Ordering",
+   "default": "30"
+  },
+  {
+   "fieldname": "expiry_warning_days",
+   "fieldtype": "Int",
+   "label": "Warn Before Expiry (days)",
+   "default": "30"
+  },
+  {
+   "fieldname": "equipment_check_days",
+   "fieldtype": "Int",
+   "label": "Equipment Walk-through Every (days)",
+   "default": "120"
+  },
+  {
+   "fieldname": "tab_break_50",
+   "fieldtype": "Tab Break",
+   "label": "Slack"
+  },
+  {
+   "fieldname": "slack_enabled",
+   "fieldtype": "Check",
+   "label": "Enable Slack"
+  },
+  {
+   "fieldname": "slack_bot_token",
+   "fieldtype": "Password",
+   "label": "Bot Token (xoxb-\u2026)",
+   "length": 255
+  },
+  {
+   "fieldname": "slack_signing_secret",
+   "fieldtype": "Password",
+   "label": "Signing Secret",
+   "length": 255
+  },
+  {
+   "fieldname": "column_break_41",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "default_channel",
+   "fieldtype": "Data",
+   "label": "Default Channel",
+   "default": "#general"
+  },
+  {
+   "fieldname": "maintainers_channel",
+   "fieldtype": "Data",
+   "label": "Maintainers Channel",
+   "default": "#erp-maintainers",
+   "description": "Automation failures are posted here."
+  },
+  {
+   "fieldname": "section_break_51",
+   "fieldtype": "Section Break",
+   "label": "Which channel gets which notification",
+   "description": "Subteam notifications go to the subteam's own channel when it has one."
+  },
+  {
+   "fieldname": "slack_routes",
+   "fieldtype": "Table",
+   "label": "Slack Routes",
+   "options": "Solar Slack Route"
+  },
+  {
+   "fieldname": "tab_break_52",
+   "fieldtype": "Tab Break",
+   "label": "Google Drive"
+  },
+  {
+   "fieldname": "drive_enabled",
+   "fieldtype": "Check",
+   "label": "Enable Google Drive"
+  },
+  {
+   "fieldname": "drive_service_account",
+   "fieldtype": "Attach",
+   "label": "Service Account Key (JSON)",
+   "description": "Upload the robot account's key file as a private file. Share the Shared Drive with the service account's email."
+  },
+  {
+   "fieldname": "column_break_42",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "drive_projects_folder",
+   "fieldtype": "Data",
+   "label": "Projects Folder ID"
+  },
+  {
+   "fieldname": "drive_manufacturing_folder",
+   "fieldtype": "Data",
+   "label": "Manufacturing Folder ID"
+  },
+  {
+   "fieldname": "drive_project_template",
+   "fieldtype": "Data",
+   "label": "Project Doc Template ID",
+   "description": "Google Doc with tabs Meeting Notes, Design Reviews, Research, Tests. Put {{ERP_LINK}} where the ERP link should go."
+  },
+  {
+   "fieldname": "drive_procedure_template",
+   "fieldtype": "Data",
+   "label": "Procedure Doc Template ID"
+  },
+  {
+   "fieldname": "tab_break_53",
+   "fieldtype": "Tab Break",
+   "label": "Monday"
+  },
+  {
+   "fieldname": "monday_enabled",
+   "fieldtype": "Check",
+   "label": "Enable Monday"
+  },
+  {
+   "fieldname": "monday_api_token",
+   "fieldtype": "Password",
+   "label": "API Token",
+   "length": 500
+  },
+  {
+   "fieldname": "column_break_43",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "monday_board_id",
+   "fieldtype": "Data",
+   "label": "Board ID"
+  },
+  {
+   "fieldname": "monday_group_id",
+   "fieldtype": "Data",
+   "label": "Group ID (optional)"
+  },
+  {
+   "fieldname": "monday_link_column",
+   "fieldtype": "Data",
+   "label": "Link Column ID (optional)",
+   "description": "A Link column on the board for the ERP link. Without one, the link is posted as an update."
+  },
+  {
+   "fieldname": "tab_break_54",
+   "fieldtype": "Tab Break",
+   "label": "Wiki"
+  },
+  {
+   "fieldname": "wiki_enabled",
+   "fieldtype": "Check",
+   "label": "Enable Wiki.js"
+  },
+  {
+   "fieldname": "wiki_url",
+   "fieldtype": "Data",
+   "label": "Wiki Address",
+   "default": "https://wiki.ubcsolar.com",
+   "options": "URL"
+  },
+  {
+   "fieldname": "wiki_api_key",
+   "fieldtype": "Password",
+   "label": "API Key",
+   "length": 1000
+  },
+  {
+   "fieldname": "column_break_44",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "wiki_current_car_path",
+   "fieldtype": "Data",
+   "label": "Current Car Page Path",
+   "default": "current-car"
+  },
+  {
+   "fieldname": "wiki_snapshot_prefix",
+   "fieldtype": "Data",
+   "label": "End-of-car Snapshot Path Prefix",
+   "default": "cars"
+  },
+  {
+   "fieldname": "wiki_locale",
+   "fieldtype": "Data",
+   "label": "Wiki Locale",
+   "default": "en"
+  }
+ ],
+ "icon": "settings",
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-10-27 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Solar Automation",
+ "name": "Solar Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Admin",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "states": []
+}

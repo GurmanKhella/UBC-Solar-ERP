@@ -1,0 +1,186 @@
+{
+ "actions": [],
+ "autoname": "format:DON-{YYYY}-{####}",
+ "creation": "2026-10-27 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "sponsor",
+  "donation_type",
+  "status",
+  "column_break_32",
+  "amount",
+  "budget",
+  "campaign",
+  "column_break_33",
+  "date_pledged",
+  "date_received",
+  "section_break_38",
+  "items",
+  "stock_entry",
+  "section_break_39",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "sponsor",
+   "fieldtype": "Link",
+   "label": "Sponsor",
+   "options": "Sponsor",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "donation_type",
+   "fieldtype": "Select",
+   "label": "Type",
+   "options": "Money\nParts\nService",
+   "default": "Money",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Pledged\nReceived",
+   "default": "Pledged",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "column_break_32",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "label": "Amount / Value",
+   "options": "CAD",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "Money: the amount. Parts and services: their value (in-kind; doesn't add to Raised)."
+  },
+  {
+   "fieldname": "budget",
+   "fieldtype": "Link",
+   "label": "Budget",
+   "options": "Solar Budget",
+   "reqd": 1
+  },
+  {
+   "fieldname": "campaign",
+   "fieldtype": "Link",
+   "label": "Campaign",
+   "options": "Outreach Campaign"
+  },
+  {
+   "fieldname": "column_break_33",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "date_pledged",
+   "fieldtype": "Date",
+   "label": "Date Pledged",
+   "default": "Today"
+  },
+  {
+   "fieldname": "date_received",
+   "fieldtype": "Date",
+   "label": "Date Received"
+  },
+  {
+   "fieldname": "section_break_38",
+   "fieldtype": "Section Break",
+   "label": "Donated parts",
+   "depends_on": "eval:doc.donation_type=='Parts'"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Sponsor Donation Item"
+  },
+  {
+   "fieldname": "stock_entry",
+   "fieldtype": "Link",
+   "label": "Received Into Stock",
+   "options": "Stock Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_39",
+   "fieldtype": "Section Break",
+   "label": "Notes",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  }
+ ],
+ "icon": "gift",
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-10-27 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Sponsors",
+ "name": "Sponsor Donation",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Captain",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Solar Member",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1
+  },
+  {
+   "role": "Solar Alumni",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "sponsor",
+ "track_changes": 1
+}

@@ -1,0 +1,246 @@
+{
+ "actions": [],
+ "autoname": "format:BUILD-{YYYY}-{#####}",
+ "creation": "2026-10-27 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "bom",
+  "item_code",
+  "qty",
+  "column_break_17",
+  "build_date",
+  "built_by",
+  "target_warehouse",
+  "column_break_18",
+  "car",
+  "solar_project",
+  "manufacturing_stage",
+  "section_break_17",
+  "items",
+  "section_break_18",
+  "serial_numbers",
+  "section_break_19",
+  "quality_inspection_template",
+  "quality_results",
+  "section_break_20",
+  "stock_entry",
+  "quality_status",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "bom",
+   "fieldtype": "Link",
+   "label": "BOM",
+   "options": "BOM",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "Built 2\u00d7 BMS boards? Pick the BOM; every part on it is deducted when you submit."
+  },
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "label": "Built Part",
+   "options": "Item",
+   "fetch_from": "bom.item",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "qty",
+   "fieldtype": "Float",
+   "label": "Quantity Built",
+   "reqd": 1,
+   "default": "1",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "column_break_17",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "build_date",
+   "fieldtype": "Date",
+   "label": "Build Date",
+   "reqd": 1,
+   "default": "Today"
+  },
+  {
+   "fieldname": "built_by",
+   "fieldtype": "Link",
+   "label": "Built By",
+   "options": "User",
+   "reqd": 1,
+   "default": "__user"
+  },
+  {
+   "fieldname": "target_warehouse",
+   "fieldtype": "Link",
+   "label": "Put Finished Part In",
+   "options": "Warehouse",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_18",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "car",
+   "fieldtype": "Link",
+   "label": "Car",
+   "options": "Car",
+   "read_only": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "solar_project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Solar Project",
+   "read_only": 1
+  },
+  {
+   "fieldname": "manufacturing_stage",
+   "fieldtype": "Link",
+   "label": "Manufacturing Stage",
+   "options": "Manufacturing Stage"
+  },
+  {
+   "fieldname": "section_break_17",
+   "fieldtype": "Section Break",
+   "label": "Parts used",
+   "description": "Filled from the BOM. Adjust quantities if extra parts were used."
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Build Record Item"
+  },
+  {
+   "fieldname": "section_break_18",
+   "fieldtype": "Section Break",
+   "label": "Serial numbers",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "serial_numbers",
+   "fieldtype": "Small Text",
+   "label": "Serial Numbers",
+   "description": "Optional. One per line, for tracking individual units (e.g. module #3)."
+  },
+  {
+   "fieldname": "section_break_19",
+   "fieldtype": "Section Break",
+   "label": "Quality checks"
+  },
+  {
+   "fieldname": "quality_inspection_template",
+   "fieldtype": "Link",
+   "label": "Quality Inspection Template",
+   "options": "Quality Inspection Template"
+  },
+  {
+   "fieldname": "quality_results",
+   "fieldtype": "Table",
+   "label": "Quality Results",
+   "options": "Build Quality Result"
+  },
+  {
+   "fieldname": "section_break_20",
+   "fieldtype": "Section Break",
+   "label": "Result"
+  },
+  {
+   "fieldname": "stock_entry",
+   "fieldtype": "Link",
+   "label": "Stock Entry",
+   "options": "Stock Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "quality_status",
+   "fieldtype": "Select",
+   "label": "Quality Status",
+   "options": "\nAccepted\nRejected",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "options": "Build Record",
+   "read_only": 1,
+   "no_copy": 1,
+   "print_hide": 1
+  }
+ ],
+ "icon": "hammer",
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-10-27 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Cars",
+ "name": "Build Record",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1
+  },
+  {
+   "role": "Solar Captain",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1
+  },
+  {
+   "role": "Solar Member",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "share": 1,
+   "create": 1,
+   "submit": 1,
+   "amend": 1
+  },
+  {
+   "role": "Solar Alumni",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

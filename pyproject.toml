@@ -1,0 +1,28 @@
+[project]
+name = "ubc_solar"
+authors = [
+    { name = "UBC Solar" }
+]
+description = "UBC Solar operations system (ERP) on ERPNext"
+requires-python = ">=3.14"
+readme = "README.md"
+dynamic = ["version"]
+dependencies = [
+    # "frappe~=16.0.0" and "erpnext~=16.0.0" are installed and managed by bench.
+]
+
+[build-system]
+requires = ["flit_core >=3.4,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.ruff]
+line-length = 110
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["F", "E", "W", "I", "UP", "B", "RUF"]
+ignore = ["E501", "W191", "E101", "RUF012"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "tab"
